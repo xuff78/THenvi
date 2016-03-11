@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:background="@color/appBackground"
+        android:layout_width="match_parent"
+        android:layout_height="45dip">
+        <ImageView
+            android:id="@+id/listLeftBtn"
+            android:src="@mipmap/btn_more_click"
+            android:layout_width="45dip"
+            android:padding="10dip"
+            android:layout_height="45dip" />
+        <TextView
+            android:layout_gravity="center"
+            android:text="TH跨界区"
+            android:layout_centerInParent="true"
+            style="@style/txt_white_15" />
+    </RelativeLayout>
+    <android.support.v4.widget.DrawerLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/drawer_layout"
+        android:orientation="vertical">
+        <com.baidu.mapapi.map.MapView
+            android:id="@+id/mapView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:clickable="true" />
+        <LinearLayout
+            android:layout_gravity="left"
+            android:id="@+id/leftMenuView"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:layout_width="140dip"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+                <TextView
+                    android:layout_marginLeft="10dip"
+                    android:layout_marginTop="10dip"
+                    android:text="杭长桥    杭嘉湖区"
+                    style="@style/txt_black_14" />
+                </LinearLayout>
+            </LinearLayout>
+    </android.support.v4.widget.DrawerLayout>
+</LinearLayout>
