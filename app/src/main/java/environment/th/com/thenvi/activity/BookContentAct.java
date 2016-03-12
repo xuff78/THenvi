@@ -16,6 +16,7 @@ public class BookContentAct extends AppCompatActivity {
 
     WebView mWebView;
     String testUrl="http://www.chinapdf.com/PDF/Acrobat%208%20family.pdf";
+    String example="https://cors-anywhere.herokuapp.com/http://bhpr.hrsa.gov/healthworkforce/rnsurveys/rnsurveyfinal.pdf";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,6 @@ public class BookContentAct extends AppCompatActivity {
                 return true;
             }
         });
-        mWebView.loadUrl("file:///android_asset/web/viewer.html?file="+"https://cors-anywhere.herokuapp.com/http://bhpr.hrsa.gov/healthworkforce/rnsurveys/rnsurveyfinal.pdf");
+        mWebView.loadUrl("file:///android_asset/web/viewer.html?file="+"adobe8redader.pdf");
     }
 }

@@ -11,6 +11,8 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.Poi;
 import com.baidu.mapapi.model.LatLng;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import environment.th.com.thenvi.R;
@@ -19,6 +21,7 @@ import environment.th.com.thenvi.frg.CurrentLoactionMap;
 import environment.th.com.thenvi.frg.WaterInfoMap;
 import environment.th.com.thenvi.services.BDLocationService;
 import environment.th.com.thenvi.utils.ConstantUtil;
+import environment.th.com.thenvi.utils.LogUtil;
 import environment.th.com.thenvi.utils.SharedPreferencesUtil;
 
 public class MainMenuAct extends AppCompatActivity implements View.OnClickListener {
@@ -104,8 +107,11 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
         @Override
         public void onReceiveLocation(BDLocation bdLocation) {
             if (bdLocation != null) {
-                String lat = bdLocation.getLatitude() + "";
-                String lon = bdLocation.getLongitude() + "";
+
+                BigDecimal la = new BigDecimal(bdLocation.getLatitude());
+                BigDecimal lo = new BigDecimal(bdLocation.getLongitude());
+                String lat = la.toString();
+                String lon = lo.toString();
 
                 String old_lat= SharedPreferencesUtil.getString(MainMenuAct.this, ConstantUtil.lat);
                 String old_lon=SharedPreferencesUtil.getString(MainMenuAct.this, ConstantUtil.lon);
@@ -114,6 +120,7 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
                     SharedPreferencesUtil.setString(MainMenuAct.this, ConstantUtil.lon, lon); //location.get("lng")+"");
                     SharedPreferencesUtil.setString(MainMenuAct.this, ConstantUtil.lat, lat); //location.get("lat")+"");
                     ((CurrentLoactionMap)frg).refreshMapStatus(current_point, 18);
+                    LogUtil.i("Location","location: lat: "+lat+"   lon: "+lon);
 
                 }
                 switch (bdLocation.getLocType()) {
@@ -140,7 +147,6 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
                         locationService.unRegisterListener(listener);
                         break;
                     case BDLocation.TypeNetWorkException:
-//                        LogUtils.i("网络不同导致定位失败，请检查网络是否通畅");
                         break;
                 }
 
