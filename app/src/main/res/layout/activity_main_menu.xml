@@ -33,7 +33,7 @@
             android:id="@+id/menu_btn2"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="基础地图"
+            android:text="水文站"
             android:drawablePadding="5dip"
             style="@style/txt_white_10"
             android:drawableTop="@drawable/selector_btn_water" />
@@ -41,7 +41,7 @@
             android:id="@+id/menu_btn3"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="基础地图"
+            android:text="水质监测"
             android:drawablePadding="5dip"
             style="@style/txt_white_10"
             android:drawableTop="@drawable/selector_btn_air" />
@@ -49,7 +49,7 @@
             android:id="@+id/menu_btn4"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="基础地图"
+            android:text="污染源信息"
             android:drawablePadding="5dip"
             style="@style/txt_white_10"
             android:drawableTop="@drawable/selector_btn_pollute" />
@@ -57,7 +57,7 @@
             android:id="@+id/menu_btn5"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="基础地图"
+            android:text="法律法规"
             android:drawablePadding="5dip"
             style="@style/txt_white_10"
             android:drawableTop="@drawable/selector_btn_more" />

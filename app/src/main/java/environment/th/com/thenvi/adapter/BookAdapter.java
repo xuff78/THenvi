@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
@@ -83,8 +84,17 @@ public class BookAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             @Override
             public void onClick(View view) {
 //                cb.onClick(position, view);
-                if(true){ //bean.isDownload()){
-                    act.startActivity(new Intent(act, BookContentAct.class));
+                if(bean.isDownload()){
+//                    act.startActivity(new Intent(act, BookContentAct.class));
+                    File file = new File(FileUtil.savePath, "book"+bean.getId()+".pdf");
+                    if(file.exists()) {
+                        Intent intent = new Intent("android.intent.action.VIEW");
+                        intent.addCategory("android.intent.category.DEFAULT");
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Uri uri = Uri.fromFile(file);
+                        intent.setDataAndType(uri, "application/pdf");
+                        act.startActivity(intent);
+                    }
                 }else {
                     progress = ProgressDialog.show(act, bean.getBookName(), "正在连接");
                     currentDownloadTxt = tvh.timeTxt;

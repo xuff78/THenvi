@@ -5,6 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
     <color name="appBackground">#343434</color>
+    <color name="trans">#00000000</color>
+    <color name="alphagray">#22000000</color>
 
     <!-- 商城使用字体颜色 -->
     <color name="highlight_gray">#eaeaea</color><!--高亮灰 -->

@@ -9,9 +9,10 @@
         android:layout_height="45dip">
         <ImageView
             android:id="@+id/listLeftBtn"
-            android:src="@mipmap/btn_more_click"
+            android:src="@mipmap/icon_white_arrow_left"
             android:layout_width="45dip"
             android:padding="10dip"
+            android:background="@drawable/press_trans_to_gray"
             android:layout_height="45dip" />
         <TextView
             android:layout_gravity="center"

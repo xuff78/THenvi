@@ -11,14 +11,28 @@
         android:layout_height="45dip">
         <ImageView
             android:id="@+id/listLeftBtn"
-            android:src="@mipmap/btn_more_click"
+            android:src="@mipmap/icon_menu_list"
+            android:background="@drawable/press_trans_to_gray"
             android:layout_width="45dip"
-            android:padding="10dip"
+            android:padding="8dip"
             android:layout_height="45dip" />
         <TextView
             android:layout_gravity="center"
             android:text="TH跨界区"
             android:layout_centerInParent="true"
+            style="@style/txt_white_15" />
+        <TextView
+            android:id="@+id/typeBtn"
+            android:layout_gravity="center"
+            android:background="@drawable/press_trans_to_gray"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:drawablePadding="5dip"
+            android:drawableRight="@mipmap/icon_triangle"
+            android:text="类型"
+            android:paddingRight="28dp"
+            android:paddingLeft="28dp"
+            android:layout_alignParentRight="true"
             style="@style/txt_white_15" />
     </RelativeLayout>
     <android.support.v4.widget.DrawerLayout

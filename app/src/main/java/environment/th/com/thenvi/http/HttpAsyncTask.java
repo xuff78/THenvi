@@ -1,6 +1,8 @@
 package environment.th.com.thenvi.http;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -8,6 +10,7 @@ import android.os.AsyncTask;
 
 import java.util.HashMap;
 
+import environment.th.com.thenvi.utils.ActUtil;
 import environment.th.com.thenvi.utils.LogUtil;
 
 /**
@@ -42,15 +45,11 @@ public class HttpAsyncTask extends AsyncTask<Object, String, String> {
 	/**
 	 * 用于展现UI使用，在本类中用于显示进度条
 	 */
-	private Context mContext;
+	private Activity mContext;
 	private boolean isCancel=false;
-
-	/**
-	 * 显示进度条
-	 */
-	public Dialog mPrgDlg;
 	
 	public boolean isShowDlg = true;
+	private ProgressDialog progressDialog;
 
 	/**
 	 * 唯一构造函数
@@ -58,17 +57,25 @@ public class HttpAsyncTask extends AsyncTask<Object, String, String> {
 	 * @param context Context
 	 * @param httpCb HttpCallback
 	 */
-	public HttpAsyncTask(Context context, HttpCallback httpCb) {
+	public HttpAsyncTask(Activity context, HttpCallback httpCb) {
 		super();
 		mHttpCb = httpCb;
 		mContext = context;
 	}
 	
-	public HttpAsyncTask(Context context, HttpCallback httpCb, boolean isShowDlg) {
+	public HttpAsyncTask(Activity context, HttpCallback httpCb, boolean isShowDlg) {
 		super();
 		mHttpCb = httpCb;
 		mContext = context;
 		this. isShowDlg= isShowDlg;
+	}
+
+	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+		ActUtil.closeSoftPan(mContext);
+		progressDialog = ProgressDialog.show(mContext, "", "加载中..", true, true);
+		progressDialog.setOnCancelListener(dialogCancel);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -92,11 +99,13 @@ public class HttpAsyncTask extends AsyncTask<Object, String, String> {
 	@Override
 	protected void onPostExecute(final String result) {
 		super.onPostExecute(result);
-		// JSONObject这个类内部处理了乱码的问题
 
 		LogUtil.i(TAG, mReqMethod + "---->" + result);
 
-		
+		if(progressDialog!=null&&progressDialog.isShowing())
+			progressDialog.dismiss();
+
+		if(mContext!=null)
 		if(!isCancel)
 			mHttpCb.httpCallback(mReqMethod, result.trim());
 		
@@ -110,16 +119,4 @@ public class HttpAsyncTask extends AsyncTask<Object, String, String> {
 			isCancel=true;
 		}
 	};
-
-	@Override
-	protected void onCancelled() {
-		if (mPrgDlg != null) {
-			mPrgDlg.dismiss();
-		}
-	}
-
-	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
-	}
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 
 import environment.th.com.thenvi.bean.JsonMessage;
+import environment.th.com.thenvi.utils.DialogUtil;
 import environment.th.com.thenvi.utils.JsonUtil;
 import environment.th.com.thenvi.utils.LogUtil;
 
@@ -32,7 +33,7 @@ public class CallBack {
 //		LogUtil.e(TAG, "onSuccess:"+jsonMessage);
 		JsonMessage msg=JsonUtil.getJsonMessage(jsonMessage);
 		if(msg.getCode()==null){
-			onHTTPException(method, jsonMessage);
+			oServerException(method, jsonMessage);
 		}else if(msg.getCode().equals("9200"))
 			doSuccess(method, JsonUtil.getJsonData(jsonMessage));
 		else{
@@ -51,6 +52,7 @@ public class CallBack {
 	 */
 	public void onFailure(String method, JsonMessage jsonMessage){
 //		LogUtil.e(TAG, "onFailure:" + jsonMessage);
+		DialogUtil.showInfoDailog(mContext, jsonMessage.getCode(), jsonMessage.getMsg());
 	}
 	
 	/**
@@ -59,6 +61,16 @@ public class CallBack {
 	 */
 	public void onHTTPException(String method, String jsonMessage){
 //		LogUtil.e(TAG, "onHTTPException:"+jsonMessage);
+		DialogUtil.showInfoDailog(mContext, "提示", GlbsNet.HTTP_ERROR_MESSAGE);
+	}
+
+	/**
+	 * 处理HTTP网络连接异常
+	 * @param jsonMessage
+	 */
+	public void oServerException(String method, String jsonMessage){
+//		LogUtil.e(TAG, "onHTTPException:"+jsonMessage);
+		DialogUtil.showInfoDailog(mContext, "提示", "服务器内部错误，请稍后再试");
 	}
 	
 	/**
