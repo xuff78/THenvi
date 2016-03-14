@@ -49,6 +49,9 @@ public class CurrentLoactionMap extends BaseFragment {
 
 
         initView(mView);
+
+        LatLng current_point=new LatLng(39.919209, 116.368666);
+        refreshMapStatus(current_point, 16);
         return mView;
     }
 

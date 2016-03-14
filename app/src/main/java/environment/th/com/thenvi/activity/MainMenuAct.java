@@ -108,18 +108,18 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
         public void onReceiveLocation(BDLocation bdLocation) {
             if (bdLocation != null) {
 
-                BigDecimal la = new BigDecimal(bdLocation.getLatitude());
-                BigDecimal lo = new BigDecimal(bdLocation.getLongitude());
-                String lat = la.toString();
-                String lon = lo.toString();
+//                BigDecimal la = new BigDecimal(bdLocation.getLatitude());
+//                BigDecimal lo = new BigDecimal(bdLocation.getLongitude());
+                Double lat = bdLocation.getLatitude();
+                Double lon = bdLocation.getLongitude();
 
                 String old_lat= SharedPreferencesUtil.getString(MainMenuAct.this, ConstantUtil.lat);
                 String old_lon=SharedPreferencesUtil.getString(MainMenuAct.this, ConstantUtil.lon);
                 if (!old_lat.equals(lat) || !old_lon.equals(lon)){
                     LatLng current_point=new LatLng(bdLocation.getLatitude(),bdLocation.getLongitude());
-                    SharedPreferencesUtil.setString(MainMenuAct.this, ConstantUtil.lon, lon); //location.get("lng")+"");
-                    SharedPreferencesUtil.setString(MainMenuAct.this, ConstantUtil.lat, lat); //location.get("lat")+"");
-                    ((CurrentLoactionMap)frg).refreshMapStatus(current_point, 18);
+                    SharedPreferencesUtil.setString(MainMenuAct.this, ConstantUtil.lon, String.valueOf(lon)); //location.get("lng")+"");
+                    SharedPreferencesUtil.setString(MainMenuAct.this, ConstantUtil.lat, String.valueOf(lat)); //location.get("lat")+"");
+//                    ((CurrentLoactionMap)frg).refreshMapStatus(current_point, 18);
                     LogUtil.i("Location","location: lat: "+lat+"   lon: "+lon);
 
                 }

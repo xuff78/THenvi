@@ -74,18 +74,16 @@ public class HttpAsyncTask extends AsyncTask<Object, String, String> {
 	protected void onPreExecute() {
 		super.onPreExecute();
 		ActUtil.closeSoftPan(mContext);
-		progressDialog = ProgressDialog.show(mContext, "", "加载中..", true, true);
-		progressDialog.setOnCancelListener(dialogCancel);
+		if(isShowDlg) {
+			progressDialog = ProgressDialog.show(mContext, "", "加载中..", true, true);
+			progressDialog.setOnCancelListener(dialogCancel);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	protected String doInBackground(Object... params) {
 		mReqMethod = (String) params[1];
-		
-		if(isShowDlg){
-			publishProgress(mReqMethod);
-		}
 		
 		if((Boolean)params[4]){
 			return "";

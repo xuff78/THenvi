@@ -15,5 +15,12 @@ public class ConstantUtil {
 
 	public static final String method_Login="1/login";
 
+	/** 水文站点列表 */
+	public static final String method_SiteList="1/shuiwen/siteList";
+	/** 水文站点详情 */
+	public static final String method_SiteDetail="1/shuiwen/siteDetail";
+	/** 水文站表数据 */
+	public static final String method_SiteChart="1/shuiwen/chart";
+
 
 }

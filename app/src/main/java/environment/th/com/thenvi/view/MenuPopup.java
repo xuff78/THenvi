@@ -35,7 +35,7 @@ public class MenuPopup extends PopupWindow {
         conentView = inflater.inflate(R.layout.popup_view, null);
         // 设置SelectPicPopupWindow的View
         this.setContentView(conentView);
-        this.setWidth(ScreenUtil.getScreenWidth(context)/5);
+        this.setWidth(ScreenUtil.dip2px(context,100));
         this.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
         this.setFocusable(true);
         this.setOutsideTouchable(true);
@@ -50,7 +50,7 @@ public class MenuPopup extends PopupWindow {
 
     public void showPopupWindow(View v) {
         if (!this.isShowing()) {
-            this.showAsDropDown(v, v.getLayoutParams().width / 2, 12);
+            this.showAsDropDown(v, 0, 12);
         } else {
             this.dismiss();
         }
