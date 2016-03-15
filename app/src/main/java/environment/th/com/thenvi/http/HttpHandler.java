@@ -47,6 +47,7 @@ public class HttpHandler extends Handle {
 		HashMap<String, String> params=new HashMap<>();
 		params.put("hsname", hsname);
 		params.put("rsname", rsname);
+		params.put("date", "2014-03-31");
 		request(ConstantUtil.method_SiteDetail, params, true);
 	}
 

@@ -2,6 +2,7 @@ package environment.th.com.thenvi.frg;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -21,6 +23,7 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -48,7 +51,8 @@ import environment.th.com.thenvi.view.MenuPopup;
 /**
  * Created by Administrator on 2016/3/9.
  */
-public class WaterInfoMap extends BaseFragment implements View.OnClickListener{
+public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
+        BaiduMap.OnMapClickListener {
 
     private void initHandler() {
         handler=new HttpHandler(getActivity(), new CallBack(getActivity()){
@@ -58,8 +62,27 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener{
                     siteList= JsonUtil.getSiteList(jsonData);
                     siteListview.setAdapter(new SiteListAdapter(getActivity(), siteList));
                     siteListview.setOnItemClickListener(itemClickListener);
+                    for (WaterSiteBean bean : siteList) {
+                        View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.marker_layout, null);
+                        mMarkerView.setBackgroundResource(R.mipmap.marker_blue_round);
+                        TextView nameTxt= (TextView) mMarkerView.findViewById(R.id.nameTxt);
+//                        nameTxt.setText(bean.getHSNAME());
+                        LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLONGITUDE()));
+                        Bundle bundle = new Bundle();
+                        int dataType = 0;
+                        bundle.putInt("mark_type", dataType);
+                        bundle.putSerializable("InfoBean", bean);
+                        //将标记添加到地图上
+                        addMarkerToMap(point, bundle, mMarkerView);
+                    }
+                    if(siteList.size()>0){
+                        WaterSiteBean bean = siteList.get(0);
+                        LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLONGITUDE()));
+                        refreshMapStatus(point, 10);
+                    }
                 }else if(method.equals(ConstantUtil.method_SiteDetail)){
-
+                    WaterSiteBean siteBean=JsonUtil.getSiteDetail(jsonData);
+                    content.setListView(siteBean.getInfos());
                 }
             }
         });
@@ -75,6 +98,7 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener{
     private MenuPopup popup;
     private ListView siteListview;
     public InfoWindow mInfoWindow;
+    private MarkerSupportView content;
     private ArrayList<WaterSiteBean> siteList=new ArrayList<>();
     private Marker currentMarker;
 
@@ -89,6 +113,8 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener{
         mMapView.showZoomControls(false);
         mMapView.showScaleControl(true);
         baiduMap = mMapView.getMap();
+
+        baiduMap.setOnMapClickListener(this);
         baiduMap.setMyLocationEnabled(true);
         //普通地图
 //        baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
@@ -106,7 +132,8 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener{
                 }
                 if (type == 0) {
                     WaterSiteBean bean = (WaterSiteBean) markerExtraInfo.getSerializable("InfoBean");
-                    showSupportContent(marker, height, bean.getInfos(), bean.getHSNAME());
+                    showSupportContent(marker.getPosition(), height, bean.getHSNAME());
+                    handler.getSiteDetail(bean.getHSNAME(), bean.getRSNAME());
                 } else if (type == 1) {
 
                 } else if (type == 2) {
@@ -150,21 +177,15 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener{
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             mDrawerLayout.closeDrawer(menuLayout);
             WaterSiteBean site= (WaterSiteBean) view.getTag();
+            showSupportContent(new LatLng(Double.valueOf(site.getLATITUDE()),Double.valueOf(site.getLONGITUDE())), 115, site.getHSNAME());
             handler.getSiteDetail(site.getHSNAME(), site.getRSNAME());
         }
     };
 
-    public void showSupportContent(Marker marker, int height, ArrayList<PopupInfoItem> datas, String title) {
+    public void showSupportContent(LatLng endpositon, int height, String title) {
 
-        LatLng endpositon = marker.getPosition();
-        MarkerSupportView content = new MarkerSupportView(getActivity(), datas, title);
+        content = new MarkerSupportView(getActivity(), title);
         View view = content.getMarkerContentView();
-        //获取屏幕大小，以及图片的数量，来控制滚动图片的容器宽度
-        WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                (int) (display.getWidth() * 0.7), (int) (display.getHeight() * 0.4));
-        view.setLayoutParams(layoutParams);
         mInfoWindow = new InfoWindow(view, endpositon, -height);
         //显示InfoWindow
         baiduMap.showInfoWindow(mInfoWindow);
@@ -197,6 +218,17 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener{
         }catch (Exception e){
 
         }
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        baiduMap.hideInfoWindow();
+        mInfoWindow = null;
+    }
+
+    @Override
+    public boolean onMapPoiClick(MapPoi mapPoi) {
+        return false;
     }
 
     @Override
@@ -245,6 +277,7 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener{
 
     @Override
     public void onDestroy() {
+        baiduMap.clear();
         mMapView.onDestroy();
         super.onDestroy();
     }

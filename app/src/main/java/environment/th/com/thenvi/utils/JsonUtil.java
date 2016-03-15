@@ -51,10 +51,10 @@ public class JsonUtil {
                     site.setHSNAME(subJson.getString("HSNAME"));
                 if(!subJson.isNull("RSNAME"))
                     site.setRSNAME(subJson.getString("RSNAME"));
-//                if(!subJson.isNull("RSNAME"))
-//                    site.setRSNAME(subJson.getString("RSNAME"));
-//                if(!subJson.isNull("RSNAME"))
-//                    site.setRSNAME(subJson.getString("RSNAME"));
+                if(!subJson.isNull("LONGITUDE"))
+                    site.setLONGITUDE(subJson.getString("LONGITUDE"));
+                if(!subJson.isNull("LATITUDE"))
+                    site.setLATITUDE(subJson.getString("LATITUDE"));
 //                if(!subJson.isNull("RSNAME"))
 //                    site.setRSNAME(subJson.getString("RSNAME"));
                 sitelist.add(site);
@@ -63,5 +63,30 @@ public class JsonUtil {
             e.printStackTrace();
         }
         return sitelist;
+    }
+
+    public static WaterSiteBean getSiteDetail(String jsonStr) {
+        WaterSiteBean site=new WaterSiteBean();
+        try {
+            JSONObject json=new JSONObject(jsonStr);
+            if(!json.isNull("siteDetail")) {
+                JSONObject subJson=json.getJSONObject("siteDetail");
+                if (!subJson.isNull("hsname"))
+                    site.setHSNAME(subJson.getString("hsname"));
+                if (!subJson.isNull("rsname"))
+                    site.setRSNAME(subJson.getString("rsname"));
+                if (!subJson.isNull("LONGITUDE"))
+                    site.setLONGITUDE(subJson.getString("LONGITUDE"));
+                if (!subJson.isNull("LATITUDE"))
+                    site.setLATITUDE(subJson.getString("LATITUDE"));
+                if (!subJson.isNull("SAFESTAGE"))
+                    site.setSAFESTAGE(subJson.getString("SAFESTAGE"));
+                if (!subJson.isNull("CRESTELEVATION"))
+                    site.setCRESTELEVATION(subJson.getString("CRESTELEVATION"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return site;
     }
 }

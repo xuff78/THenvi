@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import environment.th.com.thenvi.R;
+import environment.th.com.thenvi.adapter.PopupInfoAdapter;
 import environment.th.com.thenvi.bean.PopupInfoItem;
 
 /**
@@ -42,11 +43,10 @@ public class MarkerSupportView extends View implements View.OnClickListener {
     private  float density;
     private ArrayList<PopupInfoItem> datas;
 
-    public MarkerSupportView(Activity context, ArrayList<PopupInfoItem> datas, String title) {
+    public MarkerSupportView(Activity context, String title) {
         super(context);
         this.mContext=context;
         this.title=title;
-        this.datas=datas;
     }
 
     public MarkerSupportView(Context context, AttributeSet attrs) {
@@ -67,7 +67,18 @@ public class MarkerSupportView extends View implements View.OnClickListener {
         infoList = (ListView) contentView.findViewById(R.id.infoList);
 
 
+        //获取屏幕大小，以及图片的数量，来控制滚动图片的容器宽度
+        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                (int) (display.getWidth() * 0.6), (int) (display.getHeight() * 0.4));
+        infoList.setLayoutParams(layoutParams);
         return contentView;
+    }
+
+    public void setListView(ArrayList<PopupInfoItem> datas){
+        this.datas=datas;
+        infoList.setAdapter(new PopupInfoAdapter(mContext, datas));
     }
 
     @Override

@@ -1,9 +1,11 @@
 package environment.th.com.thenvi.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 2016/3/14.
  */
-public class PopupInfoItem {
+public class PopupInfoItem implements Serializable{
 
     private String name="";
     private String content="";
