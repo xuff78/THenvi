@@ -16,6 +16,8 @@ public class WaterSiteBean implements Serializable{
     private String SAFESTAGE="";
     private String CRESTELEVATION="";
 
+    public static String Name="WaterSiteBean";
+
     public String getCRESTELEVATION() {
         return CRESTELEVATION;
     }
@@ -67,8 +69,10 @@ public class WaterSiteBean implements Serializable{
     public ArrayList<PopupInfoItem> getInfos(){
         ArrayList<PopupInfoItem> datas = new ArrayList<>();
         datas.add(new PopupInfoItem("水系", RSNAME));
-        datas.add(new PopupInfoItem("保证水位", SAFESTAGE));
-        datas.add(new PopupInfoItem("堤顶高度", CRESTELEVATION));
+        if(SAFESTAGE.length()>0)
+            datas.add(new PopupInfoItem("保证水位", SAFESTAGE));
+        if(CRESTELEVATION.length()>0)
+            datas.add(new PopupInfoItem("堤顶高度", CRESTELEVATION));
         datas.add(new PopupInfoItem("经度", LONGITUDE));
         datas.add(new PopupInfoItem("纬度", LATITUDE));
         return datas;

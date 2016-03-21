@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:background="@color/appBackground"
+        android:layout_width="match_parent"
+        android:layout_height="45dip">
+        <ImageView
+            android:id="@+id/listLeftBtn"
+            android:src="@mipmap/icon_white_arrow_left"
+            android:layout_width="45dip"
+            android:padding="10dip"
+            android:background="@drawable/press_trans_to_gray"
+            android:layout_height="45dip" />
+        <TextView
+            android:layout_gravity="center"
+            android:text="TH跨界区"
+            android:layout_centerInParent="true"
+            style="@style/txt_white_15" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_marginTop="15dip"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/startDate"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:background="@mipmap/of_white_btn"
+            android:layout_width="120dip"
+            android:layout_height="36dip" />
+        <ImageView
+            android:background="@mipmap/icon_arrow_right"
+            android:layout_width="35dip"
+            android:layout_height="35dip" />
+        <TextView
+            android:id="@+id/endDate"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:background="@mipmap/of_white_btn"
+            android:layout_width="120dip"
+            android:layout_height="36dip" />
+
+        <TextView
+            android:layout_marginLeft="10dip"
+            android:background="@color/hard_gray"
+            android:gravity="center"
+            android:id="@+id/findData"
+            style="@style/txt_white_14"
+            android:text="查找"
+            android:layout_width="60dip"
+            android:layout_height="36dip" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_marginTop="50dip"
+        android:id="@+id/mainFrame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

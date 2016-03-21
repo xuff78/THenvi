@@ -15,12 +15,35 @@ public class ConstantUtil {
 
 	public static final String method_Login="1/login";
 
+
 	/** 水文站点列表 */
 	public static final String method_SiteList="1/shuiwen/siteList";
-	/** 水文站点详情 */
 	public static final String method_SiteDetail="1/shuiwen/siteDetail";
-	/** 水文站表数据 */
 	public static final String method_SiteChart="1/shuiwen/chart";
+
+	/** 雨量站点列表 */
+	public static final String method_RainSiteList="1/yuliang/siteList";
+	public static final String method_RainSiteDetail="1/yuliang/siteDetail";
+	public static final String method_RainSiteChart="1/yuliang/chart";
+
+	/** 闸坝站点列表 */
+	public static final String method_GateDamSiteList="1/zhaba/siteList";
+	public static final String method_GateDamDetail="1/zhaba/siteDetail";
+	public static final String method_GateDamChart="1/zhaba/chart";
+
+
+	//水质监测数据库
+	/** 跨界断面 */
+	public static final String method_KuajieSiteList="1/kuajie/siteList";
+	public static final String method_KuajieSiteDetail="1/kuajie/siteDetail";
+	public static final String method_KuajieSiteChart="1/kuajie/chart";
+
+	/** 国控断面 */
+	public static final String method_GuokongSiteList="1/guokong/siteList";
+	public static final String method_GuokongSiteDetail="1/guokong/siteDetail";
+	public static final String method_GuokongSiteChart="1/guokong/chart";
+
+
 
 
 }

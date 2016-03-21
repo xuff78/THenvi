@@ -41,10 +41,10 @@
         formatter:function(params)
         {
 
-            var relVal = params[0].name+"时<br/>";
+            var relVal = params[0].name+"<br/>";
 
-            relVal += "浪高和波向：" + params[1].value + "m<br/>";
-            relVal += "潮位：" + params[0].data + "cm";
+            relVal += "水位：" + params[1].value + "米<br/>";
+            relVal += "流量：" + params[0].data + "方/秒";
             return relVal;
         }
     },
@@ -71,7 +71,7 @@
     <!--},-->
     calculable : false,
     legend: {
-        data:['浪高和波向','潮位'],
+        data:['水位','流量'],
         textStyle: {
             color: 'white'          // 图例文字颜色
         }
@@ -139,7 +139,7 @@
     yAxis : [
         {
             type : 'value',
-            name : '浪高(m)',
+            name : '水位(米)',
             splitNumber: 5,
             axisLine: {            // 坐标轴线
                 show: true,        // 默认显示，属性show控制显示与否
@@ -170,7 +170,7 @@
         },
         {
             type : 'value',
-            name : '潮位(cm)',
+            name : '流量(方/米)',
             splitNumber: 5,
             axisLine: {            // 坐标轴线
                 show: true,        // 默认显示，属性show控制显示与否
@@ -218,26 +218,23 @@
             <!--data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]-->
         <!--},-->
         {
-            name:'潮位',
-            type:'bar',
+            name:'流量',
+            type:'line',
             yAxisIndex: 1,
             itemStyle: {
                 normal: {
-                    color: '#5CACEE',
+                    color: '#C9C9C9',
                 }
             },
             data:m_list4
         },
         {
-            name:'浪高和波向',
-            type:'line',
-            symbol: 'arrow',
-            symbolSize: 4,
-            symbolRotate: -40,
+            name:'水位',
+            type:'bar',
             yAxisIndex: 0,
             itemStyle: {
                 normal: {
-                    color: '#C9C9C9',
+                    color: '#5CACEE',
                 }
             },
             data:m_list3

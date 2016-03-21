@@ -15,8 +15,9 @@
         android:paddingLeft="10dip"
         android:paddingRight="10dip"
         android:text="xxx"
+        android:layout_toRightOf="@+id/nameTxt"
         android:layout_alignParentRight="true"
-        android:gravity="center"
+        android:gravity="center_vertical|right"
         android:layout_height="40dip"
         style="@style/txt_black_14" />
 </RelativeLayout>

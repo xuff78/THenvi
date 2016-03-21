@@ -54,6 +54,24 @@
             android:orientation="vertical"
             android:layout_width="140dip"
             android:layout_height="match_parent">
+            <LinearLayout
+                android:padding="5dip"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="45dip">
+                <EditText
+                    android:id="@+id/searchEdt"
+                    style="@style/txt_black_13"
+                    android:hint="输入要查找的内容"
+                    android:background="@mipmap/of_white_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dip" />
+            </LinearLayout>
+            <View
+                android:background="@color/light_gray"
+                android:layout_width="match_parent"
+                android:layout_height="1px"/>
             <ListView
                 android:id="@+id/siteList"
                 android:scrollbars="none"

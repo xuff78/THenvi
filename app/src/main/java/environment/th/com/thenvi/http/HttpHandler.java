@@ -40,7 +40,7 @@ public class HttpHandler extends Handle {
 
 	public void getSiteList() {
 		HashMap<String, String> params=new HashMap<>();
-		request(ConstantUtil.method_SiteList, params, false);
+		request(ConstantUtil.method_SiteList, params, true);
 	}
 
 	public void getSiteDetail(String hsname, String rsname) {
@@ -58,6 +58,100 @@ public class HttpHandler extends Handle {
 		params.put("beginDate", beginDate);
 		params.put("endDate", endDate);
 		request(ConstantUtil.method_SiteChart, params, true);
+	}
+
+
+	public void getRainSiteList() {
+		HashMap<String, String> params=new HashMap<>();
+		request(ConstantUtil.method_RainSiteList, params, true);
+	}
+
+	public void getRainSiteDetail(String hsname, String rsname) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("rfname", hsname);
+		params.put("rsname", rsname);
+		params.put("date", "2014-03-31");
+		request(ConstantUtil.method_RainSiteDetail, params, true);
+	}
+
+	public void getRainSiteChart(String hsname, String rsname, String beginDate, String endDate) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("rfname", hsname);
+		params.put("rsname", rsname);
+		params.put("beginDate", beginDate);
+		params.put("endDate", endDate);
+		request(ConstantUtil.method_RainSiteChart, params, true);
+	}
+
+
+	public void getGateDamSiteList() {
+		HashMap<String, String> params=new HashMap<>();
+		request(ConstantUtil.method_GateDamSiteList, params, true);
+	}
+
+	public void getGateDamDetail(String hsname, String rsname) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("dname", hsname);
+		params.put("rsname", rsname);
+		params.put("date", "2014-03-31");
+		request(ConstantUtil.method_GateDamDetail, params, true);
+	}
+
+	public void getGateDamChart(String hsname, String rsname, String beginDate, String endDate) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("dname", hsname);
+		params.put("rsname", rsname);
+		params.put("beginDate", beginDate);
+		params.put("endDate", endDate);
+		request(ConstantUtil.method_GateDamChart, params, true);
+	}
+
+
+
+	public void getKuajieSiteList() {
+		HashMap<String, String> params=new HashMap<>();
+		request(ConstantUtil.method_KuajieSiteList, params, true);
+	}
+
+	public void getKuajieDetail(String hsname, String rsname) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("river", hsname);
+		params.put("provices", rsname);
+		params.put("date", "2014-03-31");
+		request(ConstantUtil.method_KuajieSiteDetail, params, true);
+	}
+
+	public void getKuajieChart(String hsname, String rsname, String beginDate, String endDate) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("river", hsname);
+		params.put("provices", rsname);
+		params.put("beginDate", beginDate);
+		params.put("endDate", endDate);
+		request(ConstantUtil.method_KuajieSiteChart, params, true);
+	}
+
+
+
+	public void getGuokongSiteList() {
+		HashMap<String, String> params=new HashMap<>();
+		request(ConstantUtil.method_GuokongSiteList, params, true);
+	}
+
+	public void getGuokongSiteDetail(String hsname, String rsname) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("pname", hsname);
+		params.put("city", rsname);
+		params.put("date", "2014-03-31");
+		request(ConstantUtil.method_GuokongSiteDetail, params, true);
+	}
+
+	public void getGuokongSiteChart(String hsname, String rsname, String beginDate, String endDate) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("pname", hsname);
+		params.put("city", rsname);
+		params.put("beginDate", beginDate);
+		params.put("endDate", endDate);
+		request(ConstantUtil.method_GuokongSiteChart, params, true);
 	}
 
 	protected void request(String method, HashMap<String, String> params, boolean showDialog) {

@@ -22,10 +22,10 @@ public class SiteListAdapter extends BaseAdapter {
 
     private LayoutInflater mInflater;
     private Context con;
-    private ArrayList<WaterSiteBean> dataList;
+    private ArrayList<String> dataList;
     private int itemHeight=0;
 
-    public SiteListAdapter(Context context, ArrayList<WaterSiteBean> dataList){
+    public SiteListAdapter(Context context, ArrayList<String> dataList){
         this.mInflater = LayoutInflater.from(context);
         this.dataList=dataList;
         con=context;
@@ -55,11 +55,11 @@ public class SiteListAdapter extends BaseAdapter {
         AbsListView.LayoutParams alp=new  AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemHeight);
         TextView title = new TextView(con);
         title.setGravity(Gravity.CENTER);
-        title.setText(dataList.get(position).getHSNAME());
+        title.setText(dataList.get(position));
         title.setLayoutParams(alp);
         title.setTextSize(14);
         title.setTextColor(Color.BLACK);
-        title.setTag(dataList.get(position));
+//        title.setTag(dataList.get(position));
         return title;
     }
 }

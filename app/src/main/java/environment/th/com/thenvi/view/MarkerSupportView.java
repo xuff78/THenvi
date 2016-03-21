@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import environment.th.com.thenvi.R;
+import environment.th.com.thenvi.activity.ChatsInfoAct;
 import environment.th.com.thenvi.adapter.PopupInfoAdapter;
 import environment.th.com.thenvi.bean.PopupInfoItem;
 
@@ -32,7 +33,7 @@ import environment.th.com.thenvi.bean.PopupInfoItem;
  * 显示公共设施状况详情
  * Created by haiyunlong on 2015/11/27.
  */
-public class MarkerSupportView extends View implements View.OnClickListener {
+public class MarkerSupportView extends View{
 
     private View contentView;
     private Activity mContext;
@@ -42,11 +43,13 @@ public class MarkerSupportView extends View implements View.OnClickListener {
     private int columnSize=1;
     private  float density;
     private ArrayList<PopupInfoItem> datas;
+    private View.OnClickListener clickListener;
 
-    public MarkerSupportView(Activity context, String title) {
+    public MarkerSupportView(Activity context, String title, View.OnClickListener clickListener) {
         super(context);
         this.mContext=context;
         this.title=title;
+        this.clickListener=clickListener;
     }
 
     public MarkerSupportView(Context context, AttributeSet attrs) {
@@ -61,17 +64,16 @@ public class MarkerSupportView extends View implements View.OnClickListener {
         LayoutInflater inflater = (LayoutInflater) mContext
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         contentView = inflater.inflate(R.layout.mark_detail_view, null);
-        setOnClickListener(this);
         titleTxt = (TextView) contentView.findViewById(R.id.titleTxt);
         titleTxt.setText(title);
         infoList = (ListView) contentView.findViewById(R.id.infoList);
-
+        contentView.findViewById(R.id.detailBtn).setOnClickListener(clickListener);
 
         //获取屏幕大小，以及图片的数量，来控制滚动图片的容器宽度
         WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                (int) (display.getWidth() * 0.6), (int) (display.getHeight() * 0.4));
+                (int) (display.getWidth() * 0.6), (int) (display.getHeight() * 0.35));
         infoList.setLayoutParams(layoutParams);
         return contentView;
     }
@@ -79,10 +81,5 @@ public class MarkerSupportView extends View implements View.OnClickListener {
     public void setListView(ArrayList<PopupInfoItem> datas){
         this.datas=datas;
         infoList.setAdapter(new PopupInfoAdapter(mContext, datas));
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 }

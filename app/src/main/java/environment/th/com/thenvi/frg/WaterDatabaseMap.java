@@ -1,25 +1,18 @@
 package environment.th.com.thenvi.frg;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.baidu.mapapi.map.BaiduMap;
@@ -35,14 +28,15 @@ import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.model.LatLng;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 import environment.th.com.thenvi.R;
 import environment.th.com.thenvi.activity.ChatsInfoAct;
-import environment.th.com.thenvi.activity.MainMenuAct;
 import environment.th.com.thenvi.adapter.SiteListAdapter;
+import environment.th.com.thenvi.bean.CRiverInfoBean;
 import environment.th.com.thenvi.bean.PopupInfoItem;
+import environment.th.com.thenvi.bean.RiverInfoBean;
 import environment.th.com.thenvi.bean.WaterSiteBean;
 import environment.th.com.thenvi.http.CallBack;
 import environment.th.com.thenvi.http.HttpHandler;
@@ -53,9 +47,9 @@ import environment.th.com.thenvi.view.MarkerSupportView;
 import environment.th.com.thenvi.view.MenuPopup;
 
 /**
- * Created by Administrator on 2016/3/9.
+ * Created by Administrator on 2016/3/21.
  */
-public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
+public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListener,
         BaiduMap.OnMapClickListener {
 
     private HttpHandler handler;
@@ -65,13 +59,16 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
     private DrawerLayout mDrawerLayout;
     private TextView typeBtn;
     private EditText searchEdt;
-    private int type=0; //水文， 雨量， 闸坝
+    private int type=0; //跨界， 国控， 闸坝
     private MenuPopup popup;
     private ListView siteListview;
     public InfoWindow mInfoWindow;
     private MarkerSupportView content;
-    private ArrayList<WaterSiteBean> siteList=new ArrayList<>();
-    private ArrayList<WaterSiteBean> findList=new ArrayList<>();
+    private ArrayList<RiverInfoBean> kjList=new ArrayList<>();
+    private ArrayList<RiverInfoBean> kjFindList=new ArrayList<>();
+
+    private ArrayList<CRiverInfoBean> gkList=new ArrayList<>();
+    private ArrayList<CRiverInfoBean> gkFindList=new ArrayList<>();
     private Marker currentMarker;
 
     @Override
@@ -102,19 +99,28 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
                     height = markerExtraInfo.getInt("height");
                     height += 5;
                 }
-                WaterSiteBean bean = (WaterSiteBean) markerExtraInfo.getSerializable("InfoBean");
-                showSupportContent(marker.getPosition(), height, bean.getHSNAME(), bean);
+                ArrayList<PopupInfoItem> datalist=null;
+                String title="";
+                Serializable bean = null;
                 switch (type){
                     case 0:
-                        handler.getSiteDetail(bean.getHSNAME(), bean.getRSNAME());
+                        RiverInfoBean RBean=(RiverInfoBean) markerExtraInfo.getSerializable("InfoBean");
+                        bean=RBean;
+                        datalist=RBean.getInfos();
+                        title=RBean.getSNAME();
                         break;
                     case 1:
-                        handler.getRainSiteDetail(bean.getHSNAME(), bean.getRSNAME());
+                        CRiverInfoBean CBean=(CRiverInfoBean) markerExtraInfo.getSerializable("InfoBean");
+                        bean=CBean;
+                        datalist=CBean.getInfos();
+                        title=CBean.getPNAME();
                         break;
                     case 2:
-                        handler.getGateDamDetail(bean.getHSNAME(), bean.getRSNAME());
                         break;
                 }
+
+                showSupportContent(marker.getPosition(), height, title, bean);
+                content.setListView(datalist);
                 return true;
             }
         });
@@ -123,13 +129,13 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
         initView(mView);
         switch (type){
             case 0:
-                handler.getSiteList();
+                handler.getKuajieSiteList();
                 break;
             case 1:
-                handler.getRainSiteList();
+                handler.getGuokongSiteList();
                 break;
             case 2:
-                handler.getGateDamSiteList();
+//                handler.getGateDamSiteList();
                 break;
         }
         return mView;
@@ -145,9 +151,9 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
         typeBtn.setOnClickListener(this);
         v.findViewById(R.id.listLeftBtn).setOnClickListener(this);
         final ArrayList<String> strings=new ArrayList<>();
-        strings.add("水文站");
-        strings.add("雨量站");
-        strings.add("闸坝");
+        strings.add("跨界断面");
+        strings.add("国控断面");
+        strings.add("自动检测站");
         popup = new MenuPopup(getActivity(), strings, new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -156,13 +162,13 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
                 popup.dismiss();
                 switch (type){
                     case 0:
-                        handler.getSiteList();
+                        handler.getKuajieSiteList();
                         break;
                     case 1:
-                        handler.getRainSiteList();
+                        handler.getGuokongSiteList();
                         break;
                     case 2:
-                        handler.getGateDamSiteList();
+//                        handler.getGateDamSiteList();
                         break;
                 }
             }
@@ -175,17 +181,20 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             mDrawerLayout.closeDrawer(menuLayout);
-            WaterSiteBean site= (WaterSiteBean) view.getTag();
-            showSupportContent(new LatLng(Double.valueOf(site.getLATITUDE()),Double.valueOf(site.getLONGITUDE())), 75, site.getHSNAME(), site);
             switch (type){
                 case 0:
-                    handler.getSiteDetail(site.getHSNAME(), site.getRSNAME());
+                    RiverInfoBean kjbean=kjFindList.get(i);
+                    showSupportContent(new LatLng(Double.valueOf(kjbean.getLATITUDE()),Double.valueOf(kjbean.getLONGITUDE())),
+                            75, kjbean.getSNAME(), kjbean);
+                    content.setListView(kjbean.getInfos());
                     break;
                 case 1:
-                    handler.getRainSiteDetail(site.getHSNAME(), site.getRSNAME());
+                    CRiverInfoBean gkbean=gkFindList.get(i);
+                    showSupportContent(new LatLng(Double.valueOf(gkbean.getLATITUDE()),Double.valueOf(gkbean.getLONGITUDE())),
+                            75, gkbean.getPNAME(), gkbean);
+                    content.setListView(gkbean.getInfos());
                     break;
                 case 2:
-                    handler.getGateDamDetail(site.getHSNAME(), site.getRSNAME());
                     break;
             }
         }
@@ -204,27 +213,42 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
 
         @Override
         public void afterTextChanged(Editable editable) {
-            findList.clear();
             ArrayList<String> names=new ArrayList<>();
-            for (int i=0;i<siteList.size();i++){
-                WaterSiteBean site=siteList.get(i);
-                if(site.getHSNAME().startsWith(editable.toString())) {
-                    findList.add(site);
-                    names.add(site.getHSNAME());
-                }
+            switch (type){
+                case 0:
+                    kjFindList.clear();
+                    for (int i=0;i<kjList.size();i++){
+                        RiverInfoBean site=kjList.get(i);
+                        if(site.getSNAME().startsWith(editable.toString())) {
+                            kjFindList.add(site);
+                            names.add(site.getSNAME());
+                        }
+                    }
+                    break;
+                case 1:
+                    gkFindList.clear();
+                    for (int i=0;i<gkList.size();i++){
+                        CRiverInfoBean site=gkList.get(i);
+                        if(site.getPNAME().startsWith(editable.toString())) {
+                            gkFindList.add(site);
+                            names.add(site.getPNAME());
+                        }
+                    }
+                    break;
             }
+
             siteListview.setAdapter(new SiteListAdapter(getActivity(), names));
         }
     };
 
-    public void showSupportContent(LatLng endpositon, int height, String title, final WaterSiteBean bean) {
+    public void showSupportContent(LatLng endpositon, int height, String title, final Serializable bean) {
 
         content = new MarkerSupportView(getActivity(), title, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 baiduMap.hideInfoWindow();
                 Intent i=new Intent(getActivity(), ChatsInfoAct.class);
-                i.putExtra(WaterSiteBean.Name, bean);
+                i.putExtra("ChatData", bean);
                 startActivity(i);
             }
         });
@@ -329,20 +353,19 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
         handler=new HttpHandler(getActivity(), new CallBack(getActivity()){
             @Override
             public void doSuccess(String method, String jsonData) {
-                if(method.equals(ConstantUtil.method_SiteList)||method.equals(ConstantUtil.method_RainSiteList)
-                        ||method.equals(ConstantUtil.method_GateDamSiteList)){
+                if(method.equals(ConstantUtil.method_KuajieSiteList)){
                     baiduMap.hideInfoWindow();
                     mInfoWindow = null;
                     baiduMap.clear();
-                    siteList= JsonUtil.getSiteList(jsonData);
+                    kjList= JsonUtil.getKuajieSite(jsonData);
                     ArrayList<String> names=new ArrayList<>();
-
-                    for (WaterSiteBean bean : siteList) {
-                        names.add(bean.getHSNAME());
+                    for (RiverInfoBean bean : kjList) {
+                        kjFindList.add(bean);
+                        names.add(bean.getSNAME());
                         View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.marker_layout, null);
 //                        mMarkerView.setBackgroundResource(R.mipmap.marker_blue_round);
                         TextView nameTxt= (TextView) mMarkerView.findViewById(R.id.nameTxt);
-                        nameTxt.setText(bean.getHSNAME());
+                        nameTxt.setText(bean.getSNAME());
                         LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLONGITUDE()));
                         Bundle bundle = new Bundle();
                         int dataType = 0;
@@ -353,15 +376,39 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
                     }
                     siteListview.setAdapter(new SiteListAdapter(getActivity(), names));
                     siteListview.setOnItemClickListener(itemClickListener);
-                    if(siteList.size()>0){
-                        WaterSiteBean bean = siteList.get(siteList.size()/2);
+                    if(kjList.size()>0){
+                        RiverInfoBean bean = kjList.get(kjList.size()/2);
                         LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLONGITUDE()));
                         refreshMapStatus(point, 10);
                     }
-                }else if(method.equals(ConstantUtil.method_SiteDetail)||method.equals(ConstantUtil.method_RainSiteDetail)
-                        ||method.equals(ConstantUtil.method_GateDamDetail)){
-                    WaterSiteBean siteBean=JsonUtil.getSiteDetail(jsonData);
-                    content.setListView(siteBean.getInfos());
+                }else if(method.equals(ConstantUtil.method_GuokongSiteList)){
+                    baiduMap.hideInfoWindow();
+                    mInfoWindow = null;
+                    baiduMap.clear();
+                    gkList= JsonUtil.getGuokongSite(jsonData);
+                    ArrayList<String> names=new ArrayList<>();
+                    for (CRiverInfoBean bean : gkList) {
+                        gkFindList.add(bean);
+                        names.add(bean.getPNAME());
+                        View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.marker_layout, null);
+//                        mMarkerView.setBackgroundResource(R.mipmap.marker_blue_round);
+                        TextView nameTxt= (TextView) mMarkerView.findViewById(R.id.nameTxt);
+                        nameTxt.setText(bean.getPNAME());
+                        LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLONGITUDE()));
+                        Bundle bundle = new Bundle();
+                        int dataType = 0;
+                        bundle.putInt("mark_type", dataType);
+                        bundle.putSerializable("InfoBean", bean);
+                        //将标记添加到地图上
+                        addMarkerToMap(point, bundle, mMarkerView);
+                    }
+                    siteListview.setAdapter(new SiteListAdapter(getActivity(), names));
+                    siteListview.setOnItemClickListener(itemClickListener);
+                    if(gkList.size()>0){
+                        CRiverInfoBean bean = gkList.get(gkList.size()/2);
+                        LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLONGITUDE()));
+                        refreshMapStatus(point, 10);
+                    }
                 }
             }
         });
