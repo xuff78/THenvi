@@ -49,6 +49,10 @@ public class CompanyBean implements Serializable{
     private String FAX=""; //
     private String PSENVIRONM=""; //
 
+    public CompanyBean() {
+
+    }
+
     public String getSTATECONTR() {
         return STATECONTR;
     }

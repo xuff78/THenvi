@@ -374,7 +374,7 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                     baiduMap.hideInfoWindow();
                     mInfoWindow = null;
                     baiduMap.clear();
-                    CopList= JsonUtil.getArrayByJson(jsonData, CompanyBean.class);
+                    CopList= JsonUtil.getCompanyList(jsonData);
                     ArrayList<String> names=new ArrayList<>();
                     for (CompanyBean bean : CopList) {
                         CopFindList.add(bean);
