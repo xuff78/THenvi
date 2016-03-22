@@ -154,6 +154,54 @@ public class HttpHandler extends Handle {
 		request(ConstantUtil.method_GuokongSiteChart, params, true);
 	}
 
+	public void getYibanSiteList() {
+		HashMap<String, String> params=new HashMap<>();
+		request(ConstantUtil.method_YibanSiteList, params, true);
+	}
+
+	public void getYibanSiteDetail(String pscode) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("pscode", pscode);
+		params.put("date", "2014-03-31");
+		request(ConstantUtil.method_YibanSiteDetail, params, true);
+	}
+
+	public void getWushuizdSiteList() {
+		HashMap<String, String> params=new HashMap<>();
+		request(ConstantUtil.method_WushuizdSiteList, params, true);
+	}
+
+	public void getWushuizdSiteDetail(String pscode) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("pscode", pscode);
+		params.put("date", "2014-03-31");
+		request(ConstantUtil.method_WushuizdSiteDetail, params, true);
+	}
+
+	public void getGongyeSiteList() {
+		HashMap<String, String> params=new HashMap<>();
+		request(ConstantUtil.method_GongyeSiteList, params, true);
+	}
+
+	public void getGongyeSiteDetail(String runit) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("runit", runit);
+		params.put("date", "2014-03-31");
+		request(ConstantUtil.method_GongyeSiteDetail, params, true);
+	}
+
+	public void getChuqinSiteList() {
+		HashMap<String, String> params=new HashMap<>();
+		request(ConstantUtil.method_ChuqinSiteList, params, true);
+	}
+
+	public void getChuqinSiteDetail(String farm) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("farm", farm);
+		params.put("date", "2014-03-31");
+		request(ConstantUtil.method_ChuqinSiteDetail, params, true);
+	}
+
 	protected void request(String method, HashMap<String, String> params, boolean showDialog) {
 		String progressInfo = "";
 		String url= ConstantUtil.Api_Url+method;

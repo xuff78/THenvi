@@ -84,8 +84,8 @@ public class BookAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             @Override
             public void onClick(View view) {
 //                cb.onClick(position, view);
-                if(bean.isDownload()){
-//                    act.startActivity(new Intent(act, BookContentAct.class));
+                act.startActivity(new Intent(act, BookContentAct.class));
+                /*if(bean.isDownload()){
                     File file = new File(FileUtil.savePath, "book"+bean.getId()+".pdf");
                     if(file.exists()) {
                         Intent intent = new Intent("android.intent.action.VIEW");
@@ -121,7 +121,7 @@ public class BookAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                             currentDownloadTxt.setText("下载");
                         }
                     });
-                }
+                }*/
             }
         });
     }

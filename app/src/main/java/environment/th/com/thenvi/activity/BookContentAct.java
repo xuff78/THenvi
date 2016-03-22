@@ -15,7 +15,7 @@ import environment.th.com.thenvi.R;
 public class BookContentAct extends AppCompatActivity {
 
     WebView mWebView;
-    String testUrl="http://www.chinapdf.com/PDF/Acrobat%208%20family.pdf";
+    String testUrl="http://120.25.248.182:9090/web/viewer.html?file=001-2.pdf";
     String example="https://cors-anywhere.herokuapp.com/http://bhpr.hrsa.gov/healthworkforce/rnsurveys/rnsurveyfinal.pdf";
 
     @Override
@@ -42,6 +42,7 @@ public class BookContentAct extends AppCompatActivity {
                 return true;
             }
         });
-        mWebView.loadUrl("file:///android_asset/web/viewer.html?file="+"adobe8redader.pdf");
+        mWebView.loadUrl(testUrl);
+//        mWebView.loadUrl("file:///android_asset/web/viewer.html?file="+"adobe8redader.pdf");
     }
 }

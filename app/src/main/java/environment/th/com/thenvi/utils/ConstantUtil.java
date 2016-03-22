@@ -32,6 +32,7 @@ public class ConstantUtil {
 	public static final String method_GateDamChart="1/zhaba/chart";
 
 
+
 	//水质监测数据库
 	/** 跨界断面 */
 	public static final String method_KuajieSiteList="1/kuajie/siteList";
@@ -43,6 +44,23 @@ public class ConstantUtil {
 	public static final String method_GuokongSiteDetail="1/guokong/siteDetail";
 	public static final String method_GuokongSiteChart="1/guokong/chart";
 
+
+	//污染源信息数据库
+	/** 一般工业企业 */
+	public static final String method_YibanSiteList="1/yiban/siteList";
+	public static final String method_YibanSiteDetail="1/yiban/siteDetail";
+
+	/** 污水处理厂 */
+	public static final String method_WushuizdSiteList="1/wushuizd/siteList";
+	public static final String method_WushuizdSiteDetail="1/wushuizd/siteDetail";
+
+	/** 工业企业 */
+	public static final String method_GongyeSiteList="1/gongye/siteList";
+	public static final String method_GongyeSiteDetail="1/gongye/siteDetail";
+
+	/** 畜禽养殖 */
+	public static final String method_ChuqinSiteList="1/chuqin/siteList";
+	public static final String method_ChuqinSiteDetail="1/chuqin/siteDetail";
 
 
 

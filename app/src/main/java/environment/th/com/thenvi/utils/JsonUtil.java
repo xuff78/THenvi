@@ -1,10 +1,13 @@
 package environment.th.com.thenvi.utils;
 
+import com.alibaba.fastjson.JSON;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import environment.th.com.thenvi.bean.CRiverInfoBean;
 import environment.th.com.thenvi.bean.ChatGateDam;
@@ -284,5 +287,13 @@ public class JsonUtil {
             e.printStackTrace();
         }
         return sitelist;
+    }
+
+    public static <T> T getDataByJson(String jsonString, Class<T> cls) {
+        return JSON.parseObject(jsonString,cls);
+    }
+
+    public static <T> List<T> getArrayByJson(String jsonString, Class<T> cls) {
+        return JSON.parseArray(jsonString,cls);
     }
 }

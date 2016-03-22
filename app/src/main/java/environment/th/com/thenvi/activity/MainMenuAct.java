@@ -22,6 +22,7 @@ import java.util.List;
 import environment.th.com.thenvi.R;
 import environment.th.com.thenvi.frg.BookPage;
 import environment.th.com.thenvi.frg.CurrentLoactionMap;
+import environment.th.com.thenvi.frg.SewageDisposalMap;
 import environment.th.com.thenvi.frg.WaterDatabaseMap;
 import environment.th.com.thenvi.frg.WaterInfoMap;
 import environment.th.com.thenvi.services.BDLocationService;
@@ -83,9 +84,9 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
                 addListFragment(frg, "menu3");
                 break;
             case R.id.menu_btn4:
-//                selectPos=3;
-//                frg = new CurrentLoactionMap();
-//                addListFragment(frg, "menu3");
+                selectPos=3;
+                frg = new SewageDisposalMap();
+                addListFragment(frg, "menu3");
                 break;
             case R.id.menu_btn5:
                 selectPos=1;
