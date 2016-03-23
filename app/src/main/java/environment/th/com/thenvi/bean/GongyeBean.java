@@ -1,6 +1,7 @@
 package environment.th.com.thenvi.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2016/3/22.
@@ -258,5 +259,66 @@ public class GongyeBean implements Serializable{
 
     public void setLATITUDE(String LATITUDE) {
         this.LATITUDE = LATITUDE;
+    }
+
+    public ArrayList<PopupInfoItem> getInfos() {
+        ArrayList<PopupInfoItem> datas = new ArrayList<>();
+        if(NN.length()>0)
+            datas.add(new PopupInfoItem("氨氮排放量（吨）", NN));
+        if(LOSECOND.length()>0)
+            datas.add(new PopupInfoItem("中心经度（秒）", LOSECOND));
+        if(LADEGREE.length()>0)
+            datas.add(new PopupInfoItem("中心维度（度）", LADEGREE));
+        if(LONGITUDE.length()>0)
+            datas.add(new PopupInfoItem("经度", LONGITUDE));
+        if(LODEGREE.length()>0)
+            datas.add(new PopupInfoItem("中心经度（度）", LODEGREE));
+        if(BASINNAME.length()>0)
+            datas.add(new PopupInfoItem("所在流域名词", BASINNAME));
+        if(YEAR.length()>0)
+            datas.add(new PopupInfoItem("统计年份", YEAR));
+        if(VERTICAL.length()>0)
+            datas.add(new PopupInfoItem("直接排入环境的（吨）", VERTICAL));
+        if(COD.length()>0)
+            datas.add(new PopupInfoItem("COD排放量（吨）", COD));
+        if(LAPORTION.length()>0)
+            datas.add(new PopupInfoItem("中心纬度（分）", LAPORTION));
+        if(DTYPE.length()>0)
+            datas.add(new PopupInfoItem("排水去向类型", DTYPE));
+        if(RECEIVWNAME.length()>0)
+            datas.add(new PopupInfoItem("受纳水体名称", RECEIVWNAME));
+        if(ACODE.length()>0)
+            datas.add(new PopupInfoItem("行政区划代码", ACODE));
+        if(LOPORTION.length()>0)
+            datas.add(new PopupInfoItem("中心经度（分）", LOPORTION));
+        if(COUNTY.length()>0)
+            datas.add(new PopupInfoItem("详细地址县", COUNTY));
+        if(DOORPLATE.length()>0)
+            datas.add(new PopupInfoItem("详细地址街道、门牌", DOORPLATE));
+        if(DCODE.length()>0)
+            datas.add(new PopupInfoItem("排水去向代码", DCODE));
+        if(MUNICIPALITY.length()>0)
+            datas.add(new PopupInfoItem("详细地址省、直辖市", MUNICIPALITY));
+        if(ANAME.length()>0)
+            datas.add(new PopupInfoItem("行政区划名词", ANAME));
+        if(CITY.length()>0)
+            datas.add(new PopupInfoItem("详细地址地区市、州", CITY));
+        if(BASINCODE.length()>0)
+            datas.add(new PopupInfoItem("所在流域代码", BASINCODE));
+        if(ZN.length()>0)
+            datas.add(new PopupInfoItem("总氮排放量", ZN));
+        if(TOWN.length()>0)
+            datas.add(new PopupInfoItem("详细地址乡", TOWN));
+        if(LASECOND.length()>0)
+            datas.add(new PopupInfoItem("中心纬度（秒）", LASECOND));
+        if(ZP.length()>0)
+            datas.add(new PopupInfoItem("总磷排放量", ZP));
+        if(RECEIVWCODE.length()>0)
+            datas.add(new PopupInfoItem("受纳水体代码", RECEIVWCODE));
+        if(RUNIT.length()>0)
+            datas.add(new PopupInfoItem("填报单位名称", RUNIT));
+        if(LATITUDE.length()>0)
+            datas.add(new PopupInfoItem("纬度", LATITUDE));
+        return datas;
     }
 }

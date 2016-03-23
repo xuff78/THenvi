@@ -114,15 +114,15 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                         title=RBean.getPSNAME();
                         break;
                     case 1:
-                        WushuiBean WBean=(WushuiBean) markerExtraInfo.getSerializable("InfoBean");
+                        CompanyBean WBean=(CompanyBean) markerExtraInfo.getSerializable("InfoBean");
                         bean=WBean;
-//                        datalist=WBean.getInfos();
+                        datalist=WBean.getInfos();
                         title=WBean.getPSNAME();
                         break;
                     case 2:
                         GongyeBean GBean=(GongyeBean) markerExtraInfo.getSerializable("InfoBean");
                         bean=GBean;
-//                        datalist=GBean.getInfos();
+                        datalist=GBean.getInfos();
                         title=GBean.getRUNIT();
                         break;
                     case 3:
