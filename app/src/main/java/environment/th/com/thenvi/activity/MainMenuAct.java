@@ -1,5 +1,6 @@
 package environment.th.com.thenvi.activity;
 
+import android.animation.Animator;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -8,6 +9,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -35,7 +38,7 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
     public BDLocationService locationService;
     public Fragment frg;
     public MyLocationListener listener=new MyLocationListener();
-    public View selectBtn=null;
+    public View selectBtn=null, menu_level2_layout;
     private int selectPos=0;
 
     @Override
@@ -58,10 +61,25 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
         findViewById(R.id.menu_btn3).setOnClickListener(this);
         findViewById(R.id.menu_btn4).setOnClickListener(this);
         findViewById(R.id.menu_btn5).setOnClickListener(this);
+        menu_level2_layout=findViewById(R.id.menu_level2_layout);
+        menu_level2_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideMenu();
+            }
+        });
     }
 
     @Override
     public void onClick(View view) {
+        boolean hide=false;
+        if(menu_level2_layout.isShown()) {
+            hideMenu();
+            hide=true;
+        }
+        if(view.getId()==R.id.menu_btn2&&!menu_level2_layout.isShown()&&!hide) {
+            showMenu();
+        }
         if(selectBtn==view)
             return;
         selectBtn.setSelected(false);
@@ -95,6 +113,38 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
                 break;
         }
     }
+
+    private void hideMenu(){
+        Animation anima= AnimationUtils.loadAnimation(this ,R.anim.trans_down_out);
+        anima.setAnimationListener(animalistener);
+        menu_level2_layout.startAnimation(anima);
+    }
+
+    private void showMenu(){
+        Animation anima= AnimationUtils.loadAnimation(this ,R.anim.trans_up_in);
+        anima.setAnimationListener(animalistener);
+        menu_level2_layout.startAnimation(anima);
+    }
+
+    Animation.AnimationListener animalistener=new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            if(menu_level2_layout.isShown())
+                menu_level2_layout.setVisibility(View.GONE);
+            else
+                menu_level2_layout.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
+    };
 
     private void initLocation() {
         locationService =  new BDLocationService(getApplicationContext());

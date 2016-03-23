@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ZoomControls;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
@@ -118,6 +119,10 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
                 return true;
             }
         });
+        View child = mMapView.getChildAt(1);
+        if (child != null && (child instanceof ImageView || child instanceof ZoomControls)){
+            child.setVisibility(View.INVISIBLE);
+        }
 
         initHandler();
         initView(mView);

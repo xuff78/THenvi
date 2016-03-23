@@ -10,6 +10,55 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/menu_level2_layout"
+        android:orientation="horizontal"
+        android:layout_above="@id/bottomLayout"
+        android:background="@drawable/shape_menu_level2"
+        android:layout_width="match_parent"
+        android:layout_height="40dip">
+        <TextView
+            android:id="@+id/menu_btn21"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="水文站点"
+            android:layout_height="match_parent"
+            android:drawablePadding="5dip"
+            style="@style/txt_black_12" />
+        <TextView
+            android:id="@+id/menu_btn22"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="水质站"
+            android:layout_height="match_parent"
+            android:drawablePadding="5dip"
+            style="@style/txt_black_12" />
+        <TextView
+            android:id="@+id/menu_btn23"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="饮水源"
+            android:layout_height="match_parent"
+            android:drawablePadding="5dip"
+            style="@style/txt_black_12" />
+        <TextView
+            android:id="@+id/menu_btn24"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="应急资源"
+            android:layout_height="match_parent"
+            android:drawablePadding="5dip"
+            style="@style/txt_black_12" />
+        <TextView
+            android:id="@+id/menu_btn25"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="重点风险源"
+            android:layout_height="match_parent"
+            android:drawablePadding="5dip"
+            style="@style/txt_black_12" />
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/bottomLayout"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
@@ -25,7 +74,7 @@
             android:id="@+id/menu_btn1"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="基础地图"
+            android:text="首页"
             android:drawablePadding="5dip"
             style="@style/txt_white_10"
             android:drawableTop="@drawable/selector_btn_home" />
@@ -33,7 +82,7 @@
             android:id="@+id/menu_btn2"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="水文站"
+            android:text="专题数据"
             android:drawablePadding="5dip"
             style="@style/txt_white_10"
             android:drawableTop="@drawable/selector_btn_water" />
@@ -41,7 +90,7 @@
             android:id="@+id/menu_btn3"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="水质监测"
+            android:text="业务数据"
             android:drawablePadding="5dip"
             style="@style/txt_white_10"
             android:drawableTop="@drawable/selector_btn_air" />
@@ -49,7 +98,7 @@
             android:id="@+id/menu_btn4"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="污染源信息"
+            android:text="数据文档"
             android:drawablePadding="5dip"
             style="@style/txt_white_10"
             android:drawableTop="@drawable/selector_btn_pollute" />

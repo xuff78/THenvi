@@ -11,9 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ZoomControls;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
@@ -138,6 +140,10 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                 return true;
             }
         });
+        View child = mMapView.getChildAt(1);
+        if (child != null && (child instanceof ImageView || child instanceof ZoomControls)){
+            child.setVisibility(View.INVISIBLE);
+        }
 
         initHandler();
         initView(mView);

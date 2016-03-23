@@ -5,7 +5,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ZoomControls;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatus;
@@ -46,6 +48,10 @@ public class CurrentLoactionMap extends BaseFragment {
         //卫星地图
         baiduMap.setMapType(BaiduMap.MAP_TYPE_SATELLITE);
 
+        View child = mMapView.getChildAt(1);
+        if (child != null && (child instanceof ImageView || child instanceof ZoomControls)){
+            child.setVisibility(View.INVISIBLE);
+        }
 
         initView(mView);
 
