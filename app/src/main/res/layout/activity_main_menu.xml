@@ -95,14 +95,6 @@
             style="@style/txt_white_10"
             android:drawableTop="@drawable/selector_btn_air" />
         <TextView
-            android:id="@+id/menu_btn4"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="数据文档"
-            android:drawablePadding="5dip"
-            style="@style/txt_white_10"
-            android:drawableTop="@drawable/selector_btn_pollute" />
-        <TextView
             android:id="@+id/menu_btn5"
             android:layout_weight="1"
             android:gravity="center"

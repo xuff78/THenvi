@@ -37,8 +37,8 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
 
     public BDLocationService locationService;
     public Fragment frg;
-    public MyLocationListener listener=new MyLocationListener();
-    public View selectBtn=null, menu_level2_layout;
+    public MyLocationListener listenerLocation=new MyLocationListener();
+    public View selectBtn=null, select2Btn=null, menu_level2_layout;
     private int selectPos=0;
 
     @Override
@@ -59,8 +59,16 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
         selectBtn=menu1;
         findViewById(R.id.menu_btn2).setOnClickListener(this);
         findViewById(R.id.menu_btn3).setOnClickListener(this);
-        findViewById(R.id.menu_btn4).setOnClickListener(this);
         findViewById(R.id.menu_btn5).setOnClickListener(this);
+
+        View menu21=findViewById(R.id.menu_btn21);
+        menu21.setOnClickListener(listener);
+        select2Btn=menu21;
+        findViewById(R.id.menu_btn22).setOnClickListener(listener);
+        findViewById(R.id.menu_btn23).setOnClickListener(listener);
+        findViewById(R.id.menu_btn24).setOnClickListener(listener);
+        findViewById(R.id.menu_btn25).setOnClickListener(listener);
+
         menu_level2_layout=findViewById(R.id.menu_level2_layout);
         menu_level2_layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,14 +105,9 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
                 addListFragment(frg, "menu2");
                 break;
             case R.id.menu_btn3:
-                selectPos=2;
-                frg = new WaterDatabaseMap();
-                addListFragment(frg, "menu3");
-                break;
-            case R.id.menu_btn4:
-                selectPos=3;
-                frg = new SewageDisposalMap();
-                addListFragment(frg, "menu3");
+//                selectPos=2;
+//                frg = new WaterDatabaseMap();
+//                addListFragment(frg, "menu3");
                 break;
             case R.id.menu_btn5:
                 selectPos=1;
@@ -113,6 +116,38 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
                 break;
         }
     }
+
+    View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(select2Btn==view)
+                return;
+            select2Btn=view;
+            view.setSelected(true);
+            switch (view.getId()) {
+                case R.id.menu_btn21:
+                    frg = new WaterInfoMap();
+                    addListFragment(frg, "menu21");
+                    break;
+                case R.id.menu_btn22:
+                    frg = new WaterDatabaseMap();
+                    addListFragment(frg, "menu22");
+                    break;
+                case R.id.menu_btn23:
+//                    frg = new WaterDatabaseMap();
+//                    addListFragment(frg, "menu23");
+                    break;
+                case R.id.menu_btn24:
+                    frg = new SewageDisposalMap();
+                    addListFragment(frg, "menu24");
+                    break;
+                case R.id.menu_btn25:
+//                    frg = new WaterInfoMap();
+//                    addListFragment(frg, "menu25");
+                    break;
+            }
+        }
+    };
 
     private void hideMenu(){
         Animation anima= AnimationUtils.loadAnimation(this ,R.anim.trans_down_out);
@@ -148,7 +183,7 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
 
     private void initLocation() {
         locationService =  new BDLocationService(getApplicationContext());
-        locationService.registerListener(listener);
+        locationService.registerListener(listenerLocation);
         locationService.start();
     }
 
@@ -200,7 +235,7 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
                             break;
                         }
                         locationService.stop();
-                        locationService.unRegisterListener(listener);
+                        locationService.unRegisterListener(listenerLocation);
                         break;
                     case BDLocation.TypeNetWorkException:
                         break;
@@ -237,7 +272,7 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
     protected void onDestroy() {
         if(locationService!=null) {
             locationService.stop();
-            locationService.unRegisterListener(listener);
+            locationService.unRegisterListener(listenerLocation);
         }
         super.onDestroy();
     }
