@@ -13,6 +13,7 @@ import environment.th.com.thenvi.bean.ChatKuaJie;
 import environment.th.com.thenvi.bean.ChatRainFall;
 import environment.th.com.thenvi.bean.ChatWaterSiteBean;
 import environment.th.com.thenvi.bean.CompanyBean;
+import environment.th.com.thenvi.bean.GongyeBean;
 import environment.th.com.thenvi.bean.JsonMessage;
 import environment.th.com.thenvi.bean.RiverInfoBean;
 import environment.th.com.thenvi.bean.WaterSiteBean;
@@ -294,81 +295,7 @@ public class JsonUtil {
             JSONArray array=new JSONArray(jsonData);
             for(int i=0;i<array.length();i++){
                 JSONObject subJson=array.getJSONObject(i);
-                CompanyBean site=new CompanyBean();
-                if(!subJson.isNull("STATECONTR"))
-                    site.setSTATECONTR(subJson.getString("STATECONTR"));
-                if(!subJson.isNull("PSALIAS"))
-                    site.setPSALIAS(subJson.getString("PSALIAS"));
-                if(!subJson.isNull("UPDATETIME"))
-                    site.setUPDATETIME(subJson.getString("UPDATETIME"));
-                if(!subJson.isNull("PSCODE"))
-                    site.setPSCODE(subJson.getString("PSCODE"));
-                if(!subJson.isNull("TOTALAREA"))
-                    site.setTOTALAREA(subJson.getString("TOTALAREA"));
-                if(!subJson.isNull("COMMENTS"))
-                    site.setCOMMENTS(subJson.getString("COMMENTS"));
-                if(!subJson.isNull("REGISTTYPE"))
-                    site.setREGISTTYPE(subJson.getString("REGISTTYPE"));
-                if(!subJson.isNull("EMAIL"))
-                    site.setEMAIL(subJson.getString("EMAIL"));
-                if(!subJson.isNull("PSALIAS"))
-                    site.setPSALIAS(subJson.getString("PSALIAS"));
-                if(!subJson.isNull("UNITTYPENA"))
-                    site.setUNITTYPENA(subJson.getString("UNITTYPENA"));
-                if(!subJson.isNull("ISMONITOR"))
-                    site.setISMONITOR(subJson.getString("ISMONITOR"));
-                if(!subJson.isNull("INDUSTRYTY"))
-                    site.setINDUSTRYTY(subJson.getString("INDUSTRYTY"));
-                if(!subJson.isNull("X"))
-                    site.setX(subJson.getString("X"));
-                if(!subJson.isNull("Y"))
-                    site.setY(subJson.getString("Y"));
-                if(!subJson.isNull("ENVIRONMEN"))
-                    site.setENVIRONMEN(subJson.getString("ENVIRONMEN"));
-                if(!subJson.isNull("ATTENTIOND"))
-                    site.setATTENTIOND(subJson.getString("ATTENTIOND"));
-                if(!subJson.isNull("POSTALCODE"))
-                    site.setPOSTALCODE(subJson.getString("POSTALCODE"));
-                if(!subJson.isNull("VALLEYNAME"))
-                    site.setVALLEYNAME(subJson.getString("VALLEYNAME"));
-                if(!subJson.isNull("PSNUMBER"))
-                    site.setPSNUMBER(subJson.getString("PSNUMBER"));
-                if(!subJson.isNull("SUBJECTION"))
-                    site.setSUBJECTION(subJson.getString("SUBJECTION"));
-
-                if(!subJson.isNull("PSCLASSNAM"))
-                    site.setPSCLASSNAM(subJson.getString("PSCLASSNAM"));
-                if(!subJson.isNull("RUNDATE"))
-                    site.setRUNDATE(subJson.getString("RUNDATE"));
-                if(!subJson.isNull("REGIONNAME"))
-                    site.setREGIONNAME(subJson.getString("REGIONNAME"));
-                if(!subJson.isNull("PSWEBSITE"))
-                    site.setPSWEBSITE(subJson.getString("PSWEBSITE"));
-                if(!subJson.isNull("MOBILEPHON"))
-                    site.setMOBILEPHON(subJson.getString("MOBILEPHON"));
-                if(!subJson.isNull("PSSCALENAM"))
-                    site.setPSSCALENAM(subJson.getString("PSSCALENAM"));
-
-                if(!subJson.isNull("PSADDRESS"))
-                    site.setPSADDRESS(subJson.getString("PSADDRESS"));
-                if(!subJson.isNull("PSNAME"))
-                    site.setPSNAME(subJson.getString("PSNAME"));
-                if(!subJson.isNull("COMMUNICAT"))
-                    site.setCOMMUNICAT(subJson.getString("COMMUNICAT"));
-                if(!subJson.isNull("OPENACOCUN"))
-                    site.setOPENACOCUN(subJson.getString("OPENACOCUN"));
-                if(!subJson.isNull("BANKACCOUN"))
-                    site.setBANKACCOUN(subJson.getString("BANKACCOUN"));
-                if(!subJson.isNull("AREANAME"))
-                    site.setAREANAME(subJson.getString("AREANAME"));
-
-                if(!subJson.isNull("CORPORATIO"))
-                    site.setCORPORATIO(subJson.getString("CORPORATIO"));
-                if(!subJson.isNull("FAX"))
-                    site.setFAX(subJson.getString("FAX"));
-                if(!subJson.isNull("PSENVIRONM"))
-                    site.setPSENVIRONM(subJson.getString("PSENVIRONM"));
-                sitelist.add(site);
+                sitelist.add(getCompanyBean(subJson));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -376,5 +303,189 @@ public class JsonUtil {
         return sitelist;
     }
 
+    public static CompanyBean getCompanyDetail(String jsonData){
+        CompanyBean site=new CompanyBean();
+        try {
+            JSONObject json=new JSONObject(jsonData);
+            if(!json.isNull("siteDetail")) {
+                JSONObject jsonItem=json.getJSONObject("siteDetail");
+                site=getCompanyBean(jsonItem);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return site;
+    }
 
+    public static CompanyBean getCompanyBean(JSONObject subJson) throws JSONException {
+        CompanyBean site=new CompanyBean();
+        if(!subJson.isNull("STATECONTR"))
+            site.setSTATECONTR(subJson.getString("STATECONTR"));
+        if(!subJson.isNull("PSALIAS"))
+            site.setPSALIAS(subJson.getString("PSALIAS"));
+        if(!subJson.isNull("UPDATETIME"))
+            site.setUPDATETIME(subJson.getString("UPDATETIME"));
+        if(!subJson.isNull("PSCODE"))
+            site.setPSCODE(subJson.getString("PSCODE"));
+        if(!subJson.isNull("TOTALAREA"))
+            site.setTOTALAREA(subJson.getString("TOTALAREA"));
+        if(!subJson.isNull("COMMENTS"))
+            site.setCOMMENTS(subJson.getString("COMMENTS"));
+        if(!subJson.isNull("REGISTTYPE"))
+            site.setREGISTTYPE(subJson.getString("REGISTTYPE"));
+        if(!subJson.isNull("EMAIL"))
+            site.setEMAIL(subJson.getString("EMAIL"));
+        if(!subJson.isNull("PSALIAS"))
+            site.setPSALIAS(subJson.getString("PSALIAS"));
+        if(!subJson.isNull("UNITTYPENA"))
+            site.setUNITTYPENA(subJson.getString("UNITTYPENA"));
+        if(!subJson.isNull("ISMONITOR"))
+            site.setISMONITOR(subJson.getString("ISMONITOR"));
+        if(!subJson.isNull("INDUSTRYTY"))
+            site.setINDUSTRYTY(subJson.getString("INDUSTRYTY"));
+        if(!subJson.isNull("X"))
+            site.setX(subJson.getString("X"));
+        if(!subJson.isNull("Y"))
+            site.setY(subJson.getString("Y"));
+        if(!subJson.isNull("ENVIRONMEN"))
+            site.setENVIRONMEN(subJson.getString("ENVIRONMEN"));
+        if(!subJson.isNull("ATTENTIOND"))
+            site.setATTENTIOND(subJson.getString("ATTENTIOND"));
+        if(!subJson.isNull("POSTALCODE"))
+            site.setPOSTALCODE(subJson.getString("POSTALCODE"));
+        if(!subJson.isNull("VALLEYNAME"))
+            site.setVALLEYNAME(subJson.getString("VALLEYNAME"));
+        if(!subJson.isNull("PSNUMBER"))
+            site.setPSNUMBER(subJson.getString("PSNUMBER"));
+        if(!subJson.isNull("SUBJECTION"))
+            site.setSUBJECTION(subJson.getString("SUBJECTION"));
+
+        if(!subJson.isNull("PSCLASSNAM"))
+            site.setPSCLASSNAM(subJson.getString("PSCLASSNAM"));
+        if(!subJson.isNull("RUNDATE"))
+            site.setRUNDATE(subJson.getString("RUNDATE"));
+        if(!subJson.isNull("REGIONNAME"))
+            site.setREGIONNAME(subJson.getString("REGIONNAME"));
+        if(!subJson.isNull("PSWEBSITE"))
+            site.setPSWEBSITE(subJson.getString("PSWEBSITE"));
+        if(!subJson.isNull("MOBILEPHON"))
+            site.setMOBILEPHON(subJson.getString("MOBILEPHON"));
+        if(!subJson.isNull("PSSCALENAM"))
+            site.setPSSCALENAM(subJson.getString("PSSCALENAM"));
+
+        if(!subJson.isNull("PSADDRESS"))
+            site.setPSADDRESS(subJson.getString("PSADDRESS"));
+        if(!subJson.isNull("PSNAME"))
+            site.setPSNAME(subJson.getString("PSNAME"));
+        if(!subJson.isNull("COMMUNICAT"))
+            site.setCOMMUNICAT(subJson.getString("COMMUNICAT"));
+        if(!subJson.isNull("OPENACOCUN"))
+            site.setOPENACOCUN(subJson.getString("OPENACOCUN"));
+        if(!subJson.isNull("BANKACCOUN"))
+            site.setBANKACCOUN(subJson.getString("BANKACCOUN"));
+        if(!subJson.isNull("AREANAME"))
+            site.setAREANAME(subJson.getString("AREANAME"));
+
+        if(!subJson.isNull("CORPORATIO"))
+            site.setCORPORATIO(subJson.getString("CORPORATIO"));
+        if(!subJson.isNull("FAX"))
+            site.setFAX(subJson.getString("FAX"));
+        if(!subJson.isNull("PSENVIRONM"))
+            site.setPSENVIRONM(subJson.getString("PSENVIRONM"));
+        return site;
+    }
+
+
+
+    public static ArrayList<GongyeBean> getGongyeList(String jsonData) {
+        ArrayList<GongyeBean> sitelist=new ArrayList<>();
+        try {
+            JSONArray array=new JSONArray(jsonData);
+            for(int i=0;i<array.length();i++){
+                JSONObject subJson=array.getJSONObject(i);
+                sitelist.add(getGongyeBean(subJson));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return sitelist;
+    }
+
+    public static GongyeBean getGongyeDetail(String jsonData){
+        GongyeBean site=new GongyeBean();
+        try {
+            JSONObject json=new JSONObject(jsonData);
+            if(!json.isNull("siteDetail")) {
+                JSONObject jsonItem=json.getJSONObject("siteDetail");
+                site=getGongyeBean(jsonItem);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return site;
+    }
+
+    public static GongyeBean getGongyeBean(JSONObject subJson) throws JSONException {
+        GongyeBean site=new GongyeBean();
+        if(!subJson.isNull("NN"))
+            site.setNN(subJson.getString("NN"));
+        if(!subJson.isNull("LOSECOND"))
+            site.setLOSECOND(subJson.getString("LOSECOND"));
+        if(!subJson.isNull("LADEGREE"))
+            site.setLADEGREE(subJson.getString("LADEGREE"));
+        if(!subJson.isNull("LONGITUDE"))
+            site.setLONGITUDE(subJson.getString("LONGITUDE"));
+        if(!subJson.isNull("LODEGREE"))
+            site.setLODEGREE(subJson.getString("LODEGREE"));
+        if(!subJson.isNull("BASINNAME"))
+            site.setBASINNAME(subJson.getString("BASINNAME"));
+        if(!subJson.isNull("YEAR"))
+            site.setYEAR(subJson.getString("YEAR"));
+        if(!subJson.isNull("VERTICAL"))
+            site.setVERTICAL(subJson.getString("VERTICAL"));
+        if(!subJson.isNull("COD"))
+            site.setCOD(subJson.getString("COD"));
+        if(!subJson.isNull("LAPORTION"))
+            site.setLAPORTION(subJson.getString("LAPORTION"));
+        if(!subJson.isNull("DTYPE"))
+            site.setDTYPE(subJson.getString("DTYPE"));
+        if(!subJson.isNull("RECEIVWNAME"))
+            site.setRECEIVWNAME(subJson.getString("RECEIVWNAME"));
+        if(!subJson.isNull("ACODE"))
+            site.setACODE(subJson.getString("ACODE"));
+        if(!subJson.isNull("LOPORTION"))
+            site.setLOPORTION(subJson.getString("LOPORTION"));
+        if(!subJson.isNull("COUNTY"))
+            site.setCOUNTY(subJson.getString("COUNTY"));
+        if(!subJson.isNull("DOORPLATE"))
+            site.setDOORPLATE(subJson.getString("DOORPLATE"));
+        if(!subJson.isNull("DCODE"))
+            site.setDCODE(subJson.getString("DCODE"));
+        if(!subJson.isNull("MUNICIPALITY"))
+            site.setMUNICIPALITY(subJson.getString("MUNICIPALITY"));
+        if(!subJson.isNull("ANAME"))
+            site.setANAME(subJson.getString("ANAME"));
+        if(!subJson.isNull("CITY"))
+            site.setCITY(subJson.getString("CITY"));
+
+        if(!subJson.isNull("BASINCODE"))
+            site.setBASINCODE(subJson.getString("BASINCODE"));
+        if(!subJson.isNull("ZN"))
+            site.setZN(subJson.getString("ZN"));
+        if(!subJson.isNull("TOWN"))
+            site.setTOWN(subJson.getString("TOWN"));
+        if(!subJson.isNull("LASECOND"))
+            site.setLASECOND(subJson.getString("LASECOND"));
+        if(!subJson.isNull("ZP"))
+            site.setZP(subJson.getString("ZP"));
+        if(!subJson.isNull("RECEIVWCODE"))
+            site.setRECEIVWCODE(subJson.getString("RECEIVWCODE"));
+
+        if(!subJson.isNull("RUNIT"))
+            site.setRUNIT(subJson.getString("RUNIT"));
+        if(!subJson.isNull("LATITUDE"))
+            site.setLATITUDE(subJson.getString("LATITUDE"));
+
+        return site;
+    }
 }
