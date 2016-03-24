@@ -1,6 +1,7 @@
 package environment.th.com.thenvi.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2016/3/22.
@@ -366,5 +367,88 @@ public class WushuiBean implements Serializable{
 
     public void setPSENVIRONM(String PSENVIRONM) {
         this.PSENVIRONM = PSENVIRONM;
+    }
+
+    public ArrayList<PopupInfoItem> getInfos() {
+        ArrayList<PopupInfoItem> datas = new ArrayList<>();
+        if(STATECONTR.length()>0)
+            datas.add(new PopupInfoItem("国控类别", STATECONTR));
+        if(PSALIAS.length()>0)
+            datas.add(new PopupInfoItem("污染源别名", PSALIAS));
+        if(UPDATETIME.length()>0)
+            datas.add(new PopupInfoItem("更新时间", UPDATETIME));
+        if(PSCODE.length()>0)
+            datas.add(new PopupInfoItem("系统编码", PSCODE));
+        if(TOTALAREA.length()>0)
+            datas.add(new PopupInfoItem("占地面积", TOTALAREA));
+        if(COMMENTS.length()>0)
+            datas.add(new PopupInfoItem("备注", COMMENTS));
+        if(REGISTTYPE.length()>0)
+            datas.add(new PopupInfoItem("注册类型", REGISTTYPE));
+        if(EMAIL.length()>0)
+            datas.add(new PopupInfoItem("电子邮箱", EMAIL));
+        if(UNITTYPENA.length()>0)
+            datas.add(new PopupInfoItem("单位类别", UNITTYPENA));
+        if(ISMONITOR.length()>0)
+            datas.add(new PopupInfoItem("是否监控", ISMONITOR));
+        if(INDUSTRYTY.length()>0)
+            datas.add(new PopupInfoItem("行业类别", INDUSTRYTY));
+//        if(ENVIRONM_1.length()>0)
+//            datas.add(new PopupInfoItem("省界", ENVIRONM_1));
+        if(X.length()>0)
+            datas.add(new PopupInfoItem("经度", X));
+        if(Y.length()>0)
+            datas.add(new PopupInfoItem("纬度", Y));
+//        if(LINKMAN.length()>0)
+//            datas.add(new PopupInfoItem("省界", LINKMAN));
+        if(ENVIRONMEN.length()>0)
+            datas.add(new PopupInfoItem("环保负责人", ENVIRONMEN));
+        if(ATTENTIOND.length()>0)
+            datas.add(new PopupInfoItem("关注程度", ATTENTIOND));
+        if(POSTALCODE.length()>0)
+            datas.add(new PopupInfoItem("邮政编码", POSTALCODE));
+        if(VALLEYNAME.length()>0)
+            datas.add(new PopupInfoItem("流域", VALLEYNAME));
+        if(PSNUMBER.length()>0)
+            datas.add(new PopupInfoItem("企业编号", PSNUMBER));
+        if(SUBJECTION.length()>0)
+            datas.add(new PopupInfoItem("隶属关系", SUBJECTION));
+//        if(CORPORAT_1.length()>0)
+//            datas.add(new PopupInfoItem("省界", CORPORAT_1));
+        if(PSCLASSNAM.length()>0)
+            datas.add(new PopupInfoItem("所属环保机构", PSCLASSNAM));
+        if(RUNDATE.length()>0)
+            datas.add(new PopupInfoItem("投产日期", RUNDATE));
+        if(REGIONNAME.length()>0)
+            datas.add(new PopupInfoItem("地区", REGIONNAME));
+        if(PSWEBSITE.length()>0)
+            datas.add(new PopupInfoItem("企业网址", PSWEBSITE));
+        if(MOBILEPHON.length()>0)
+            datas.add(new PopupInfoItem("移动电话", MOBILEPHON));
+        if(PSSCALENAM.length()>0)
+            datas.add(new PopupInfoItem("企业规模", PSSCALENAM));
+        if(PSADDRESS.length()>0)
+            datas.add(new PopupInfoItem("单位地址", PSADDRESS));
+//        if(DISPOSETYP.length()>0)
+//            datas.add(new PopupInfoItem("省界", DISPOSETYP));
+        if(PSNAME.length()>0)
+            datas.add(new PopupInfoItem("企业名称", PSNAME));
+//        if(IFTHIRTYTE.length()>0)
+//            datas.add(new PopupInfoItem("省界", IFTHIRTYTE));
+        if(COMMUNICAT.length()>0)
+            datas.add(new PopupInfoItem("通讯地址", COMMUNICAT));
+        if(OPENACOCUN.length()>0)
+            datas.add(new PopupInfoItem("开户银行", OPENACOCUN));
+        if(BANKACCOUN.length()>0)
+            datas.add(new PopupInfoItem("银行账号", BANKACCOUN));
+        if(AREANAME.length()>0)
+            datas.add(new PopupInfoItem("地区", AREANAME));
+        if(CORPORATIO.length()>0)
+            datas.add(new PopupInfoItem("法定代表人", CORPORATIO));
+        if(FAX.length()>0)
+            datas.add(new PopupInfoItem("传真", FAX));
+        if(PSENVIRONM.length()>0)
+            datas.add(new PopupInfoItem("企业环保部门", PSENVIRONM));
+        return datas;
     }
 }
