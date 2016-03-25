@@ -39,6 +39,7 @@ import environment.th.com.thenvi.activity.ChatsInfoAct;
 import environment.th.com.thenvi.adapter.SiteListAdapter;
 import environment.th.com.thenvi.bean.CRiverInfoBean;
 import environment.th.com.thenvi.bean.ChuqinBean;
+import environment.th.com.thenvi.bean.Company2Bean;
 import environment.th.com.thenvi.bean.CompanyBean;
 import environment.th.com.thenvi.bean.GongyeBean;
 import environment.th.com.thenvi.bean.PopupInfoItem;
@@ -65,16 +66,24 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
     private DrawerLayout mDrawerLayout;
     private TextView typeBtn;
     private EditText searchEdt;
-    private int type=0; //跨界， 国控， 闸坝
+    private int type=0; //一般工业企业，污水处理厂，工业企业， 污水处理厂，禽畜养殖
     private MenuPopup popup;
     private ListView siteListview;
     public InfoWindow mInfoWindow;
     private MarkerSupportView content;
+
     private List<CompanyBean> CopList=new ArrayList<>();
     private List<CompanyBean> CopFindList=new ArrayList<>();
+    private List<CompanyBean> WsList=new ArrayList<>();
+    private List<CompanyBean> WsFindList=new ArrayList<>();
+    private List<GongyeBean> GyList=new ArrayList<>();
+    private List<GongyeBean> GyFindList=new ArrayList<>();
+    private List<Company2Bean> Ws2List=new ArrayList<>();
+    private List<Company2Bean> Ws2FindList=new ArrayList<>();
+    private List<ChuqinBean> CqList=new ArrayList<>();
+    private List<ChuqinBean> CqFindList=new ArrayList<>();
 
-    private ArrayList<CRiverInfoBean> gkList=new ArrayList<>();
-    private ArrayList<CRiverInfoBean> gkFindList=new ArrayList<>();
+
     private Marker currentMarker;
 
     @Override
@@ -110,10 +119,10 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                 Serializable bean = null;
                 switch (type){
                     case 0:
-                        CompanyBean RBean=(CompanyBean) markerExtraInfo.getSerializable("InfoBean");
-                        bean=RBean;
-                        datalist=RBean.getInfos();
-                        title=RBean.getPSNAME();
+                        CompanyBean CpyBean=(CompanyBean) markerExtraInfo.getSerializable("InfoBean");
+                        bean=CpyBean;
+                        datalist=CpyBean.getInfos();
+                        title=CpyBean.getPSNAME();
                         break;
                     case 1:
                         CompanyBean WBean=(CompanyBean) markerExtraInfo.getSerializable("InfoBean");
@@ -128,9 +137,15 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                         title=GBean.getRUNIT();
                         break;
                     case 3:
+                        Company2Bean Cpy2Bean=(Company2Bean) markerExtraInfo.getSerializable("InfoBean");
+                        bean=Cpy2Bean;
+                        datalist=Cpy2Bean.getInfos();
+                        title=Cpy2Bean.getNAME();
+                        break;
+                    case 4:
                         ChuqinBean CBean=(ChuqinBean) markerExtraInfo.getSerializable("InfoBean");
                         bean=CBean;
-//                        datalist=CBean.getInfos();
+                        datalist=CBean.getInfos();
                         title=CBean.getFARM();
                         break;
                 }
@@ -152,12 +167,15 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                 handler.getYibanSiteList();
                 break;
             case 1:
-                handler.getWushuizdSiteList();
+                handler.getYibanSiteList();
                 break;
             case 2:
                 handler.getGongyeSiteList();
                 break;
             case 3:
+                handler.getWushuipcSiteList();
+                break;
+            case 4:
                 handler.getChuqinSiteList();
                 break;
         }
@@ -174,9 +192,11 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
         typeBtn.setOnClickListener(this);
         v.findViewById(R.id.listLeftBtn).setOnClickListener(this);
         final ArrayList<String> strings=new ArrayList<>();
-        strings.add("跨界断面");
-        strings.add("国控断面");
-        strings.add("自动检测站");
+        strings.add("一般工业企业");
+        strings.add("污水处理厂（重点检查）");
+        strings.add("工业企业");
+        strings.add("污水处理厂（污染普查）");
+        strings.add("禽畜养殖");
         popup = new MenuPopup(getActivity(), strings, new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -188,10 +208,16 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                         handler.getYibanSiteList();
                         break;
                     case 1:
-                        handler.getWushuizdSiteList();
+                        handler.getYibanSiteList();
                         break;
                     case 2:
-//                        handler.getGateDamSiteList();
+                        handler.getGongyeSiteList();
+                        break;
+                    case 3:
+                        handler.getWushuipcSiteList();
+                        break;
+                    case 4:
+                        handler.getChuqinSiteList();
                         break;
                 }
             }
@@ -206,18 +232,34 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
             mDrawerLayout.closeDrawer(menuLayout);
             switch (type){
                 case 0:
-                    CompanyBean kjbean=CopFindList.get(i);
-                    showSupportContent(new LatLng(Double.valueOf(kjbean.getY()),Double.valueOf(kjbean.getX())),
-                            75, kjbean.getPSNAME(), kjbean);
-                    content.setListView(kjbean.getInfos());
+                    CompanyBean bean1=CopFindList.get(i);
+                    showSupportContent(new LatLng(Double.valueOf(bean1.getY()),Double.valueOf(bean1.getX())),
+                            75, bean1.getPSNAME(), bean1);
+                    content.setListView(bean1.getInfos());
                     break;
                 case 1:
-                    CRiverInfoBean gkbean=gkFindList.get(i);
-                    showSupportContent(new LatLng(Double.valueOf(gkbean.getLATITUDE()),Double.valueOf(gkbean.getLONGITUDE())),
-                            75, gkbean.getPNAME(), gkbean);
-                    content.setListView(gkbean.getInfos());
+                    CompanyBean bean2=WsFindList.get(i);
+                    showSupportContent(new LatLng(Double.valueOf(bean2.getY()),Double.valueOf(bean2.getX())),
+                            75, bean2.getPSNAME(), bean2);
+                    content.setListView(bean2.getInfos());
                     break;
                 case 2:
+                    GongyeBean bean3=GyFindList.get(i);
+                    showSupportContent(new LatLng(Double.valueOf(bean3.getLATITUDE()),Double.valueOf(bean3.getLONGITUDE())),
+                            75, bean3.getRUNIT(), bean3);
+                    content.setListView(bean3.getInfos());
+                    break;
+                case 3:
+                    Company2Bean bean4=Ws2FindList.get(i);
+                    showSupportContent(new LatLng(Double.valueOf(bean4.getLATITUDE()),Double.valueOf(bean4.getLODEGREEE())),
+                            75, bean4.getNAME(), bean4);
+                    content.setListView(bean4.getInfos());
+                    break;
+                case 4:
+                    ChuqinBean bean5=CqFindList.get(i);
+                    showSupportContent(new LatLng(Double.valueOf(bean5.getLATITUDE()),Double.valueOf(bean5.getLODEGREE())),
+                            75, bean5.getFARM(), bean5);
+                    content.setListView(bean5.getInfos());
                     break;
             }
         }
@@ -239,7 +281,7 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
             ArrayList<String> names=new ArrayList<>();
             switch (type){
                 case 0:
-                    CopList.clear();
+                    CopFindList.clear();
                     for (int i=0;i<CopList.size();i++){
                         CompanyBean site=CopList.get(i);
                         if(site.getPSNAME().startsWith(editable.toString())) {
@@ -249,12 +291,12 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                     }
                     break;
                 case 1:
-                    gkFindList.clear();
-                    for (int i=0;i<gkList.size();i++){
-                        CRiverInfoBean site=gkList.get(i);
-                        if(site.getPNAME().startsWith(editable.toString())) {
-                            gkFindList.add(site);
-                            names.add(site.getPNAME());
+                    WsFindList.clear();
+                    for (int i=0;i<WsList.size();i++){
+                        CompanyBean site=WsList.get(i);
+                        if(site.getPSNAME().startsWith(editable.toString())) {
+                            WsFindList.add(site);
+                            names.add(site.getPSNAME());
                         }
                     }
                     break;
@@ -408,16 +450,16 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                     baiduMap.hideInfoWindow();
                     mInfoWindow = null;
                     baiduMap.clear();
-                    gkList= JsonUtil.getGuokongSite(jsonData);
+                    WsList= JsonUtil.getCompanyList(jsonData);
                     ArrayList<String> names=new ArrayList<>();
-                    for (CRiverInfoBean bean : gkList) {
-                        gkFindList.add(bean);
-                        names.add(bean.getPNAME());
+                    for (CompanyBean bean : WsList) {
+                        WsFindList.add(bean);
+                        names.add(bean.getPSNAME());
                         View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.marker_layout, null);
 //                        mMarkerView.setBackgroundResource(R.mipmap.marker_blue_round);
                         TextView nameTxt= (TextView) mMarkerView.findViewById(R.id.nameTxt);
-                        nameTxt.setText(bean.getPNAME());
-                        LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLONGITUDE()));
+                        nameTxt.setText(bean.getPSNAME());
+                        LatLng point = new LatLng(Double.parseDouble(bean.getY()), Double.parseDouble(bean.getX()));
                         Bundle bundle = new Bundle();
                         int dataType = 0;
                         bundle.putInt("mark_type", dataType);
@@ -427,9 +469,9 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                     }
                     siteListview.setAdapter(new SiteListAdapter(getActivity(), names));
                     siteListview.setOnItemClickListener(itemClickListener);
-                    if(gkList.size()>0){
-                        CRiverInfoBean bean = gkList.get(gkList.size()/2);
-                        LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLONGITUDE()));
+                    if(WsList.size()>0){
+                        CompanyBean bean = WsList.get(WsList.size()/2);
+                        LatLng point = new LatLng(Double.parseDouble(bean.getY()), Double.parseDouble(bean.getX()));
                         refreshMapStatus(point, 10);
                     }
                 }

@@ -58,6 +58,10 @@ public class ConstantUtil {
 	public static final String method_GongyeSiteList="1/gongye/siteList";
 	public static final String method_GongyeSiteDetail="1/gongye/siteDetail";
 
+	/** 污水处理厂（污染源普查数据） */
+	public static final String method_WushuipcSiteList="1/wushuipc/siteList";
+	public static final String method_WushuipcSiteDetail="1/wushuipc/siteDetail";
+
 	/** 畜禽养殖 */
 	public static final String method_ChuqinSiteList="1/chuqin/siteList";
 	public static final String method_ChuqinSiteDetail="1/chuqin/siteDetail";

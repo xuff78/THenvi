@@ -190,6 +190,18 @@ public class HttpHandler extends Handle {
 		request(ConstantUtil.method_GongyeSiteDetail, params, true);
 	}
 
+	public void getWushuipcSiteList() {
+		HashMap<String, String> params=new HashMap<>();
+		request(ConstantUtil.method_WushuipcSiteList, params, true);
+	}
+
+	public void getWushuipcDetail(String farm) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("farm", farm);
+		params.put("date", "2014-03-31");
+		request(ConstantUtil.method_WushuipcSiteDetail, params, true);
+	}
+
 	public void getChuqinSiteList() {
 		HashMap<String, String> params=new HashMap<>();
 		request(ConstantUtil.method_ChuqinSiteList, params, true);

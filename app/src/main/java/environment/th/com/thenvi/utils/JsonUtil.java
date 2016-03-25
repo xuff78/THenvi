@@ -12,6 +12,8 @@ import environment.th.com.thenvi.bean.ChatGuokong;
 import environment.th.com.thenvi.bean.ChatKuaJie;
 import environment.th.com.thenvi.bean.ChatRainFall;
 import environment.th.com.thenvi.bean.ChatWaterSiteBean;
+import environment.th.com.thenvi.bean.ChuqinBean;
+import environment.th.com.thenvi.bean.Company2Bean;
 import environment.th.com.thenvi.bean.CompanyBean;
 import environment.th.com.thenvi.bean.GongyeBean;
 import environment.th.com.thenvi.bean.JsonMessage;
@@ -485,6 +487,164 @@ public class JsonUtil {
             site.setRUNIT(subJson.getString("RUNIT"));
         if(!subJson.isNull("LATITUDE"))
             site.setLATITUDE(subJson.getString("LATITUDE"));
+
+        return site;
+    }
+
+
+
+    public static ArrayList<ChuqinBean> getChuqinList(String jsonData) {
+        ArrayList<ChuqinBean> sitelist=new ArrayList<>();
+        try {
+            JSONArray array=new JSONArray(jsonData);
+            for(int i=0;i<array.length();i++){
+                JSONObject subJson=array.getJSONObject(i);
+                sitelist.add(getChuqinBean(subJson));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return sitelist;
+    }
+
+    public static ChuqinBean getChuqinDetail(String jsonData){
+        ChuqinBean site=new ChuqinBean();
+        try {
+            JSONObject json=new JSONObject(jsonData);
+            if(!json.isNull("siteDetail")) {
+                JSONObject jsonItem=json.getJSONObject("siteDetail");
+                site=getChuqinBean(jsonItem);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return site;
+    }
+
+    public static ChuqinBean getChuqinBean(JSONObject subJson) throws JSONException {
+        ChuqinBean site=new ChuqinBean();
+        if(!subJson.isNull("LPTYPE"))
+            site.setLPTYPE(subJson.getString("LPTYPE"));
+        if(!subJson.isNull("OZN"))
+            site.setOZN(subJson.getString("OZN"));
+        if(!subJson.isNull("OZP"))
+            site.setOZP(subJson.getString("OZP"));
+        if(!subJson.isNull("PZN"))
+            site.setPZN(subJson.getString("PZN"));
+        if(!subJson.isNull("DOORPLATE"))
+            site.setDOORPLATE(subJson.getString("DOORPLATE"));
+        if(!subJson.isNull("PZP"))
+            site.setPZP(subJson.getString("PZP"));
+        if(!subJson.isNull("NBREAD"))
+            site.setNBREAD(subJson.getString("NBREAD"));
+        if(!subJson.isNull("OZNN"))
+            site.setOZNN(subJson.getString("OZNN"));
+        if(!subJson.isNull("MUNICIPALITY"))
+            site.setMUNICIPALITY(subJson.getString("MUNICIPALITY"));
+        if(!subJson.isNull("PNN"))
+            site.setPNN(subJson.getString("PNN"));
+        if(!subJson.isNull("LODEGREE"))
+            site.setLODEGREE(subJson.getString("LODEGREE"));
+        if(!subJson.isNull("ANAME"))
+            site.setANAME(subJson.getString("ANAME"));
+        if(!subJson.isNull("YEAR"))
+            site.setYEAR(subJson.getString("YEAR"));
+        if(!subJson.isNull("CITY"))
+            site.setCITY(subJson.getString("CITY"));
+        if(!subJson.isNull("TOWN"))
+            site.setCOUNTY(subJson.getString("TOWN"));
+        if(!subJson.isNull("FARM"))
+            site.setFARM(subJson.getString("FARM"));
+        if(!subJson.isNull("RECEIVWCODE"))
+            site.setRECEIVWCODE(subJson.getString("RECEIVWCODE"));
+        if(!subJson.isNull("OCO"))
+            site.setOCO(subJson.getString("OCO"));
+        if(!subJson.isNull("RECEIVWNAME"))
+            site.setRECEIVWNAME(subJson.getString("RECEIVWNAME"));
+        if(!subJson.isNull("ACODE"))
+            site.setACODE(subJson.getString("ACODE"));
+
+        if(!subJson.isNull("LATITUDE"))
+            site.setLATITUDE(subJson.getString("LATITUDE"));
+        if(!subJson.isNull("PCO"))
+            site.setPCO(subJson.getString("PCO"));
+        if(!subJson.isNull("COUNTY"))
+            site.setCOUNTY(subJson.getString("COUNTY"));
+
+        return site;
+    }
+
+
+    public static ArrayList<Company2Bean> getCompany2List(String jsonData) {
+        ArrayList<Company2Bean> sitelist=new ArrayList<>();
+        try {
+            JSONArray array=new JSONArray(jsonData);
+            for(int i=0;i<array.length();i++){
+                JSONObject subJson=array.getJSONObject(i);
+                sitelist.add(getCompany2Bean(subJson));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return sitelist;
+    }
+
+    public static Company2Bean getCompany2Detail(String jsonData){
+        Company2Bean site=new Company2Bean();
+        try {
+            JSONObject json=new JSONObject(jsonData);
+            if(!json.isNull("siteDetail")) {
+                JSONObject jsonItem=json.getJSONObject("siteDetail");
+                site=getCompany2Bean(jsonItem);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return site;
+    }
+
+    public static Company2Bean getCompany2Bean(JSONObject subJson) throws JSONException {
+        Company2Bean site=new Company2Bean();
+        if(!subJson.isNull("SLEVEL"))
+            site.setSLEVEL(subJson.getString("SLEVEL"));
+        if(!subJson.isNull("DOORPLATE"))
+            site.setDOORPLATE(subJson.getString("DOORPLATE"));
+        if(!subJson.isNull("BDATA"))
+            site.setBDATA(subJson.getString("BDATA"));
+        if(!subJson.isNull("NAME"))
+            site.setNAME(subJson.getString("NAME"));
+        if(!subJson.isNull("MUNICIPALITY"))
+            site.setMUNICIPALITY(subJson.getString("MUNICIPALITY"));
+        if(!subJson.isNull("ORGANIZATION"))
+            site.setORGANIZATION(subJson.getString("ORGANIZATION"));
+        if(!subJson.isNull("COST"))
+            site.setCOST(subJson.getString("COST"));
+        if(!subJson.isNull("NINVESTMENT"))
+            site.setNINVESTMENT(subJson.getString("NINVESTMENT"));
+        if(!subJson.isNull("YEAR"))
+            site.setYEAR(subJson.getString("YEAR"));
+        if(!subJson.isNull("CITY"))
+            site.setCITY(subJson.getString("CITY"));
+        if(!subJson.isNull("TOWN"))
+            site.setTOWN(subJson.getString("TOWN"));
+        if(!subJson.isNull("RUNINGDAY"))
+            site.setRUNINGDAY(subJson.getString("RUNINGDAY"));
+        if(!subJson.isNull("LSEWAGE"))
+            site.setLSEWAGE(subJson.getString("LSEWAGE"));
+        if(!subJson.isNull("INVESTMENT"))
+            site.setINVESTMENT(subJson.getString("INVESTMENT"));
+        if(!subJson.isNull("REPRESENTATIVE"))
+            site.setREPRESENTATIVE(subJson.getString("REPRESENTATIVE"));
+        if(!subJson.isNull("TEL"))
+            site.setTEL(subJson.getString("TEL"));
+        if(!subJson.isNull("RECEIVWCODE"))
+            site.setRECEIVWCODE(subJson.getString("RECEIVWCODE"));
+        if(!subJson.isNull("RECEIVWNAME"))
+            site.setRECEIVWNAME(subJson.getString("RECEIVWNAME"));
+        if(!subJson.isNull("HANDLE"))
+            site.setHANDLE(subJson.getString("HANDLE"));
+        if(!subJson.isNull("COUNTY"))
+            site.setCOUNTY(subJson.getString("COUNTY"));
 
         return site;
     }
