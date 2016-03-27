@@ -291,20 +291,6 @@ public class JsonUtil {
     }
 
 
-    public static ArrayList<CompanyBean> getCompanyList(String jsonData) {
-        ArrayList<CompanyBean> sitelist=new ArrayList<>();
-        try {
-            JSONArray array=new JSONArray(jsonData);
-            for(int i=0;i<array.length();i++){
-                JSONObject subJson=array.getJSONObject(i);
-                sitelist.add(getCompanyBean(subJson));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return sitelist;
-    }
-
     public static CompanyBean getCompanyDetail(String jsonData){
         CompanyBean site=new CompanyBean();
         try {
@@ -317,6 +303,20 @@ public class JsonUtil {
             e.printStackTrace();
         }
         return site;
+    }
+
+    public static ArrayList<CompanyBean> getCompanyList(String jsonData) {
+        ArrayList<CompanyBean> sitelist=new ArrayList<>();
+        try {
+            JSONArray array=new JSONArray(jsonData);
+            for(int i=0;i<array.length();i++){
+                JSONObject subJson=array.getJSONObject(i);
+                sitelist.add(getCompanyBean(subJson));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return sitelist;
     }
 
     public static CompanyBean getCompanyBean(JSONObject subJson) throws JSONException {
@@ -545,6 +545,8 @@ public class JsonUtil {
             site.setPNN(subJson.getString("PNN"));
         if(!subJson.isNull("LODEGREE"))
             site.setLODEGREE(subJson.getString("LODEGREE"));
+        else if(!subJson.isNull("LONGITUDE"))
+            site.setLODEGREE(subJson.getString("LONGITUDE"));
         if(!subJson.isNull("ANAME"))
             site.setANAME(subJson.getString("ANAME"));
         if(!subJson.isNull("YEAR"))
@@ -645,6 +647,10 @@ public class JsonUtil {
             site.setHANDLE(subJson.getString("HANDLE"));
         if(!subJson.isNull("COUNTY"))
             site.setCOUNTY(subJson.getString("COUNTY"));
+        if(!subJson.isNull("LATITUDE"))
+            site.setLATITUDE(subJson.getString("LATITUDE"));
+        if(!subJson.isNull("LODEGREE"))
+            site.setLODEGREE(subJson.getString("LODEGREE"));
 
         return site;
     }

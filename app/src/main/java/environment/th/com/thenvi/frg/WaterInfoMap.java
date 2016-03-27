@@ -180,7 +180,7 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             mDrawerLayout.closeDrawer(menuLayout);
-            WaterSiteBean site= (WaterSiteBean) view.getTag();
+            WaterSiteBean site= findList.get(i);
             showSupportContent(new LatLng(Double.valueOf(site.getLATITUDE()),Double.valueOf(site.getLONGITUDE())), 75, site.getHSNAME(), site);
             switch (type){
                 case 0:
@@ -341,8 +341,9 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
                     baiduMap.clear();
                     siteList= JsonUtil.getSiteList(jsonData);
                     ArrayList<String> names=new ArrayList<>();
-
+                    findList.clear();
                     for (WaterSiteBean bean : siteList) {
+                        findList.add(bean);
                         names.add(bean.getHSNAME());
                         View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.marker_layout, null);
 //                        mMarkerView.setBackgroundResource(R.mipmap.marker_blue_round);

@@ -44,6 +44,7 @@ import environment.th.com.thenvi.bean.CompanyBean;
 import environment.th.com.thenvi.bean.GongyeBean;
 import environment.th.com.thenvi.bean.PopupInfoItem;
 import environment.th.com.thenvi.bean.RiverInfoBean;
+import environment.th.com.thenvi.bean.WaterSiteBean;
 import environment.th.com.thenvi.bean.WushuiBean;
 import environment.th.com.thenvi.http.CallBack;
 import environment.th.com.thenvi.http.HttpHandler;
@@ -93,6 +94,8 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
 //        mCallBack = new MapRequestCallBack(getActivity());
 //        mCMHandler = new CMHandler(getActivity(), mCallBack);
         //获取地图控件引用
+        TextView titleTxt = (TextView) mView.findViewById(R.id.titleTxt);
+        titleTxt.setText("重点风险源");
         mMapView = (MapView) mView.findViewById(R.id.mapView);
         mMapView.showZoomControls(false);
         mMapView.showScaleControl(true);
@@ -114,44 +117,35 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                     height = markerExtraInfo.getInt("height");
                     height += 5;
                 }
-                ArrayList<PopupInfoItem> datalist=null;
                 String title="";
-                Serializable bean = null;
                 switch (type){
                     case 0:
                         CompanyBean CpyBean=(CompanyBean) markerExtraInfo.getSerializable("InfoBean");
-                        bean=CpyBean;
-                        datalist=CpyBean.getInfos();
                         title=CpyBean.getPSNAME();
+                        handler.getYibanSiteDetail(CpyBean.getPSCODE());
                         break;
                     case 1:
                         CompanyBean WBean=(CompanyBean) markerExtraInfo.getSerializable("InfoBean");
-                        bean=WBean;
-                        datalist=WBean.getInfos();
                         title=WBean.getPSNAME();
+                        handler.getWushuizdSiteDetail(WBean.getPSCODE());
                         break;
                     case 2:
                         GongyeBean GBean=(GongyeBean) markerExtraInfo.getSerializable("InfoBean");
-                        bean=GBean;
-                        datalist=GBean.getInfos();
                         title=GBean.getRUNIT();
+                        handler.getGongyeSiteDetail(GBean.getRUNIT());
                         break;
                     case 3:
                         Company2Bean Cpy2Bean=(Company2Bean) markerExtraInfo.getSerializable("InfoBean");
-                        bean=Cpy2Bean;
-                        datalist=Cpy2Bean.getInfos();
                         title=Cpy2Bean.getNAME();
+                        handler.getWushuipcDetail(Cpy2Bean.getNAME());
                         break;
                     case 4:
                         ChuqinBean CBean=(ChuqinBean) markerExtraInfo.getSerializable("InfoBean");
-                        bean=CBean;
-                        datalist=CBean.getInfos();
                         title=CBean.getFARM();
+                        handler.getChuqinSiteDetail(CBean.getFARM());
                         break;
                 }
-
-                showSupportContent(marker.getPosition(), height, title, bean);
-                content.setListView(datalist);
+                showSupportContent(marker.getPosition(), height, title);
                 return true;
             }
         });
@@ -167,7 +161,7 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                 handler.getYibanSiteList();
                 break;
             case 1:
-                handler.getYibanSiteList();
+                handler.getWushuizdSiteList();
                 break;
             case 2:
                 handler.getGongyeSiteList();
@@ -193,9 +187,9 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
         v.findViewById(R.id.listLeftBtn).setOnClickListener(this);
         final ArrayList<String> strings=new ArrayList<>();
         strings.add("一般工业企业");
-        strings.add("污水处理厂（重点检查）");
+        strings.add("污水处理厂\n（重点检查）");
         strings.add("工业企业");
-        strings.add("污水处理厂（污染普查）");
+        strings.add("污水处理厂\n（污染普查）");
         strings.add("禽畜养殖");
         popup = new MenuPopup(getActivity(), strings, new AdapterView.OnItemClickListener() {
             @Override
@@ -208,7 +202,7 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                         handler.getYibanSiteList();
                         break;
                     case 1:
-                        handler.getYibanSiteList();
+                        handler.getWushuizdSiteList();
                         break;
                     case 2:
                         handler.getGongyeSiteList();
@@ -234,34 +228,69 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                 case 0:
                     CompanyBean bean1=CopFindList.get(i);
                     showSupportContent(new LatLng(Double.valueOf(bean1.getY()),Double.valueOf(bean1.getX())),
-                            75, bean1.getPSNAME(), bean1);
+                            75, bean1.getPSNAME());
                     content.setListView(bean1.getInfos());
                     break;
                 case 1:
                     CompanyBean bean2=WsFindList.get(i);
                     showSupportContent(new LatLng(Double.valueOf(bean2.getY()),Double.valueOf(bean2.getX())),
-                            75, bean2.getPSNAME(), bean2);
+                            75, bean2.getPSNAME());
                     content.setListView(bean2.getInfos());
                     break;
                 case 2:
                     GongyeBean bean3=GyFindList.get(i);
                     showSupportContent(new LatLng(Double.valueOf(bean3.getLATITUDE()),Double.valueOf(bean3.getLONGITUDE())),
-                            75, bean3.getRUNIT(), bean3);
+                            75, bean3.getRUNIT());
                     content.setListView(bean3.getInfos());
                     break;
                 case 3:
                     Company2Bean bean4=Ws2FindList.get(i);
-                    showSupportContent(new LatLng(Double.valueOf(bean4.getLATITUDE()),Double.valueOf(bean4.getLODEGREEE())),
-                            75, bean4.getNAME(), bean4);
+                    showSupportContent(new LatLng(Double.valueOf(bean4.getLATITUDE()),Double.valueOf(bean4.getLODEGREE())),
+                            75, bean4.getNAME());
                     content.setListView(bean4.getInfos());
                     break;
                 case 4:
                     ChuqinBean bean5=CqFindList.get(i);
                     showSupportContent(new LatLng(Double.valueOf(bean5.getLATITUDE()),Double.valueOf(bean5.getLODEGREE())),
-                            75, bean5.getFARM(), bean5);
+                            75, bean5.getFARM());
                     content.setListView(bean5.getInfos());
                     break;
             }
+            String title="";
+            LatLng ll=null;
+            switch (type){
+                case 0:
+                    CompanyBean CpyBean=CopFindList.get(i);
+                    title=CpyBean.getPSNAME();
+                    ll=new LatLng(Double.valueOf(CpyBean.getY()),Double.valueOf(CpyBean.getX()));
+                    handler.getYibanSiteDetail(CpyBean.getPSCODE());
+                    break;
+                case 1:
+                    CompanyBean WBean=WsFindList.get(i);
+                    title=WBean.getPSNAME();
+                    ll=new LatLng(Double.valueOf(WBean.getY()),Double.valueOf(WBean.getX()));
+                    handler.getWushuizdSiteDetail(WBean.getPSCODE());
+                    break;
+                case 2:
+                    GongyeBean GBean=GyFindList.get(i);
+                    title=GBean.getRUNIT();
+                    ll=new LatLng(Double.valueOf(GBean.getLATITUDE()),Double.valueOf(GBean.getLONGITUDE()));
+                    handler.getGongyeSiteDetail(GBean.getRUNIT());
+                    break;
+                case 3:
+                    Company2Bean Cpy2Bean=Ws2FindList.get(i);
+                    title=Cpy2Bean.getNAME();
+                    ll=new LatLng(Double.valueOf(Cpy2Bean.getLATITUDE()),Double.valueOf(Cpy2Bean.getLODEGREE()));
+                    handler.getWushuipcDetail(Cpy2Bean.getNAME());
+                    break;
+                case 4:
+                    ChuqinBean CBean=CqFindList.get(i);
+                    title=CBean.getFARM();
+                    ll=new LatLng(Double.valueOf(CBean.getLATITUDE()),Double.valueOf(CBean.getLODEGREE()));
+                    handler.getChuqinSiteDetail(CBean.getFARM());
+                    break;
+            }
+            showSupportContent(ll, 75, title);
         }
     };
 
@@ -300,23 +329,51 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                         }
                     }
                     break;
+                case 2:
+                    GyFindList.clear();
+                    for (int i=0;i<GyList.size();i++){
+                        GongyeBean site=GyList.get(i);
+                        if(site.getRUNIT().startsWith(editable.toString())) {
+                            GyFindList.add(site);
+                            names.add(site.getRUNIT());
+                        }
+                    }
+                    break;
+                case 3:
+                    Ws2FindList.clear();
+                    for (int i=0;i<Ws2List.size();i++){
+                        Company2Bean site=Ws2List.get(i);
+                        if(site.getNAME().startsWith(editable.toString())) {
+                            Ws2FindList.add(site);
+                            names.add(site.getNAME());
+                        }
+                    }
+                    break;
+                case 4:
+                    CqFindList.clear();
+                    for (int i=0;i<CqList.size();i++){
+                        ChuqinBean site=CqList.get(i);
+                        if(site.getFARM().startsWith(editable.toString())) {
+                            CqFindList.add(site);
+                            names.add(site.getFARM());
+                        }
+                    }
+                    break;
             }
 
             siteListview.setAdapter(new SiteListAdapter(getActivity(), names));
         }
     };
 
-    public void showSupportContent(LatLng endpositon, int height, String title, final Serializable bean) {
+    public void showSupportContent(LatLng endpositon, int height, String title) {
 
         content = new MarkerSupportView(getActivity(), title, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 baiduMap.hideInfoWindow();
-                Intent i=new Intent(getActivity(), ChatsInfoAct.class);
-                i.putExtra("ChatData", bean);
-                startActivity(i);
             }
         });
+        content.setDetailGone();
         View view = content.getMarkerContentView();
         mInfoWindow = new InfoWindow(view, endpositon, -height);
         //显示InfoWindow
@@ -424,13 +481,12 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                     baiduMap.clear();
                     CopList= JsonUtil.getCompanyList(jsonData);
                     ArrayList<String> names=new ArrayList<>();
+                    CopFindList.clear();
                     for (CompanyBean bean : CopList) {
                         CopFindList.add(bean);
                         names.add(bean.getPSNAME());
-                        View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.marker_layout, null);
-//                        mMarkerView.setBackgroundResource(R.mipmap.marker_blue_round);
-                        TextView nameTxt= (TextView) mMarkerView.findViewById(R.id.nameTxt);
-                        nameTxt.setText(bean.getPSNAME());
+                        ImageView mMarkerView = new ImageView(getActivity());
+                        mMarkerView.setImageResource(R.mipmap.marker_yiban);
                         LatLng point = new LatLng(Double.parseDouble(bean.getY()), Double.parseDouble(bean.getX()));
                         Bundle bundle = new Bundle();
                         int dataType = 0;
@@ -446,19 +502,18 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                         LatLng point = new LatLng(Double.parseDouble(bean.getY()), Double.parseDouble(bean.getX()));
                         refreshMapStatus(point, 10);
                     }
-                }else if(method.equals(ConstantUtil.method_GuokongSiteList)){
+                }else if(method.equals(ConstantUtil.method_WushuizdSiteList)){
                     baiduMap.hideInfoWindow();
                     mInfoWindow = null;
                     baiduMap.clear();
                     WsList= JsonUtil.getCompanyList(jsonData);
                     ArrayList<String> names=new ArrayList<>();
+                    WsFindList.clear();
                     for (CompanyBean bean : WsList) {
                         WsFindList.add(bean);
                         names.add(bean.getPSNAME());
-                        View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.marker_layout, null);
-//                        mMarkerView.setBackgroundResource(R.mipmap.marker_blue_round);
-                        TextView nameTxt= (TextView) mMarkerView.findViewById(R.id.nameTxt);
-                        nameTxt.setText(bean.getPSNAME());
+                        ImageView mMarkerView = new ImageView(getActivity());
+                        mMarkerView.setImageResource(R.mipmap.marker_gongye);
                         LatLng point = new LatLng(Double.parseDouble(bean.getY()), Double.parseDouble(bean.getX()));
                         Bundle bundle = new Bundle();
                         int dataType = 0;
@@ -474,6 +529,107 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                         LatLng point = new LatLng(Double.parseDouble(bean.getY()), Double.parseDouble(bean.getX()));
                         refreshMapStatus(point, 10);
                     }
+                }else if(method.equals(ConstantUtil.method_GongyeSiteList)){
+                    baiduMap.hideInfoWindow();
+                    mInfoWindow = null;
+                    baiduMap.clear();
+                    GyList= JsonUtil.getGongyeList(jsonData);
+                    ArrayList<String> names=new ArrayList<>();
+                    GyFindList.clear();
+                    int showNum=GyList.size();
+                    if(showNum>50)
+                        showNum=50;
+                    for(int i=0;i<showNum;i++){
+                        GongyeBean bean=GyList.get(i);
+                        GyFindList.add(bean);
+                        names.add(bean.getRUNIT());
+                        ImageView mMarkerView = new ImageView(getActivity());
+                        mMarkerView.setImageResource(R.mipmap.marker_yiban);
+                        LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLONGITUDE()));
+                        Bundle bundle = new Bundle();
+                        int dataType = 0;
+                        bundle.putInt("mark_type", dataType);
+                        bundle.putSerializable("InfoBean", bean);
+                        //将标记添加到地图上
+                        addMarkerToMap(point, bundle, mMarkerView);
+                    }
+                    siteListview.setAdapter(new SiteListAdapter(getActivity(), names));
+                    siteListview.setOnItemClickListener(itemClickListener);
+                    if(GyList.size()>0){
+                        GongyeBean bean = GyList.get(GyList.size()/2);
+                        LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLONGITUDE()));
+                        refreshMapStatus(point, 10);
+                    }
+                }else if(method.equals(ConstantUtil.method_WushuipcSiteList)){
+                    baiduMap.hideInfoWindow();
+                    mInfoWindow = null;
+                    baiduMap.clear();
+                    Ws2List= JsonUtil.getCompany2List(jsonData);
+                    ArrayList<String> names=new ArrayList<>();
+                    Ws2FindList.clear();
+                    for (Company2Bean bean : Ws2List) {
+                        Ws2FindList.add(bean);
+                        names.add(bean.getNAME());
+                        ImageView mMarkerView = new ImageView(getActivity());
+                        mMarkerView.setImageResource(R.mipmap.marker_gongye);
+                        LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLODEGREE()));
+                        Bundle bundle = new Bundle();
+                        int dataType = 0;
+                        bundle.putInt("mark_type", dataType);
+                        bundle.putSerializable("InfoBean", bean);
+                        //将标记添加到地图上
+                        addMarkerToMap(point, bundle, mMarkerView);
+                    }
+                    siteListview.setAdapter(new SiteListAdapter(getActivity(), names));
+                    siteListview.setOnItemClickListener(itemClickListener);
+                    if(Ws2List.size()>0){
+                        Company2Bean bean = Ws2List.get(Ws2List.size()/2);
+                        LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLODEGREE()));
+                        refreshMapStatus(point, 10);
+                    }
+                }else if(method.equals(ConstantUtil.method_ChuqinSiteList)){
+                    baiduMap.hideInfoWindow();
+                    mInfoWindow = null;
+                    baiduMap.clear();
+                    CqList= JsonUtil.getChuqinList(jsonData);
+                    ArrayList<String> names=new ArrayList<>();
+                    CqFindList.clear();
+                    int showNum=CqList.size();
+                    if(showNum>50)
+                        showNum=50;
+                    for(int i=0;i<showNum;i++){
+                        ChuqinBean bean=CqList.get(i);
+                        CqFindList.add(bean);
+                        names.add(bean.getFARM());
+                        ImageView mMarkerView = new ImageView(getActivity());
+                        mMarkerView.setImageResource(R.mipmap.marker_chuqin);
+                        LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLODEGREE()));
+                        Bundle bundle = new Bundle();
+                        int dataType = 0;
+                        bundle.putInt("mark_type", dataType);
+                        bundle.putSerializable("InfoBean", bean);
+                        //将标记添加到地图上
+                        addMarkerToMap(point, bundle, mMarkerView);
+                    }
+                    siteListview.setAdapter(new SiteListAdapter(getActivity(), names));
+                    siteListview.setOnItemClickListener(itemClickListener);
+                    if(CqList.size()>0){
+                        ChuqinBean bean = CqList.get(CqList.size()/2);
+                        LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLODEGREE()));
+                        refreshMapStatus(point, 10);
+                    }
+                }else if(method.equals(ConstantUtil.method_YibanSiteDetail)||method.equals(ConstantUtil.method_WushuizdSiteDetail)){
+                    CompanyBean siteBean=JsonUtil.getCompanyDetail(jsonData);
+                    content.setListView(siteBean.getInfos());
+                }else if(method.equals(ConstantUtil.method_GongyeSiteDetail)){
+                    GongyeBean siteBean=JsonUtil.getGongyeDetail(jsonData);
+                    content.setListView(siteBean.getInfos());
+                }else if(method.equals(ConstantUtil.method_WushuipcSiteDetail)){
+                    Company2Bean siteBean=JsonUtil.getCompany2Detail(jsonData);
+                    content.setListView(siteBean.getInfos());
+                }else if(method.equals(ConstantUtil.method_ChuqinSiteDetail)){
+                    ChuqinBean siteBean=JsonUtil.getChuqinDetail(jsonData);
+                    content.setListView(siteBean.getInfos());
                 }
             }
         });

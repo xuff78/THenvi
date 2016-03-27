@@ -44,12 +44,17 @@ public class MarkerSupportView extends View{
     private  float density;
     private ArrayList<PopupInfoItem> datas;
     private View.OnClickListener clickListener;
+    private boolean showDetail=true;
 
     public MarkerSupportView(Activity context, String title, View.OnClickListener clickListener) {
         super(context);
         this.mContext=context;
         this.title=title;
         this.clickListener=clickListener;
+    }
+
+    public void setDetailGone(){
+        showDetail=false;
     }
 
     public MarkerSupportView(Context context, AttributeSet attrs) {
@@ -67,7 +72,10 @@ public class MarkerSupportView extends View{
         titleTxt = (TextView) contentView.findViewById(R.id.titleTxt);
         titleTxt.setText(title);
         infoList = (ListView) contentView.findViewById(R.id.infoList);
-        contentView.findViewById(R.id.detailBtn).setOnClickListener(clickListener);
+        if(showDetail)
+            contentView.findViewById(R.id.detailBtn).setOnClickListener(clickListener);
+        else
+            contentView.findViewById(R.id.detailBtn).setVisibility(View.GONE);
 
         //获取屏幕大小，以及图片的数量，来控制滚动图片的容器宽度
         WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);

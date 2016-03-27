@@ -29,7 +29,7 @@ public class Company2Bean implements Serializable{
     private String HANDLE=""; //": "3651.825",
     private String COUNTY=""; //": "昆山"1
     private String LATITUDE=""; //-经度
-    private String LODEGREEE=""; //-纬度
+    private String LODEGREE=""; //-纬度
 
     public ArrayList<PopupInfoItem> getInfos() {
         ArrayList<PopupInfoItem> datas = new ArrayList<>();
@@ -85,12 +85,12 @@ public class Company2Bean implements Serializable{
         this.LATITUDE = LATITUDE;
     }
 
-    public String getLODEGREEE() {
-        return LODEGREEE;
+    public String getLODEGREE() {
+        return LODEGREE;
     }
 
-    public void setLODEGREEE(String LODEGREEE) {
-        this.LODEGREEE = LODEGREEE;
+    public void setLODEGREE(String LODEGREE) {
+        this.LODEGREE = LODEGREE;
     }
 
     public String getSLEVEL() {

@@ -138,12 +138,12 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
 //                    addListFragment(frg, "menu23");
                     break;
                 case R.id.menu_btn24:
-                    frg = new SewageDisposalMap();
-                    addListFragment(frg, "menu24");
+//                    frg = new SewageDisposalMap();
+//                    addListFragment(frg, "menu24");
                     break;
                 case R.id.menu_btn25:
-//                    frg = new WaterInfoMap();
-//                    addListFragment(frg, "menu25");
+                    frg = new SewageDisposalMap();
+                    addListFragment(frg, "menu25");
                     break;
             }
         }

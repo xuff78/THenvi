@@ -23,13 +23,13 @@ public class SiteListAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Context con;
     private ArrayList<String> dataList;
-    private int itemHeight=0;
+    private int padding=0;
 
     public SiteListAdapter(Context context, ArrayList<String> dataList){
         this.mInflater = LayoutInflater.from(context);
         this.dataList=dataList;
         con=context;
-        this.itemHeight= ScreenUtil.dip2px(context, 40);
+        this.padding= ScreenUtil.dip2px(context, 15);
     }
     @Override
     public int getCount() {
@@ -52,8 +52,9 @@ public class SiteListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        AbsListView.LayoutParams alp=new  AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemHeight);
+        AbsListView.LayoutParams alp=new  AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         TextView title = new TextView(con);
+        title.setPadding(padding,padding/2,padding,padding/2);
         title.setGravity(Gravity.CENTER);
         title.setText(dataList.get(position));
         title.setLayoutParams(alp);

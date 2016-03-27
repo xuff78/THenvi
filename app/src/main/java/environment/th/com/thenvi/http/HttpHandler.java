@@ -195,9 +195,9 @@ public class HttpHandler extends Handle {
 		request(ConstantUtil.method_WushuipcSiteList, params, true);
 	}
 
-	public void getWushuipcDetail(String farm) {
+	public void getWushuipcDetail(String name) {
 		HashMap<String, String> params=new HashMap<>();
-		params.put("farm", farm);
+		params.put("name", name);
 		params.put("date", "2014-03-31");
 		request(ConstantUtil.method_WushuipcSiteDetail, params, true);
 	}

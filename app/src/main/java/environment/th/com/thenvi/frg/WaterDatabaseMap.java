@@ -80,6 +80,8 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
 //        mCallBack = new MapRequestCallBack(getActivity());
 //        mCMHandler = new CMHandler(getActivity(), mCallBack);
         //获取地图控件引用
+        TextView titleTxt = (TextView) mView.findViewById(R.id.titleTxt);
+        titleTxt.setText("水质站");
         mMapView = (MapView) mView.findViewById(R.id.mapView);
         mMapView.showZoomControls(false);
         mMapView.showScaleControl(true);
