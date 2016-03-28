@@ -76,15 +76,18 @@ public class BookAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         final BookViewHolder tvh = (BookViewHolder) viewHolder;
         final BookBean bean = datalist.get(position);
         tvh.titleTxt.setText(bean.getBookName());
-        if(bean.isDownload())
+//        if(bean.isDownload())
             tvh.timeTxt.setText("打开");
-        else
-            tvh.timeTxt.setText("下载");
+//        else
+//            tvh.timeTxt.setText("下载");
         tvh.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                cb.onClick(position, view);
-                act.startActivity(new Intent(act, BookContentAct.class));
+                Intent intent=new Intent(act, BookContentAct.class);
+                intent.putExtra("URL", bean.getBookUrl());
+                intent.putExtra("NAME", bean.getBookName());
+                act.startActivity(intent);
                 /*if(bean.isDownload()){
                     File file = new File(FileUtil.savePath, "book"+bean.getId()+".pdf");
                     if(file.exists()) {

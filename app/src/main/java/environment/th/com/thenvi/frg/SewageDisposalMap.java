@@ -537,8 +537,8 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                     ArrayList<String> names=new ArrayList<>();
                     GyFindList.clear();
                     int showNum=GyList.size();
-                    if(showNum>50)
-                        showNum=50;
+                    if(showNum>80)
+                        showNum=80;
                     for(int i=0;i<showNum;i++){
                         GongyeBean bean=GyList.get(i);
                         GyFindList.add(bean);
@@ -595,8 +595,8 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                     ArrayList<String> names=new ArrayList<>();
                     CqFindList.clear();
                     int showNum=CqList.size();
-                    if(showNum>50)
-                        showNum=50;
+                    if(showNum>80)
+                        showNum=80;
                     for(int i=0;i<showNum;i++){
                         ChuqinBean bean=CqList.get(i);
                         CqFindList.add(bean);

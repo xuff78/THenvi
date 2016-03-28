@@ -20,7 +20,10 @@ import environment.th.com.thenvi.R;
 import environment.th.com.thenvi.adapter.AdapterCallBack;
 import environment.th.com.thenvi.adapter.BookAdapter;
 import environment.th.com.thenvi.bean.BookBean;
+import environment.th.com.thenvi.http.CallBack;
+import environment.th.com.thenvi.http.HttpHandler;
 import environment.th.com.thenvi.utils.FileUtil;
+import environment.th.com.thenvi.utils.JsonUtil;
 
 /**
  * Created by Administrator on 2016/3/10.
@@ -30,12 +33,27 @@ public class BookPage  extends BaseFragment implements AdapterCallBack {
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
     SwipeRefreshLayout refreshLayout;
-    ArrayList<BookBean> datalist;
+
+    private HttpHandler handler;
+    private ArrayList<BookBean> books=new ArrayList<>();
+
+    private void initHandler() {
+        handler=new HttpHandler(getActivity(), new CallBack(getActivity()){
+            @Override
+            public void doSuccess(String method, String jsonData) {
+                books= JsonUtil.getPDFInfo(jsonData);
+                BookAdapter adapter=new BookAdapter(getActivity(), books, BookPage.this);
+                recyclerView.setAdapter(adapter);
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mView = inflater.inflate(R.layout.list_layout, null);
         initView(mView);
+        initHandler();
+        handler.getPDFlist();
         return mView;
     }
 
@@ -46,20 +64,23 @@ public class BookPage  extends BaseFragment implements AdapterCallBack {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        datalist=new ArrayList<>();
-        for(int i=0;i<6;i++) {
-            BookBean book = new BookBean();
-            book.setBookName("测试书籍");
-            book.setBookUrl("http://www.chinapdf.com/PDF/Acrobat%208%20family.pdf");
-            File file = new File(FileUtil.savePath, "book"+book.getId()+".pdf");
-            if(file.exists()) {
-                book.setDownload(true);
-            }
-            datalist.add(book);
-        }
-        BookAdapter adapter=new BookAdapter(getActivity(), datalist,this);
-        recyclerView.setAdapter(adapter);
+//        datalist=new ArrayList<>();
+//        for(int i=0;i<6;i++) {
+//            BookBean book = new BookBean();
+//            book.setBookName("测试书籍");
+//            book.setBookUrl("http://www.chinapdf.com/PDF/Acrobat%208%20family.pdf");
+//            File file = new File(FileUtil.savePath, "book"+book.getId()+".pdf");
+//            if(file.exists()) {
+//                book.setDownload(true);
+//            }
+//            datalist.add(book);
+//        }
+//        BookAdapter adapter=new BookAdapter(getActivity(), datalist,this);
+//        recyclerView.setAdapter(adapter);
     }
+
+
+
 
     @Override
     public void onClick(int pos, View v) {

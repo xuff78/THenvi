@@ -1,11 +1,14 @@
 package environment.th.com.thenvi.utils;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import environment.th.com.thenvi.bean.BookBean;
 import environment.th.com.thenvi.bean.CRiverInfoBean;
 import environment.th.com.thenvi.bean.ChatGateDam;
 import environment.th.com.thenvi.bean.ChatGuokong;
@@ -126,6 +129,8 @@ public class JsonUtil {
                     site.setLATITUDE(subJson.getString("LATITUDE"));
                 if(!subJson.isNull("FLOW"))
                     site.setFLOW(subJson.getString("FLOW"));
+                if(!subJson.isNull("RAINFALL"))
+                    site.setRAINFALL(subJson.getString("RAINFALL"));
                 sitelist.add(site);
             }
         } catch (JSONException e) {
@@ -653,5 +658,103 @@ public class JsonUtil {
             site.setLODEGREE(subJson.getString("LODEGREE"));
 
         return site;
+    }
+
+    public static String getWaterSiteJsonStr(ArrayList<ChatWaterSiteBean> datalist) {
+        String jsonData="";
+        try {
+            int max=12;
+            JSONObject jsonObj=new JSONObject();
+            if(datalist.size()<max)
+                max=datalist.size();
+
+            JSONArray array3=new JSONArray();
+            JSONArray array4=new JSONArray();
+            JSONArray array5=new JSONArray();
+            for(int i=0;i<datalist.size();i++){
+
+                JSONObject objsub=new JSONObject();
+
+                JSONObject direct=new JSONObject();
+                direct.put("value", datalist.get(i).getSTAGE());
+//                direct.put("symbol", "arrow");
+//                direct.put("symbolSize", 5);
+                objsub.put("data",  direct);
+                array3.put(i, objsub);
+
+                objsub=new JSONObject();
+                objsub.put("data", datalist.get(i).getFLOW());
+                array4.put(i, objsub);
+
+                objsub=new JSONObject();
+                String time=datalist.get(i).getDATE();
+                objsub.put("data", time);
+                array5.put(i, objsub);
+            }
+            jsonObj.put("SecondFormInfo1", array3);
+            jsonObj.put("SecondFormInfo2", array4);
+            jsonObj.put("tags", array5);
+
+            jsonData=jsonObj.toString();
+            Log.i("Weather", jsonObj.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonData;
+    }
+
+    public static String getRainSiteJsonStr(ArrayList<ChatWaterSiteBean> datalist) {
+        String jsonData="";
+        try {
+            int max=12;
+            JSONObject jsonObj=new JSONObject();
+            if(datalist.size()<max)
+                max=datalist.size();
+
+            JSONArray array4=new JSONArray();
+            JSONArray array5=new JSONArray();
+            for(int i=0;i<datalist.size();i++){
+
+                JSONObject objsub=new JSONObject();
+
+                objsub.put("data", datalist.get(i).getRAINFALL());
+                array4.put(i, objsub);
+
+                objsub=new JSONObject();
+                String time=datalist.get(i).getDATE();
+                objsub.put("data", time);
+                array5.put(i, objsub);
+            }
+            jsonObj.put("SecondFormInfo1", array4);
+            jsonObj.put("tags", array5);
+
+            jsonData=jsonObj.toString();
+            Log.i("Weather", jsonObj.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonData;
+    }
+
+    public static ArrayList<BookBean> getPDFInfo(String jsonData){
+        ArrayList<BookBean> sites=new ArrayList();
+        try {
+            JSONObject json=new JSONObject(jsonData);
+            if(!json.isNull("content")) {
+                JSONArray array=json.getJSONArray("content");
+                for(int i=0;i<array.length();i++){
+                    JSONObject subJson=array.getJSONObject(i);
+                    BookBean book=new BookBean();
+                    if(!subJson.isNull("URL"))
+                        book.setBookUrl(subJson.getString("URL"));
+                    if(!subJson.isNull("NAME"))
+                        book.setBookName(subJson.getString("NAME"));
+                    sites.add(book);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return sites;
     }
 }

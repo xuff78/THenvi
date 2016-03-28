@@ -44,6 +44,11 @@ public class ChatsInfoAct extends AppCompatActivity implements View.OnClickListe
     private boolean isStart=true;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private ChatFragment chartFrg;
+    public static final String WaterSite="WaterSite";
+    public static final String RainSite="RainSite";
+    public static final String GateDamSite="GateDamSite";
+    public static final String KuajieSite="KuajieSite";
+    public static final String GuokongSite="GuokongSite";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,8 +100,7 @@ public class ChatsInfoAct extends AppCompatActivity implements View.OnClickListe
         b.putString("startDate", startDate.getText().toString());
         b.putString("endDate", endDate.getText().toString());
         chartFrg.setArguments(b);
-        addListFragment(chartFrg, "ChatWaterSite");
-
+        addListFragment(chartFrg);
 //        chartFrg.setDate(startDate.getText().toString(), endDate.getText().toString());
 
     }
@@ -125,9 +129,9 @@ public class ChatsInfoAct extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void addListFragment(Fragment frg, String frgId) {
+    public void addListFragment(Fragment frg) {
         FragmentTransaction Transaction = getFragmentManager().beginTransaction();
-        Transaction.replace(R.id.mainFrame, frg, frgId)
+        Transaction.replace(R.id.mainFrame, frg)
                 .commit();
     }
 

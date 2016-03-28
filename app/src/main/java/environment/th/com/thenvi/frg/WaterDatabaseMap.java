@@ -256,7 +256,17 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
             public void onClick(View view) {
                 baiduMap.hideInfoWindow();
                 Intent i=new Intent(getActivity(), ChatsInfoAct.class);
-                i.putExtra("ChatData", bean);
+                switch (type) {
+                    case 0:
+                        i.putExtra(ChatsInfoAct.KuajieSite, bean);
+                        break;
+                    case 1:
+                        i.putExtra(ChatsInfoAct.GuokongSite, bean);
+                        break;
+                    case 2:
+//                        i.putExtra(ChatsInfoAct.GateDamSite, bean);
+                        break;
+                }
                 startActivity(i);
             }
         });

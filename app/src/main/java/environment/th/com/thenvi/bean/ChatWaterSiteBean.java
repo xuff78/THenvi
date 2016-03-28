@@ -10,6 +10,15 @@ public class ChatWaterSiteBean {
     private String LONGITUDE="";
     private String LATITUDE="";
     private String FLOW="";
+    private String RAINFALL="";
+
+    public String getRAINFALL() {
+        return RAINFALL;
+    }
+
+    public void setRAINFALL(String RAINFALL) {
+        this.RAINFALL = RAINFALL;
+    }
 
     public String getDATE() {
         return DATE;

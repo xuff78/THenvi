@@ -229,7 +229,17 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
             public void onClick(View view) {
                 baiduMap.hideInfoWindow();
                 Intent i=new Intent(getActivity(), ChatsInfoAct.class);
-                i.putExtra(WaterSiteBean.Name, bean);
+                switch (type) {
+                    case 0:
+                        i.putExtra(ChatsInfoAct.WaterSite, bean);
+                        break;
+                    case 1:
+                        i.putExtra(ChatsInfoAct.RainSite, bean);
+                        break;
+                    case 2:
+                        i.putExtra(ChatsInfoAct.GateDamSite, bean);
+                        break;
+                }
                 startActivity(i);
             }
         });

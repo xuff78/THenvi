@@ -137,6 +137,11 @@ public class HttpHandler extends Handle {
 		request(ConstantUtil.method_GuokongSiteList, params, true);
 	}
 
+	public void getPDFlist() {
+		HashMap<String, String> params=new HashMap<>();
+		request(ConstantUtil.method_PDF, params, true);
+	}
+
 	public void getGuokongSiteDetail(String hsname, String rsname) {
 		HashMap<String, String> params=new HashMap<>();
 		params.put("pname", hsname);
