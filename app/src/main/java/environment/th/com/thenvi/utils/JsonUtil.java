@@ -757,4 +757,55 @@ public class JsonUtil {
         }
         return sites;
     }
+
+    public static String getGateDamJsonStr(ArrayList<ChatGateDam> datalist) {
+        String jsonData="";
+        try {
+            int max=12;
+            JSONObject jsonObj=new JSONObject();
+            if(datalist.size()<max)
+                max=datalist.size();
+
+            JSONArray array1=new JSONArray();
+            JSONArray array2=new JSONArray();
+            JSONArray array3=new JSONArray();
+            JSONArray array4=new JSONArray();
+            JSONArray array5=new JSONArray();
+            for(int i=0;i<datalist.size();i++){
+
+                JSONObject objsub=new JSONObject();
+                objsub.put("data", datalist.get(i).getUPPERSLUICE());
+                array1.put(i, objsub);
+
+                objsub=new JSONObject();
+                objsub.put("data", datalist.get(i).getUNDERSLUICE());
+                array2.put(i, objsub);
+
+                objsub=new JSONObject();
+                objsub.put("data", datalist.get(i).getDIVERSION());
+                array3.put(i, objsub);
+
+                objsub=new JSONObject();
+                objsub.put("data", datalist.get(i).getDRAINAGE());
+                array4.put(i, objsub);
+
+                objsub=new JSONObject();
+                String time=datalist.get(i).getDATE();
+                objsub.put("data", time);
+                array5.put(i, objsub);
+            }
+
+            jsonObj.put("FirstFormInfo1", array1);
+            jsonObj.put("FirstFormInfo2", array2);
+            jsonObj.put("SecondFormInfo1", array3);
+            jsonObj.put("SecondFormInfo2", array4);
+            jsonObj.put("tags", array5);
+
+            jsonData=jsonObj.toString();
+            Log.i("Weather", jsonObj.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonData;
+    }
 }

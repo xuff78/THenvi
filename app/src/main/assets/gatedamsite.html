@@ -14,6 +14,18 @@
 
         var m_json = JSON.parse(p1);
 
+        var m_info1 = m_json.FirstFormInfo1;
+        var m_list1 = new Array();
+        for (var i = 0; i < m_info1.length; i++) {
+            m_list1[i] = m_info1[i].data;
+        }
+
+        var m_info2 = m_json.FirstFormInfo2;
+        var m_list2 = new Array();
+        for (var i = 0; i < m_info2.length; i++) {
+            m_list2[i] = m_info2[i].data;
+        }
+
         var m_info3 = m_json.SecondFormInfo1;
         var m_list3 = new Array();
         for (var i = 0; i < m_info3.length; i++) {
@@ -43,8 +55,10 @@
 
             var relVal = params[0].name+"<br/>";
 
-            relVal += "水位：" + params[1].value + "米<br/>";
-            relVal += "流量：" + params[0].data + "方/秒";
+            relVal += "闸上水量：" + params[0].value + "万方<br/>";
+            relVal += "闸下水量：" + params[1].value + "万方<br/>";
+            relVal += "引水量：" + params[2].value + "m<br/>";
+            relVal += "排水量：" + params[3].value + "m";
             return relVal;
         }
     },
@@ -71,7 +85,7 @@
     <!--},-->
     calculable : false,
     legend: {
-        data:['水位','流量'],
+        data:['闸上水量','闸下水量','引水量','排水量'],
         textStyle: {
             color: 'white'          // 图例文字颜色
         }
@@ -139,7 +153,7 @@
     yAxis : [
         {
             type : 'value',
-            name : '水位(米)',
+            name : '引排水量\n(万方)',
             splitNumber: 5,
             axisLine: {            // 坐标轴线
                 show: true,        // 默认显示，属性show控制显示与否
@@ -170,7 +184,7 @@
         },
         {
             type : 'value',
-            name : '流量(方/米)',
+            name : '水位(m)',
             splitNumber: 5,
             axisLine: {            // 坐标轴线
                 show: true,        // 默认显示，属性show控制显示与否
@@ -206,30 +220,8 @@
 
     ],
     series : [
-
-        <!--{-->
-            <!--name:'蒸发量',-->
-            <!--type:'bar',-->
-            <!--itemStyle: {-->
-                <!--normal: {-->
-                    <!--color: 'blue',-->
-                <!--}-->
-            <!--},-->
-            <!--data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]-->
-        <!--},-->
         {
-            name:'流量',
-            type:'line',
-            yAxisIndex: 1,
-            itemStyle: {
-                normal: {
-                    color: '#C9C9C9',
-                }
-            },
-            data:m_list4
-        },
-        {
-            name:'水位',
+            name:'闸上水量',
             type:'bar',
             yAxisIndex: 0,
             itemStyle: {
@@ -237,7 +229,40 @@
                     color: '#5CACEE',
                 }
             },
+            data:m_list1
+        },
+        {
+            name:'闸下水量',
+            type:'bar',
+            yAxisIndex: 0,
+            itemStyle: {
+                normal: {
+                    color: '#7A67EE',
+                }
+            },
+            data:m_list2
+        },
+        {
+            name:'引水量',
+            type:'line',
+            yAxisIndex: 1,
+            itemStyle: {
+                normal: {
+                    color: '#458B74',
+                }
+            },
             data:m_list3
+        },
+        {
+            name:'排水量',
+            type:'line',
+            yAxisIndex: 1,
+            itemStyle: {
+                normal: {
+                    color: '#D1EEEE',
+                }
+            },
+            data:m_list4
         }
     ]
 };

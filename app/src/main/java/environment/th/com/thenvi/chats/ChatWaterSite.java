@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import environment.th.com.thenvi.R;
 import environment.th.com.thenvi.activity.ChatsInfoAct;
 import environment.th.com.thenvi.bean.CRiverInfoBean;
+import environment.th.com.thenvi.bean.ChatGateDam;
 import environment.th.com.thenvi.bean.ChatWaterSiteBean;
 import environment.th.com.thenvi.bean.RiverInfoBean;
 import environment.th.com.thenvi.bean.WaterSiteBean;
@@ -38,6 +39,7 @@ public class ChatWaterSite extends ChatFragment {
     private CRiverInfoBean Criversite;
     private HttpHandler handler;
     private ArrayList<ChatWaterSiteBean> datalist=new ArrayList<>();
+    private ArrayList<ChatGateDam> datalistDam=new ArrayList<>();
     private int requestType=0;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -111,7 +113,7 @@ public class ChatWaterSite extends ChatFragment {
                         jsonString=JsonUtil.getRainSiteJsonStr(datalist);
                         break;
                     case 2:
-                        jsonString=JsonUtil.getWaterSiteJsonStr(datalist);
+                        jsonString=JsonUtil.getGateDamJsonStr(datalistDam);
                         break;
                     case 3:
                         jsonString=JsonUtil.getWaterSiteJsonStr(datalist);
@@ -145,6 +147,7 @@ public class ChatWaterSite extends ChatFragment {
                         mWebView.loadUrl("file:///android_asset/rainsite.html");
                         break;
                     case 2:
+                        datalistDam= JsonUtil.getChatGateDam(jsonData);
                         mWebView.loadUrl("file:///android_asset/gatedamsite.html");
                         break;
                     case 3:
