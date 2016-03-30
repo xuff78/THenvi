@@ -7,6 +7,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -50,6 +51,7 @@ import environment.th.com.thenvi.http.CallBack;
 import environment.th.com.thenvi.http.HttpHandler;
 import environment.th.com.thenvi.utils.ConstantUtil;
 import environment.th.com.thenvi.utils.JsonUtil;
+import environment.th.com.thenvi.utils.LogUtil;
 import environment.th.com.thenvi.utils.ScreenUtil;
 import environment.th.com.thenvi.view.MarkerSupportView;
 import environment.th.com.thenvi.view.MenuPopup;
@@ -72,6 +74,8 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
     private ListView siteListview;
     public InfoWindow mInfoWindow;
     private MarkerSupportView content;
+    private float startX = 0;
+    private float startY = 0;
 
     private List<CompanyBean> CopList=new ArrayList<>();
     private List<CompanyBean> CopFindList=new ArrayList<>();
@@ -149,6 +153,35 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                 return true;
             }
         });
+        baiduMap.setOnMapDoubleClickListener(new BaiduMap.OnMapDoubleClickListener() {
+            @Override
+            public void onMapDoubleClick(LatLng latLng) {
+                getDataOnScreen();
+            }
+        });
+
+        baiduMap.setOnMapTouchListener(new BaiduMap.OnMapTouchListener() {
+            @Override
+            public void onTouch(MotionEvent motionEvent) {
+                //触摸滑动时，根据滑动的距离，来判断是否需要刷新
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startX = motionEvent.getRawX();
+                        startY = motionEvent.getRawY();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        //第一种方法，获取两点间距离
+                        float endX = motionEvent.getRawX() - startX;
+                        float endY = motionEvent.getRawY() - startY;
+                        double distance = Math.sqrt(endX * endX + endY * endY);//
+                        if (distance > 100) {
+                            getDataOnScreen();
+                        }
+                        break;
+                }
+            }
+        });
+
         View child = mMapView.getChildAt(1);
         if (child != null && (child instanceof ImageView || child instanceof ZoomControls)){
             child.setVisibility(View.INVISIBLE);
@@ -156,23 +189,8 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
 
         initHandler();
         initView(mView);
-        switch (type){
-            case 0:
-                handler.getYibanSiteList();
-                break;
-            case 1:
-                handler.getWushuizdSiteList();
-                break;
-            case 2:
-                handler.getGongyeSiteList();
-                break;
-            case 3:
-                handler.getWushuipcSiteList();
-                break;
-            case 4:
-                handler.getChuqinSiteList();
-                break;
-        }
+
+        handler.getYibanSiteList();
         return mView;
     }
 
@@ -205,13 +223,13 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                         handler.getWushuizdSiteList();
                         break;
                     case 2:
-                        handler.getGongyeSiteList();
+                        getDataOnScreen();
                         break;
                     case 3:
                         handler.getWushuipcSiteList();
                         break;
                     case 4:
-                        handler.getChuqinSiteList();
+                        getDataOnScreen();
                         break;
                 }
             }
@@ -537,8 +555,8 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                     ArrayList<String> names=new ArrayList<>();
                     GyFindList.clear();
                     int showNum=GyList.size();
-                    if(showNum>80)
-                        showNum=80;
+                    if(showNum>60)
+                        showNum=60;
                     for(int i=0;i<showNum;i++){
                         GongyeBean bean=GyList.get(i);
                         GyFindList.add(bean);
@@ -555,11 +573,11 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                     }
                     siteListview.setAdapter(new SiteListAdapter(getActivity(), names));
                     siteListview.setOnItemClickListener(itemClickListener);
-                    if(GyList.size()>0){
-                        GongyeBean bean = GyList.get(GyList.size()/2);
-                        LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLONGITUDE()));
-                        refreshMapStatus(point, 10);
-                    }
+//                    if(GyList.size()>0){
+//                        GongyeBean bean = GyList.get(GyList.size()/2);
+//                        LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLONGITUDE()));
+//                        refreshMapStatus(point, 10);
+//                    }
                 }else if(method.equals(ConstantUtil.method_WushuipcSiteList)){
                     baiduMap.hideInfoWindow();
                     mInfoWindow = null;
@@ -595,8 +613,8 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                     ArrayList<String> names=new ArrayList<>();
                     CqFindList.clear();
                     int showNum=CqList.size();
-                    if(showNum>80)
-                        showNum=80;
+                    if(showNum>60)
+                        showNum=60;
                     for(int i=0;i<showNum;i++){
                         ChuqinBean bean=CqList.get(i);
                         CqFindList.add(bean);
@@ -613,11 +631,11 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                     }
                     siteListview.setAdapter(new SiteListAdapter(getActivity(), names));
                     siteListview.setOnItemClickListener(itemClickListener);
-                    if(CqList.size()>0){
-                        ChuqinBean bean = CqList.get(CqList.size()/2);
-                        LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLODEGREE()));
-                        refreshMapStatus(point, 10);
-                    }
+//                    if(CqList.size()>0){
+//                        ChuqinBean bean = CqList.get(CqList.size()/2);
+//                        LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLODEGREE()));
+//                        refreshMapStatus(point, 10);
+//                    }
                 }else if(method.equals(ConstantUtil.method_YibanSiteDetail)||method.equals(ConstantUtil.method_WushuizdSiteDetail)){
                     CompanyBean siteBean=JsonUtil.getCompanyDetail(jsonData);
                     content.setListView(siteBean.getInfos());
@@ -633,5 +651,32 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                 }
             }
         });
+    }
+
+    public void getDataOnScreen() {
+        int[] location = new int[2];
+        mMapView.getLocationOnScreen(location);
+        int height = mMapView.getHeight();
+        int width = mMapView.getWidth();
+        Point viewLeftTop = new Point(0, location[1]);
+        Point viewRightTop = new Point(width, location[1]);
+        Point viewLeftBottom = new Point(0, location[1] + height);
+        Point viewRightBottom = new Point(width, location[1] + height);
+        LatLng pointLeftTop = baiduMap.getProjection().fromScreenLocation(viewLeftTop);
+        LatLng pointRightTop = baiduMap.getProjection().fromScreenLocation(viewRightTop);
+        LatLng pointLeftBottom = baiduMap.getProjection().fromScreenLocation(viewLeftBottom);
+        LatLng pointRightBottom = baiduMap.getProjection().fromScreenLocation(viewRightBottom);
+        LogUtil.d("HttpAsyncTask", " width=" + location[0] + ",height=" + location[1]);
+        if (type == 2) {
+            //根据屏幕所显示的范围请求数据
+            String fourCoords=pointLeftTop.longitude+","+pointLeftTop.latitude+";"+pointRightTop.longitude+","+pointRightTop.latitude
+                    +";"+pointLeftBottom.longitude+","+pointLeftBottom.latitude+";"+pointRightBottom.longitude+","+pointRightBottom.latitude;
+            handler.getGongyeSiteList(fourCoords);
+        } else if (type == 4) {
+            String fourCoords=pointLeftTop.longitude+","+pointLeftTop.latitude+";"+pointRightTop.longitude+","+pointRightTop.latitude
+                    +";"+pointLeftBottom.longitude+","+pointLeftBottom.latitude+";"+pointRightBottom.longitude+","+pointRightBottom.latitude;
+            handler.getChuqinSiteList(fourCoords);
+        }
+
     }
 }

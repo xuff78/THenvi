@@ -188,6 +188,12 @@ public class HttpHandler extends Handle {
 		request(ConstantUtil.method_GongyeSiteList, params, true);
 	}
 
+	public void getGongyeSiteList(String fourCoords) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("fourCoords", fourCoords);
+		request(ConstantUtil.method_GongyeSiteList, params, true);
+	}
+
 	public void getGongyeSiteDetail(String runit) {
 		HashMap<String, String> params=new HashMap<>();
 		params.put("runit", runit);
@@ -209,6 +215,12 @@ public class HttpHandler extends Handle {
 
 	public void getChuqinSiteList() {
 		HashMap<String, String> params=new HashMap<>();
+		request(ConstantUtil.method_ChuqinSiteList, params, true);
+	}
+
+	public void getChuqinSiteList(String fourCoords) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("fourCoords", fourCoords);
 		request(ConstantUtil.method_ChuqinSiteList, params, true);
 	}
 
