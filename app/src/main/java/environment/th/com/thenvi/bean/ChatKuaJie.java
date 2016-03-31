@@ -10,6 +10,15 @@ public class ChatKuaJie {
     private String NDN=""; //-氨氮浓度
     private String PN=""; //-总磷浓度
     private String FLOW=""; //-流量
+    private String DATA="";
+
+    public String getDATA() {
+        return DATA;
+    }
+
+    public void setDATA(String DATA) {
+        this.DATA = DATA;
+    }
 
     public String getNN() {
         return NN;

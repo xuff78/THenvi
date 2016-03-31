@@ -12,6 +12,15 @@ public class ChatGuokong {
     private String NH3N=""; //-NH3-N(mg/l)
     private String WQUALITY=""; //-本周水质
     private String LQUALITY=""; //-LQUALITY
+    private String DATA="";
+
+    public String getDATA() {
+        return DATA;
+    }
+
+    public void setDATA(String DATA) {
+        this.DATA = DATA;
+    }
 
     public String getCLCLE() {
         return CLCLE;

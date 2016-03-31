@@ -88,9 +88,10 @@ public class ChatsInfoAct extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 System.out.println("---> 设置后: year="+year+", month="+monthOfYear+",day="+dayOfMonth);
-                if(isStart)
-                    startDate.setText(year+"-"+(monthOfYear+1)+"-"+dayOfMonth);
-                else
+                if(isStart) {
+                    startDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+                    endDate.setText(year+"-"+(monthOfYear+1)+"-"+dayOfMonth);
+                }else
                     endDate.setText(year+"-"+(monthOfYear+1)+"-"+dayOfMonth);
             }
         };

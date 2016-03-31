@@ -20,6 +20,8 @@ import environment.th.com.thenvi.R;
 import environment.th.com.thenvi.activity.ChatsInfoAct;
 import environment.th.com.thenvi.bean.CRiverInfoBean;
 import environment.th.com.thenvi.bean.ChatGateDam;
+import environment.th.com.thenvi.bean.ChatGuokong;
+import environment.th.com.thenvi.bean.ChatKuaJie;
 import environment.th.com.thenvi.bean.ChatWaterSiteBean;
 import environment.th.com.thenvi.bean.RiverInfoBean;
 import environment.th.com.thenvi.bean.WaterSiteBean;
@@ -40,6 +42,8 @@ public class ChatWaterSite extends ChatFragment {
     private HttpHandler handler;
     private ArrayList<ChatWaterSiteBean> datalist=new ArrayList<>();
     private ArrayList<ChatGateDam> datalistDam=new ArrayList<>();
+    private ArrayList<ChatKuaJie> datalistKuajie=new ArrayList<>();
+    private ArrayList<ChatGuokong> datalistGuokong=new ArrayList<>();
     private int requestType=0;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -116,10 +120,10 @@ public class ChatWaterSite extends ChatFragment {
                         jsonString=JsonUtil.getGateDamJsonStr(datalistDam);
                         break;
                     case 3:
-                        jsonString=JsonUtil.getWaterSiteJsonStr(datalist);
+                        jsonString=JsonUtil.getKuajieJsonStr(datalistKuajie);
                         break;
                     case 4:
-                        jsonString=JsonUtil.getWaterSiteJsonStr(datalist);
+                        jsonString=JsonUtil.getGuokongJsonStr(datalistGuokong);
                         break;
                 }
                 mWebView.loadUrl("javascript:setData('" + jsonString + "')");
@@ -151,9 +155,11 @@ public class ChatWaterSite extends ChatFragment {
                         mWebView.loadUrl("file:///android_asset/gatedamsite.html");
                         break;
                     case 3:
-                        mWebView.loadUrl("file:///android_asset/form2.html");
+                        datalistKuajie= JsonUtil.getChatKuajie(jsonData);
+                        mWebView.loadUrl("file:///android_asset/kuajiesite.html");
                         break;
                     case 4:
+                        datalistGuokong= JsonUtil.getChatGuokong(jsonData);
                         mWebView.loadUrl("file:///android_asset/form2.html");
                         break;
                 }

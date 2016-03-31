@@ -258,6 +258,8 @@ public class JsonUtil {
                     site.setPN(subJson.getString("PN"));
                 if(!subJson.isNull("FLOW"))
                     site.setFLOW(subJson.getString("FLOW"));
+                if(!subJson.isNull("DATA"))
+                    site.setDATA(subJson.getString("DATA"));
                 sitelist.add(site);
             }
         } catch (JSONException e) {
@@ -287,6 +289,8 @@ public class JsonUtil {
                     site.setWQUALITY(subJson.getString("WQUALITY"));
                 if(!subJson.isNull("LQUALITY"))
                     site.setLQUALITY(subJson.getString("LQUALITY"));
+                if(!subJson.isNull("DATA"))
+                    site.setDATA(subJson.getString("DATA"));
                 sitelist.add(site);
             }
         } catch (JSONException e) {
@@ -795,6 +799,120 @@ public class JsonUtil {
                 array5.put(i, objsub);
             }
 
+            jsonObj.put("FirstFormInfo1", array1);
+            jsonObj.put("FirstFormInfo2", array2);
+            jsonObj.put("SecondFormInfo1", array3);
+            jsonObj.put("SecondFormInfo2", array4);
+            jsonObj.put("tags", array5);
+
+            jsonData=jsonObj.toString();
+            Log.i("Weather", jsonObj.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonData;
+    }
+
+    public static String getKuajieJsonStr(ArrayList<ChatKuaJie> datalist) {
+        String jsonData="";
+        try {
+            int max=12;
+            JSONObject jsonObj=new JSONObject();
+            if(datalist.size()<max)
+                max=datalist.size();
+
+            JSONArray array0=new JSONArray();
+            JSONArray array1=new JSONArray();
+            JSONArray array2=new JSONArray();
+            JSONArray array3=new JSONArray();
+            JSONArray array4=new JSONArray();
+            JSONArray array5=new JSONArray();
+            for(int i=0;i<datalist.size();i++){
+
+                JSONObject objsub=new JSONObject();
+                objsub.put("data", datalist.get(i).getFLOW());
+                array0.put(i, objsub);
+
+                objsub=new JSONObject();
+                objsub.put("data", datalist.get(i).getCODN());
+                array1.put(i, objsub);
+
+                objsub=new JSONObject();
+                objsub.put("data", datalist.get(i).getNDN());
+                array2.put(i, objsub);
+
+                objsub=new JSONObject();
+                objsub.put("data", datalist.get(i).getPN());
+                array3.put(i, objsub);
+
+                objsub=new JSONObject();
+                objsub.put("data", datalist.get(i).getNN());
+                array4.put(i, objsub);
+
+                objsub=new JSONObject();
+                String time=datalist.get(i).getDATA();
+                objsub.put("data", time);
+                array5.put(i, objsub);
+            }
+
+            jsonObj.put("FLOW", array0);
+            jsonObj.put("FirstFormInfo1", array1);
+            jsonObj.put("FirstFormInfo2", array2);
+            jsonObj.put("SecondFormInfo1", array3);
+            jsonObj.put("SecondFormInfo2", array4);
+            jsonObj.put("tags", array5);
+
+            jsonData=jsonObj.toString();
+            Log.i("Weather", jsonObj.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonData;
+    }
+
+    public static String getGuokongJsonStr(ArrayList<ChatGuokong> datalist) {
+        String jsonData="";
+        try {
+            int max=12;
+            JSONObject jsonObj=new JSONObject();
+            if(datalist.size()<max)
+                max=datalist.size();
+
+            JSONArray array0=new JSONArray();
+            JSONArray array1=new JSONArray();
+            JSONArray array2=new JSONArray();
+            JSONArray array3=new JSONArray();
+            JSONArray array4=new JSONArray();
+            JSONArray array5=new JSONArray();
+            for(int i=0;i<datalist.size();i++){
+
+                JSONObject objsub=new JSONObject();
+//                objsub.put("data", datalist.get(i).getFLOW());
+//                array0.put(i, objsub);
+//
+//                objsub=new JSONObject();
+//                objsub.put("data", datalist.get(i).getCODN());
+//                array1.put(i, objsub);
+//
+//                objsub=new JSONObject();
+//                objsub.put("data", datalist.get(i).getNDN());
+//                array2.put(i, objsub);
+//
+//                objsub=new JSONObject();
+//                objsub.put("data", datalist.get(i).getPN());
+//                array3.put(i, objsub);
+//
+//                objsub=new JSONObject();
+//                objsub.put("data", datalist.get(i).getNN());
+//                array4.put(i, objsub);
+
+                objsub=new JSONObject();
+                String time=i+"";
+                objsub.put("data", time);
+                array5.put(i, objsub);
+            }
+
+            jsonObj.put("FLOW", array0);
             jsonObj.put("FirstFormInfo1", array1);
             jsonObj.put("FirstFormInfo2", array2);
             jsonObj.put("SecondFormInfo1", array3);
