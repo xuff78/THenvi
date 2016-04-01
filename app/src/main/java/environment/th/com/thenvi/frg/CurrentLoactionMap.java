@@ -14,10 +14,18 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.PolygonOptions;
+import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.model.LatLng;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import environment.th.com.thenvi.R;
+import environment.th.com.thenvi.bean.MapAreaInfo;
 import environment.th.com.thenvi.services.BDLocationService;
+import environment.th.com.thenvi.utils.SharedPreferencesUtil;
 
 /**
  * Created by Administrator on 2016/3/8.
@@ -30,6 +38,7 @@ public class CurrentLoactionMap extends BaseFragment {
     private LinearLayout mNavigationView;
     //DrawerLayout控件
     private DrawerLayout mDrawerLayout;
+    private ArrayList<MapAreaInfo> areaInfo=new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,6 +71,20 @@ public class CurrentLoactionMap extends BaseFragment {
 
     private void initView(View v) {
 
+    }
+
+    public void showWorkingSpace() {
+        String spaceInfo= SharedPreferencesUtil.getString(getActivity(), "WorkingSpace");
+//        areaInfo=JsonUtil.getAreaInfo(spaceInfo);
+        for(int i=0;i<areaInfo.size();i++) {
+            List<LatLng> infos=areaInfo.get(i).getPoints();
+            OverlayOptions polygonOption = new PolygonOptions()
+                    .points(infos)
+                    .stroke(new Stroke(infos.size(), 0x331b93e5))
+                    .fillColor(0x331b93e5);
+            //在地图上添加多边形Option，用于显示
+            baiduMap.addOverlay(polygonOption);
+        }
     }
 
     /**
