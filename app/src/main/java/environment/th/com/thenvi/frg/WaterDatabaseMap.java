@@ -371,6 +371,7 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
         handler=new HttpHandler(getActivity(), new CallBack(getActivity()){
             @Override
             public void doSuccess(String method, String jsonData) {
+                if(getActivity()!=null)
                 if(method.equals(ConstantUtil.method_KuajieSiteList)){
                     baiduMap.hideInfoWindow();
                     mInfoWindow = null;

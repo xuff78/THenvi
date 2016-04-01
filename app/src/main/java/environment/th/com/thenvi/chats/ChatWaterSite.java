@@ -160,7 +160,7 @@ public class ChatWaterSite extends ChatFragment {
                         break;
                     case 4:
                         datalistGuokong= JsonUtil.getChatGuokong(jsonData);
-                        mWebView.loadUrl("file:///android_asset/form2.html");
+                        mWebView.loadUrl("file:///android_asset/guokongsite.html");
                         break;
                 }
             }

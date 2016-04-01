@@ -882,32 +882,27 @@ public class JsonUtil {
             JSONArray array1=new JSONArray();
             JSONArray array2=new JSONArray();
             JSONArray array3=new JSONArray();
-            JSONArray array4=new JSONArray();
             JSONArray array5=new JSONArray();
             for(int i=0;i<datalist.size();i++){
 
                 JSONObject objsub=new JSONObject();
-//                objsub.put("data", datalist.get(i).getFLOW());
-//                array0.put(i, objsub);
-//
-//                objsub=new JSONObject();
-//                objsub.put("data", datalist.get(i).getCODN());
-//                array1.put(i, objsub);
-//
-//                objsub=new JSONObject();
-//                objsub.put("data", datalist.get(i).getNDN());
-//                array2.put(i, objsub);
-//
-//                objsub=new JSONObject();
-//                objsub.put("data", datalist.get(i).getPN());
-//                array3.put(i, objsub);
-//
-//                objsub=new JSONObject();
-//                objsub.put("data", datalist.get(i).getNN());
-//                array4.put(i, objsub);
+                objsub.put("data", datalist.get(i).getNH3N());
+                array0.put(i, objsub);
 
                 objsub=new JSONObject();
-                String time=i+"";
+                objsub.put("data", datalist.get(i).getPH());
+                array1.put(i, objsub);
+
+                objsub=new JSONObject();
+                objsub.put("data", datalist.get(i).getDO());
+                array2.put(i, objsub);
+
+                objsub=new JSONObject();
+                objsub.put("data", datalist.get(i).getCODMN());
+                array3.put(i, objsub);
+
+                objsub=new JSONObject();
+                String time=datalist.get(i).getDATA();
                 objsub.put("data", time);
                 array5.put(i, objsub);
             }
@@ -916,7 +911,6 @@ public class JsonUtil {
             jsonObj.put("FirstFormInfo1", array1);
             jsonObj.put("FirstFormInfo2", array2);
             jsonObj.put("SecondFormInfo1", array3);
-            jsonObj.put("SecondFormInfo2", array4);
             jsonObj.put("tags", array5);
 
             jsonData=jsonObj.toString();
