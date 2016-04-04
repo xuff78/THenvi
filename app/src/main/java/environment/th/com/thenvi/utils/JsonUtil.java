@@ -2,11 +2,14 @@ package environment.th.com.thenvi.utils;
 
 import android.util.Log;
 
+import com.baidu.mapapi.model.LatLng;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import environment.th.com.thenvi.bean.BookBean;
 import environment.th.com.thenvi.bean.CRiverInfoBean;
@@ -20,7 +23,9 @@ import environment.th.com.thenvi.bean.Company2Bean;
 import environment.th.com.thenvi.bean.CompanyBean;
 import environment.th.com.thenvi.bean.GongyeBean;
 import environment.th.com.thenvi.bean.JsonMessage;
+import environment.th.com.thenvi.bean.MapAreaInfo;
 import environment.th.com.thenvi.bean.RiverInfoBean;
+import environment.th.com.thenvi.bean.WaterQualityBean;
 import environment.th.com.thenvi.bean.WaterSiteBean;
 
 /**
@@ -75,6 +80,31 @@ public class JsonUtil {
                     site.setLATITUDE(subJson.getString("LATITUDE"));
 //                if(!subJson.isNull("RSNAME"))
 //                    site.setRSNAME(subJson.getString("RSNAME"));
+                sitelist.add(site);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return sitelist;
+    }
+
+    public static ArrayList<WaterQualityBean> getWaterQualityInfo(String jsonData) {
+        ArrayList<WaterQualityBean> sitelist=new ArrayList<>();
+        try {
+            JSONArray array=new JSONArray(jsonData);
+            for(int i=0;i<array.length();i++){
+                JSONObject subJson=array.getJSONObject(i);
+                WaterQualityBean site=new WaterQualityBean();
+                if(!subJson.isNull("CODE"))
+                    site.setCODE(subJson.getString("CODE"));
+                if(!subJson.isNull("LEVEL"))
+                    site.setLEVEL(subJson.getInt("LEVEL"));
+                if(!subJson.isNull("NAME"))
+                    site.setNAME(subJson.getString("NAME"));
+                if(!subJson.isNull("X"))
+                    site.setX(subJson.getString("X"));
+                if(!subJson.isNull("Y"))
+                    site.setY(subJson.getString("Y"));
                 sitelist.add(site);
             }
         } catch (JSONException e) {
@@ -235,6 +265,30 @@ public class JsonUtil {
                     site.setREMARK(subJson.getString("REMARK"));
                 sitelist.add(site);
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return sitelist;
+    }
+
+    public static ArrayList<MapAreaInfo> getAreaInfo(String jsonData) {
+        ArrayList<MapAreaInfo> sitelist=new ArrayList<>();
+        try {
+            JSONArray array=new JSONArray(jsonData);
+            MapAreaInfo site=new MapAreaInfo();
+            List<LatLng> points=new ArrayList<LatLng>();
+            for(int i=0;i<array.length();i++){
+                JSONObject subJson=array.getJSONObject(i);
+                Double lon=0d, lat=0d;
+                if(!subJson.isNull("LONGITUDE"))
+                    lon=Double.valueOf(subJson.getString("LONGITUDE"));
+                if(!subJson.isNull("LATITUDE"))
+                    lat=Double.valueOf(subJson.getString("LATITUDE"));
+                LatLng ll=new LatLng(lat, lon);
+                points.add(ll);
+            }
+            site.setPoints(points);
+            sitelist.add(site);
         } catch (JSONException e) {
             e.printStackTrace();
         }

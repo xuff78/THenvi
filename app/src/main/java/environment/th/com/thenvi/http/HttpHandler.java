@@ -113,6 +113,18 @@ public class HttpHandler extends Handle {
 		request(ConstantUtil.method_KuajieSiteList, params, true);
 	}
 
+	public void getZidong() {
+		HashMap<String, String> params=new HashMap<>();
+		request(ConstantUtil.method_zidong, params, true);
+	}
+
+	public void getShuizhiInfo(String materialType, String queryDate) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("materialType", materialType);
+		params.put("queryDate", queryDate);
+		request(ConstantUtil.method_Shuizhi, params, true);
+	}
+
 	public void getKuajieDetail(String hsname, String rsname) {
 		HashMap<String, String> params=new HashMap<>();
 		params.put("river", hsname);

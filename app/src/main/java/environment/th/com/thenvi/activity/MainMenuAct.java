@@ -28,6 +28,7 @@ import environment.th.com.thenvi.frg.CurrentLoactionMap;
 import environment.th.com.thenvi.frg.SewageDisposalMap;
 import environment.th.com.thenvi.frg.WaterDatabaseMap;
 import environment.th.com.thenvi.frg.WaterInfoMap;
+import environment.th.com.thenvi.frg.WaterQualityMap;
 import environment.th.com.thenvi.services.BDLocationService;
 import environment.th.com.thenvi.utils.ConstantUtil;
 import environment.th.com.thenvi.utils.LogUtil;
@@ -105,9 +106,9 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
                 addListFragment(frg, "menu2");
                 break;
             case R.id.menu_btn3:
-//                selectPos=2;
-//                frg = new WaterDatabaseMap();
-//                addListFragment(frg, "menu3");
+                selectPos=2;
+                frg = new WaterQualityMap();
+                addListFragment(frg, "menu3");
                 break;
             case R.id.menu_btn5:
                 selectPos=1;

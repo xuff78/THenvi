@@ -28,6 +28,7 @@ import environment.th.com.thenvi.utils.ScreenUtil;
 public class MenuPopup extends PopupWindow {
 
     private View conentView;
+    private int width=0;
 
     public MenuPopup(final Activity context, ArrayList<String> stringList, AdapterView.OnItemClickListener itemClickListener) {
         LayoutInflater inflater = (LayoutInflater) context
@@ -35,7 +36,8 @@ public class MenuPopup extends PopupWindow {
         conentView = inflater.inflate(R.layout.popup_view, null);
         // 设置SelectPicPopupWindow的View
         this.setContentView(conentView);
-        this.setWidth(ScreenUtil.dip2px(context,100));
+        width=ScreenUtil.dip2px(context,100);
+        this.setWidth(width);
         this.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
         this.setFocusable(true);
         this.setOutsideTouchable(true);
@@ -50,7 +52,7 @@ public class MenuPopup extends PopupWindow {
 
     public void showPopupWindow(View v) {
         if (!this.isShowing()) {
-            this.showAsDropDown(v, 0, 12);
+            this.showAsDropDown(v, v.getWidth()/2-width/2, 12);
         } else {
             this.dismiss();
         }

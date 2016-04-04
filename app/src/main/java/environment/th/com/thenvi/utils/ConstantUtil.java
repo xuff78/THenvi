@@ -17,6 +17,10 @@ public class ConstantUtil {
 
 	public static final String method_PDF="1/pdf/list";
 
+	public static final String method_zidong="1/zidong/list";
+
+	public static final String method_Shuizhi="1/shuizhi/list";
+
 
 	/** 水文站点列表 */
 	public static final String method_SiteList="1/shuiwen/siteList";

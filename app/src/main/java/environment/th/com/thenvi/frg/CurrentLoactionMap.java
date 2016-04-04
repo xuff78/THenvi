@@ -1,5 +1,6 @@
 package environment.th.com.thenvi.frg;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
@@ -23,8 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import environment.th.com.thenvi.R;
+import environment.th.com.thenvi.activity.MainMenuAct;
 import environment.th.com.thenvi.bean.MapAreaInfo;
+import environment.th.com.thenvi.http.CallBack;
+import environment.th.com.thenvi.http.HttpHandler;
 import environment.th.com.thenvi.services.BDLocationService;
+import environment.th.com.thenvi.utils.JsonUtil;
 import environment.th.com.thenvi.utils.SharedPreferencesUtil;
 
 /**
@@ -39,6 +44,24 @@ public class CurrentLoactionMap extends BaseFragment {
     //DrawerLayout控件
     private DrawerLayout mDrawerLayout;
     private ArrayList<MapAreaInfo> areaInfo=new ArrayList<>();
+    private HttpHandler handler;
+
+    private void initHandler() {
+        handler=new HttpHandler(getActivity(), new CallBack(getActivity()){
+            @Override
+            public void doSuccess(String method, String jsonData) {
+                areaInfo= JsonUtil.getAreaInfo(jsonData);
+                showWorkingSpace();
+
+                if(areaInfo.size()>0) {
+                    List<LatLng> points=areaInfo.get(0).getPoints();
+                    if(points.size()>0) {
+                        refreshMapStatus(points.get(0), 14);
+                    }
+                }
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,8 +87,10 @@ public class CurrentLoactionMap extends BaseFragment {
 
         initView(mView);
 
-        LatLng current_point=new LatLng(39.919209, 116.368666);
-        refreshMapStatus(current_point, 16);
+//        LatLng current_point=new LatLng(39.919209, 116.368666);
+//        refreshMapStatus(current_point, 16);
+        initHandler();
+        handler.getZidong();
         return mView;
     }
 
@@ -74,8 +99,6 @@ public class CurrentLoactionMap extends BaseFragment {
     }
 
     public void showWorkingSpace() {
-        String spaceInfo= SharedPreferencesUtil.getString(getActivity(), "WorkingSpace");
-//        areaInfo=JsonUtil.getAreaInfo(spaceInfo);
         for(int i=0;i<areaInfo.size();i++) {
             List<LatLng> infos=areaInfo.get(i).getPoints();
             OverlayOptions polygonOption = new PolygonOptions()
