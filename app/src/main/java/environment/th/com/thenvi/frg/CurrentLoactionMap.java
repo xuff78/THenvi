@@ -99,15 +99,15 @@ public class CurrentLoactionMap extends BaseFragment {
     }
 
     public void showWorkingSpace() {
-        for(int i=0;i<areaInfo.size();i++) {
-            List<LatLng> infos=areaInfo.get(i).getPoints();
+//        for(int i=0;i<areaInfo.size();i++) {
+            List<LatLng> infos=areaInfo.get(3).getPoints();
             OverlayOptions polygonOption = new PolygonOptions()
                     .points(infos)
-                    .stroke(new Stroke(infos.size(), 0x331b93e5))
+                    .stroke(new Stroke(infos.size(), 0xFF818181))
                     .fillColor(0x331b93e5);
             //在地图上添加多边形Option，用于显示
             baiduMap.addOverlay(polygonOption);
-        }
+//        }
     }
 
     /**

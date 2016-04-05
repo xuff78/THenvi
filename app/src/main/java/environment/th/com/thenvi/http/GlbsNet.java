@@ -40,16 +40,16 @@ import environment.th.com.thenvi.utils.URLUtil;
  */
 
 public final class GlbsNet {
-	
+
 	public static final String HTTP_ERROR_MESSAGE = "抱歉，您的网络无法连通，请您检查网络设置后重试。";
 
 	private static ConnectivityManager sConnManager;
 
 	private static long CONNECTION_TIMEOUT = 40;// 设置超时时间，秒单位
-	
+
 	/**
 	 * 向指定URI，发起一个POST请求，并返回服务器响应的json串。
-	 * 
+	 *
 	 * @param uri
 	 *            请求地址
 	 * @param paramMap
@@ -69,6 +69,7 @@ public final class GlbsNet {
 			urlConn.setDoOutput(true);
 			//urlConn.setInstanceFollowRedirects(true);
 			urlConn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			urlConn.setRequestProperty("Accept-Encoding", "gzip, deflate, sdch");
 			urlConn.connect();
 			//DataOutputStream流
 			DataOutputStream out=new DataOutputStream(urlConn.getOutputStream());
@@ -78,15 +79,9 @@ public final class GlbsNet {
 			//刷新、关闭
 			out.flush();
 			out.close();
-			
+
 			//得到读取的内容（流）
-			isr=new InputStreamReader(urlConn.getInputStream());
-			//为输出创建BufferedReader
-			br=new BufferedReader(isr);
-			String inputLine=null;
-			while ((inputLine=br.readLine())!=null) {
-				result+=inputLine;
-			}
+			result=getJsonStringFromGZIP(urlConn);
 			LogUtil.d("TestDemo", result);
 		} catch (Exception e) {
 			result=HTTP_ERROR_MESSAGE;
@@ -103,10 +98,10 @@ public final class GlbsNet {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	private static HttpURLConnection getURLConnection(String url) throws Exception {
 		String proxyHost = Proxy.getDefaultHost();
 		if (proxyHost != null) {
@@ -125,7 +120,7 @@ public final class GlbsNet {
 		final String proxyHost = Proxy.getDefaultHost();
 		return !TextUtils.isEmpty(proxyHost);
 	}
-	
+
 	public static boolean isUsedWifi(Context con) {
         WifiManager wifiManager = (WifiManager) con.getSystemService(Context.WIFI_SERVICE);
         boolean isUsedWifi = false;// wifiManager.isWifiEnabled();
@@ -141,6 +136,50 @@ public final class GlbsNet {
             return false;
         }
     }
+
+	private static String getJsonStringFromGZIP( HttpURLConnection  response) {
+		String jsonString = null;
+
+		try {
+			InputStream e = response.getInputStream();
+			BufferedInputStream bis = new BufferedInputStream(e);
+			bis.mark(2);
+			byte[] header = new byte[2];
+			int result = bis.read(header);
+			bis.reset();
+			int headerData = getShort(header);
+			Object e1;
+			if(result != -1 && headerData == 8075) {
+				LogUtil.d("HttpTask", " use GZIPInputStream  ");
+				e1 = new GZIPInputStream(bis);
+			} else {
+				LogUtil.d("HttpTask", " not use GZIPInputStream");
+				e1 = bis;
+			}
+
+			InputStreamReader reader = new InputStreamReader((InputStream)e1, "utf-8");
+			char[] data = new char[100];
+			StringBuffer sb = new StringBuffer();
+
+			int readSize;
+			while((readSize = reader.read(data)) > 0) {
+				sb.append(data, 0, readSize);
+			}
+
+			jsonString = sb.toString();
+			bis.close();
+			reader.close();
+		} catch (Exception var11) {
+			LogUtil.e("HttpTask", var11.toString(), var11);
+		}
+
+		LogUtil.d("HttpTask", "getJsonStringFromGZIP net output : " + jsonString);
+		return jsonString;
+	}
+
+	private static int getShort(byte[] data) {
+		return data[0] << 8 | data[1] & 255;
+	}
 
 	/**
 	 * 网络中断监听。

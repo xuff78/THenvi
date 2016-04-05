@@ -274,21 +274,26 @@ public class JsonUtil {
     public static ArrayList<MapAreaInfo> getAreaInfo(String jsonData) {
         ArrayList<MapAreaInfo> sitelist=new ArrayList<>();
         try {
-            JSONArray array=new JSONArray(jsonData);
-            MapAreaInfo site=new MapAreaInfo();
-            List<LatLng> points=new ArrayList<LatLng>();
-            for(int i=0;i<array.length();i++){
-                JSONObject subJson=array.getJSONObject(i);
-                Double lon=0d, lat=0d;
-                if(!subJson.isNull("LONGITUDE"))
-                    lon=Double.valueOf(subJson.getString("LONGITUDE"));
-                if(!subJson.isNull("LATITUDE"))
-                    lat=Double.valueOf(subJson.getString("LATITUDE"));
-                LatLng ll=new LatLng(lat, lon);
-                points.add(ll);
+            JSONObject obj=new JSONObject(jsonData);
+            JSONArray items=obj.getJSONArray("duanMian");
+            for(int j=0;j<items.length();j++) {
+                JSONObject item=items.getJSONObject(j);
+                JSONArray array = item.getJSONArray("pointData");
+                MapAreaInfo site = new MapAreaInfo();
+                List<LatLng> points = new ArrayList<LatLng>();
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject subJson = array.getJSONObject(i);
+                    Double lon = 0d, lat = 0d;
+                    if (!subJson.isNull("POINT_X"))
+                        lon = Double.valueOf(subJson.getString("POINT_X"));
+                    if (!subJson.isNull("POINT_Y"))
+                        lat = Double.valueOf(subJson.getString("POINT_Y"));
+                    LatLng ll = new LatLng(lat, lon);
+                    points.add(ll);
+                }
+                site.setPoints(points);
+                sitelist.add(site);
             }
-            site.setPoints(points);
-            sitelist.add(site);
         } catch (JSONException e) {
             e.printStackTrace();
         }

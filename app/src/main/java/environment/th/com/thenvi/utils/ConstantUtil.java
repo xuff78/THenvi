@@ -17,7 +17,7 @@ public class ConstantUtil {
 
 	public static final String method_PDF="1/pdf/list";
 
-	public static final String method_zidong="1/zidong/list";
+	public static final String method_zidong="1/shp";
 
 	public static final String method_Shuizhi="1/shuizhi/list";
 

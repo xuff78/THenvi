@@ -95,7 +95,7 @@ public class HttpAsyncTask extends AsyncTask<Object, String, String> {
 	}
 
 	@Override
-	protected void onPostExecute(final String result) {
+	protected void onPostExecute(String result) {
 		super.onPostExecute(result);
 
 		LogUtil.i(TAG, mReqMethod + "---->" + result);
@@ -104,8 +104,9 @@ public class HttpAsyncTask extends AsyncTask<Object, String, String> {
 			progressDialog.dismiss();
 
 		if(mContext!=null)
-		if(!isCancel)
+		if(!isCancel&&result!=null) {
 			mHttpCb.httpCallback(mReqMethod, result.trim());
+		}
 		
 	}
 	
