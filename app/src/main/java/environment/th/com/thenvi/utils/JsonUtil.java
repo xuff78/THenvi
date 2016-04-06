@@ -271,11 +271,11 @@ public class JsonUtil {
         return sitelist;
     }
 
-    public static ArrayList<MapAreaInfo> getAreaInfo(String jsonData) {
+    public static ArrayList<MapAreaInfo> getAreaInfo(String jsonData, String dataName) {
         ArrayList<MapAreaInfo> sitelist=new ArrayList<>();
         try {
             JSONObject obj=new JSONObject(jsonData);
-            JSONArray items=obj.getJSONArray("duanMian");
+            JSONArray items=obj.getJSONArray(dataName);
             for(int j=0;j<items.length();j++) {
                 JSONObject item=items.getJSONObject(j);
                 JSONArray array = item.getJSONArray("pointData");

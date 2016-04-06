@@ -2,6 +2,7 @@ package environment.th.com.thenvi.frg;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolygonOptions;
+import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.model.LatLng;
 
@@ -43,20 +45,37 @@ public class CurrentLoactionMap extends BaseFragment {
     private LinearLayout mNavigationView;
     //DrawerLayout控件
     private DrawerLayout mDrawerLayout;
-    private ArrayList<MapAreaInfo> areaInfo=new ArrayList<>();
+//    private ArrayList<MapAreaInfo> areaInfo=new ArrayList<>();
     private HttpHandler handler;
+    private Handler postHandler=new Handler();
 
     private void initHandler() {
         handler=new HttpHandler(getActivity(), new CallBack(getActivity()){
             @Override
-            public void doSuccess(String method, String jsonData) {
-                areaInfo= JsonUtil.getAreaInfo(jsonData);
-                showWorkingSpace();
+            public void doSuccess(String method, final String jsonData) {
+                ArrayList<MapAreaInfo> areaInfo = JsonUtil.getAreaInfo(jsonData, "duanMian");
+                showWorkingSpace(areaInfo, getResources().getColor(R.color.white));//0xcc1b93e5);
+
+                postHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<MapAreaInfo> areaInfo = JsonUtil.getAreaInfo(jsonData, "fengqu");
+                        showWorkingSpace(areaInfo, 0x99ff0000);
+                    }
+                },2000);
+
+                postHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<MapAreaInfo> areaInfo = JsonUtil.getAreaInfo(jsonData, "xian");
+                        showWorkingLine(areaInfo, 0x99cc0000);
+                    }
+                },4000);
 
                 if(areaInfo.size()>0) {
-                    List<LatLng> points=areaInfo.get(0).getPoints();
+                    List<LatLng> points=areaInfo.get(areaInfo.size()/2).getPoints();
                     if(points.size()>0) {
-                        refreshMapStatus(points.get(0), 14);
+                        refreshMapStatus(points.get(0), 10);
                     }
                 }
             }
@@ -98,16 +117,30 @@ public class CurrentLoactionMap extends BaseFragment {
 
     }
 
-    public void showWorkingSpace() {
-//        for(int i=0;i<areaInfo.size();i++) {
-            List<LatLng> infos=areaInfo.get(3).getPoints();
+    public void showWorkingSpace(ArrayList<MapAreaInfo> areaInfo, int color) {
+        for(int i=0;i<areaInfo.size();i++) {
+            List<LatLng> infos = areaInfo.get(i).getPoints();
             OverlayOptions polygonOption = new PolygonOptions()
                     .points(infos)
-                    .stroke(new Stroke(infos.size(), 0x991b93e5))
-                    .fillColor(0x331b93e5);
+                    .stroke(new Stroke(3, color))
+                    .fillColor(0x551b93e5);
             //在地图上添加多边形Option，用于显示
             baiduMap.addOverlay(polygonOption);
 //        }
+        }
+    }
+
+    public void showWorkingLine(ArrayList<MapAreaInfo> areaInfo, int color) {
+        for(int i=0;i<areaInfo.size();i++) {
+            List<LatLng> infos = areaInfo.get(i).getPoints();
+            PolylineOptions polygonOption = new PolylineOptions()
+                    .points(infos)
+                    .zIndex(3)
+                    .color(color);
+            //在地图上添加多边形Option，用于显示
+            baiduMap.addOverlay(polygonOption);
+//        }
+        }
     }
 
     /**
