@@ -56,6 +56,7 @@ public class CurrentLoactionMap extends BaseFragment {
                 ArrayList<MapAreaInfo> areaInfo = JsonUtil.getAreaInfo(jsonData, "duanMian");
                 showWorkingSpace(areaInfo, getResources().getColor(R.color.white));//0xcc1b93e5);
 
+
                 postHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
