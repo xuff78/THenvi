@@ -278,6 +278,7 @@ public class JsonUtil {
             JSONArray items=obj.getJSONArray(dataName);
             for(int j=0;j<items.length();j++) {
                 JSONObject item=items.getJSONObject(j);
+                LogUtil.i("json", item.toString());
                 JSONArray array = item.getJSONArray("pointData");
                 MapAreaInfo site = new MapAreaInfo();
                 List<LatLng> points = new ArrayList<LatLng>();
