@@ -105,6 +105,9 @@ public class JsonUtil {
                     site.setX(subJson.getString("X"));
                 if(!subJson.isNull("Y"))
                     site.setY(subJson.getString("Y"));
+                LatLng ll=ActUtil.Mercator2lonLat(Double.valueOf(site.getX()), Double.valueOf(site.getY()));
+                site.setX(String.valueOf(ll.longitude));
+                site.setX(String.valueOf(ll.latitude));
                 sitelist.add(site);
             }
         } catch (JSONException e) {

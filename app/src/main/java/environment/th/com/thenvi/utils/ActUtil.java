@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.baidu.mapapi.model.LatLng;
+
 import java.io.File;
 
 /**
@@ -40,5 +42,15 @@ public class ActUtil {
 //        gg_lon = z * Math.cos(theta);
 //        gg_lat = z * Math.sin(theta);
 //    }
+
+    //墨卡托转经纬度
+    public static LatLng Mercator2lonLat(double mx, double my)
+    {
+        double x = mx / 20037508.34 * 180;
+        double y = my / 20037508.34 * 180;
+        y = 180 / Math.PI * (2 * Math.atan(Math.exp(y * Math.PI / 180)) - Math.PI / 2);
+        LatLng latLng = new LatLng(y,x);
+        return latLng;
+    }
 
 }

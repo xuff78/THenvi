@@ -1,6 +1,7 @@
 package environment.th.com.thenvi.frg;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
@@ -54,7 +55,7 @@ public class CurrentLoactionMap extends BaseFragment {
             @Override
             public void doSuccess(String method, final String jsonData) {
                 ArrayList<MapAreaInfo> areaInfo = JsonUtil.getAreaInfo(jsonData, "duanMian");
-                showWorkingSpace(areaInfo, getResources().getColor(R.color.white));//0xcc1b93e5);
+                showAreaSpace(areaInfo);//0xcc1b93e5);
 
 
                 postHandler.postDelayed(new Runnable() {
@@ -116,6 +117,34 @@ public class CurrentLoactionMap extends BaseFragment {
 
     private void initView(View v) {
 
+    }
+
+    int colors[]={};
+    public void showAreaSpace(ArrayList<MapAreaInfo> areaInfo) {
+        int color=0;
+        for(int i=0;i<areaInfo.size();i++) {
+            if(i<6){
+                color=0x88FF7F24;
+            }else if(i<10){
+                color=0x88008B45;
+            }else if(i<16){
+                color=0x8800C5CD;
+            }else if(i<24){
+                color=0x88CD3333;
+            }else if(i<27){
+                color=0x551b93e5;
+            }else if(i<31){
+                color=0x88CD2990;
+            }
+            List<LatLng> infos = areaInfo.get(i).getPoints();
+            OverlayOptions polygonOption = new PolygonOptions()
+                    .points(infos)
+                    .stroke(new Stroke(3, Color.WHITE))
+                    .fillColor(color);
+            //在地图上添加多边形Option，用于显示
+            baiduMap.addOverlay(polygonOption);
+//        }
+        }
     }
 
     public void showWorkingSpace(ArrayList<MapAreaInfo> areaInfo, int color) {
