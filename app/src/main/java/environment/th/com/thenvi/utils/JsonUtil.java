@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import environment.th.com.thenvi.bean.BookBean;
 import environment.th.com.thenvi.bean.CRiverInfoBean;
@@ -105,9 +106,12 @@ public class JsonUtil {
                     site.setX(subJson.getString("X"));
                 if(!subJson.isNull("Y"))
                     site.setY(subJson.getString("Y"));
-                LatLng ll=ActUtil.Mercator2lonLat(Double.valueOf(site.getX()), Double.valueOf(site.getY()));
-                site.setX(String.valueOf(ll.longitude));
-                site.setX(String.valueOf(ll.latitude));
+                Map<String, Double> map = Translate.convertMC2LL(Double.valueOf(site.getX()), Double.valueOf(site.getY()));
+                site.setX(String.valueOf(map.get("lng")));
+                site.setY(String.valueOf(map.get("lat")));
+//                LatLng ll=ActUtil.Mercator2lonLat(Double.valueOf(site.getX()), Double.valueOf(site.getY()));
+//                site.setX(String.valueOf(ll.longitude));
+//                site.setY(String.valueOf(ll.latitude));
                 sitelist.add(site);
             }
         } catch (JSONException e) {
