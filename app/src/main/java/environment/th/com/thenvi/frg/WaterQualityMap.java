@@ -347,28 +347,33 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
                     for (WaterQualityBean bean : siteList) {
                         findList.add(bean);
                         names.add(bean.getNAME());
-                        View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.marker_layout, null);
-                        mMarkerView.setBackgroundResource(R.drawable.shape_round_red);
+                        View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.level_layout, null);
                         TextView nameTxt= (TextView) mMarkerView.findViewById(R.id.nameTxt);
                         String level="";
                         switch (bean.getLEVEL()){
                             case 1:
                                 level="Ⅰ";
+                                nameTxt.setBackgroundResource(R.drawable.shape_round_blue);
                                 break;
                             case 2:
                                 level="Ⅱ";
+                                nameTxt.setBackgroundResource(R.drawable.shape_round_lightgreen);
                                 break;
                             case 3:
                                 level="Ⅲ";
+                                nameTxt.setBackgroundResource(R.drawable.shape_round_green);
                                 break;
                             case 4:
                                 level="Ⅳ";
+                                nameTxt.setBackgroundResource(R.drawable.shape_round_yellow);
                                 break;
                             case 5:
                                 level="Ⅴ";
+                                nameTxt.setBackgroundResource(R.drawable.shape_round_orange);
                                 break;
                             case 6:
                                 level="劣V";
+                                nameTxt.setBackgroundResource(R.drawable.shape_round_red);
                                 break;
                         }
 

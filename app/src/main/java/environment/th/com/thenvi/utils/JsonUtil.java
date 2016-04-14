@@ -106,9 +106,9 @@ public class JsonUtil {
                     site.setX(subJson.getString("X"));
                 if(!subJson.isNull("Y"))
                     site.setY(subJson.getString("Y"));
-                Map<String, Double> map = Translate.convertMC2LL(Double.valueOf(site.getX()), Double.valueOf(site.getY()));
-                site.setX(String.valueOf(map.get("lng")));
-                site.setY(String.valueOf(map.get("lat")));
+//                Map<String, Double> map = Translate.convertMC2LL(Double.valueOf(site.getX()), Double.valueOf(site.getY()));
+//                site.setX(String.valueOf(map.get("lng")));
+//                site.setY(String.valueOf(map.get("lat")));
 //                LatLng ll=ActUtil.Mercator2lonLat(Double.valueOf(site.getX()), Double.valueOf(site.getY()));
 //                site.setX(String.valueOf(ll.longitude));
 //                site.setY(String.valueOf(ll.latitude));
@@ -301,6 +301,47 @@ public class JsonUtil {
                 }
                 site.setPoints(points);
                 sitelist.add(site);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return sitelist;
+    }
+
+    public static MapAreaInfo getAreaInfo2(String jsonData, String dataName) {
+        MapAreaInfo site = new MapAreaInfo();
+        try {
+            JSONObject obj=new JSONObject(jsonData);
+            JSONArray items=obj.getJSONArray(dataName);
+            for(int j=0;j<items.length();j++) {
+                JSONObject item=items.getJSONObject(j);
+                LogUtil.i("json", item.toString());
+                JSONObject subJson = item.getJSONObject("pointData");
+                List<LatLng> points = new ArrayList<LatLng>();
+                Double lon = 0d, lat = 0d;
+                if (!subJson.isNull("POINT_X"))
+                    lon = Double.valueOf(subJson.getString("POINT_X"));
+                if (!subJson.isNull("POINT_Y"))
+                    lat = Double.valueOf(subJson.getString("POINT_Y"));
+                LatLng ll = new LatLng(lat, lon);
+                points.add(ll);
+                site.setPoints(points);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return site;
+    }
+
+    public static ArrayList<MapAreaInfo> getWaterSourceInfo(String jsonData) {
+        ArrayList<MapAreaInfo> sitelist=new ArrayList<>();
+        try {
+            JSONObject obj=new JSONObject(jsonData);
+            JSONArray items=obj.getJSONArray("siteList");
+            for(int j=0;j<items.length();j++) {
+                JSONObject item=items.getJSONObject(j);
+                LogUtil.i("json", item.toString());
+
             }
         } catch (JSONException e) {
             e.printStackTrace();

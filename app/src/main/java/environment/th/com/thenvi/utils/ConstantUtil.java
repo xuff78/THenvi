@@ -21,6 +21,8 @@ public class ConstantUtil {
 
 	public static final String method_Shuizhi="1/shuizhi/list";
 
+	public static final String method_Yinshuiyuan="1/yinshuiyuan";
+
 
 	/** 水文站点列表 */
 	public static final String method_SiteList="1/shuiwen/siteList";
