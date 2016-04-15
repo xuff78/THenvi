@@ -123,6 +123,21 @@ public class HttpHandler extends Handle {
 		request(ConstantUtil.method_Yinshuiyuan, params, true);
 	}
 
+	public void getYingjiJigouList() {
+		HashMap<String, String> params=new HashMap<>();
+		request(ConstantUtil.method_YingjiJigouList, params, true);
+	}
+
+	public void getYingjiQiyeList() {
+		HashMap<String, String> params=new HashMap<>();
+		request(ConstantUtil.method_YingjiQiyeList, params, true);
+	}
+
+	public void getYingjiWuziList() {
+		HashMap<String, String> params=new HashMap<>();
+		request(ConstantUtil.method_YingjiWuziList, params, true);
+	}
+
 	public void getShuizhiInfo(String materialType, String queryDate) {
 		HashMap<String, String> params=new HashMap<>();
 		params.put("materialType", materialType);

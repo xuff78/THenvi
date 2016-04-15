@@ -50,27 +50,30 @@ public class WaterSource extends BaseFragment {
         handler=new HttpHandler(getActivity(), new CallBack(getActivity()){
             @Override
             public void doSuccess(String method, final String jsonData) {
-                MapAreaInfo areaInfo1 = JsonUtil.getAreaInfo2(jsonData, "luyu3");
-                MapAreaInfo areaInfo2 = JsonUtil.getAreaInfo2(jsonData, "shuiyuandi3");
-                JsonUtil.getWaterSourceInfo(jsonData);
-//                showAreaSpace(areaInfo);//0xcc1b93e5);
-//
-//
-//                postHandler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        ArrayList<MapAreaInfo> areaInfo = JsonUtil.getAreaInfo(jsonData, "fengqu");
-//                        showWorkingSpace(areaInfo, 0x99ff0000);
-//                    }
-//                },2000);
-//
-//                postHandler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        ArrayList<MapAreaInfo> areaInfo = JsonUtil.getAreaInfo(jsonData, "xian");
-//                        showWorkingLine(areaInfo, 0x99cc0000);
-//                    }
-//                },4000);
+                ArrayList<MapAreaInfo> areaInfo1 = JsonUtil.getAreaInfo2(jsonData, "luyu3");
+
+                showWorkingSpace(areaInfo1, 0xcc1b93e5);
+                refreshMapStatus(areaInfo1.get(0).getPoints().get(0), 10);
+
+
+                postHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(getActivity()!=null) {
+                            ArrayList<MapAreaInfo> areaInfo2 = JsonUtil.getAreaInfo2(jsonData, "shuiyuandi3");
+                            showWorkingSpace(areaInfo2, 0x9900B2EE);
+                        }
+                    }
+                },2000);
+
+                postHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(getActivity()!=null) {
+                            JsonUtil.getWaterSourceInfo(jsonData);
+                        }
+                    }
+                },4000);
 //
 //                if(areaInfo.size()>0) {
 //                    List<LatLng> points=areaInfo.get(areaInfo.size()/2).getPoints();
@@ -148,13 +151,22 @@ public class WaterSource extends BaseFragment {
     public void showWorkingSpace(ArrayList<MapAreaInfo> areaInfo, int color) {
         for(int i=0;i<areaInfo.size();i++) {
             List<LatLng> infos = areaInfo.get(i).getPoints();
-            OverlayOptions polygonOption = new PolygonOptions()
-                    .points(infos)
-                    .stroke(new Stroke(3, color))
-                    .fillColor(0x551b93e5);
-            //在地图上添加多边形Option，用于显示
-            baiduMap.addOverlay(polygonOption);
-//        }
+//            if(infos.size()>=3) {
+//                OverlayOptions polygonOption = new PolygonOptions()
+//                        .points(infos)
+//                        .stroke(new Stroke(3, color))
+//                        .fillColor(0x551b93e5);
+//                //在地图上添加多边形Option，用于显示
+//                baiduMap.addOverlay(polygonOption);
+//            }else
+            if(infos.size()>=2) {
+                PolylineOptions polygonOption = new PolylineOptions()
+                        .points(infos)
+                        .zIndex(3)
+                        .color(color);
+                //在地图上添加多边形Option，用于显示
+                baiduMap.addOverlay(polygonOption);
+            }
         }
     }
 

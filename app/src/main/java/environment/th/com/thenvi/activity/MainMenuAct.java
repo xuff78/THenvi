@@ -25,6 +25,7 @@ import java.util.List;
 import environment.th.com.thenvi.R;
 import environment.th.com.thenvi.frg.BookPage;
 import environment.th.com.thenvi.frg.CurrentLoactionMap;
+import environment.th.com.thenvi.frg.EmergencySuppliesMap;
 import environment.th.com.thenvi.frg.SewageDisposalMap;
 import environment.th.com.thenvi.frg.WaterDatabaseMap;
 import environment.th.com.thenvi.frg.WaterInfoMap;
@@ -124,7 +125,9 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
         public void onClick(View view) {
             if(select2Btn==view)
                 return;
+            select2Btn.setBackgroundResource(R.color.trans);
             select2Btn=view;
+            view.setBackgroundResource(R.color.alphagray);
             view.setSelected(true);
             switch (view.getId()) {
                 case R.id.menu_btn21:
@@ -140,8 +143,8 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
                     addListFragment(frg, "menu23");
                     break;
                 case R.id.menu_btn24:
-//                    frg = new SewageDisposalMap();
-//                    addListFragment(frg, "menu24");
+                    frg = new EmergencySuppliesMap();
+                    addListFragment(frg, "menu24");
                     break;
                 case R.id.menu_btn25:
                     frg = new SewageDisposalMap();

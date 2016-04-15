@@ -52,6 +52,11 @@ public class ConstantUtil {
 	public static final String method_GuokongSiteDetail="1/guokong/siteDetail";
 	public static final String method_GuokongSiteChart="1/guokong/chart";
 
+	/** 应急资源 */
+	public static final String method_YingjiJigouList="1/yingji/jigou";
+	public static final String method_YingjiQiyeList="1/yingji/qiye";
+	public static final String method_YingjiWuziList="1/yingji/wuzi";
+
 
 	//污染源信息数据库
 	/** 一般工业企业 */

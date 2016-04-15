@@ -22,6 +22,7 @@ import environment.th.com.thenvi.bean.ChatWaterSiteBean;
 import environment.th.com.thenvi.bean.ChuqinBean;
 import environment.th.com.thenvi.bean.Company2Bean;
 import environment.th.com.thenvi.bean.CompanyBean;
+import environment.th.com.thenvi.bean.EmergencySupplies;
 import environment.th.com.thenvi.bean.GongyeBean;
 import environment.th.com.thenvi.bean.JsonMessage;
 import environment.th.com.thenvi.bean.MapAreaInfo;
@@ -247,6 +248,41 @@ public class JsonUtil {
         return sitelist;
     }
 
+    public static ArrayList<EmergencySupplies> getEmergencyInfo(String jsonData) {
+        ArrayList<EmergencySupplies> sitelist=new ArrayList<>();
+        try {
+            JSONArray array=new JSONArray(jsonData);
+            for(int i=0;i<array.length();i++){
+                JSONObject subJson=array.getJSONObject(i);
+                EmergencySupplies site=new EmergencySupplies();
+                if(!subJson.isNull("zipCode"))
+                    site.setZipCode(subJson.getString("zipCode"));
+                if(!subJson.isNull("address"))
+                    site.setAddress(subJson.getString("address"));
+                if(!subJson.isNull("unitName"))
+                    site.setUnitName(subJson.getString("unitName"));
+                else if(!subJson.isNull("name"))
+                    site.setUnitName(subJson.getString("name"));
+                if(!subJson.isNull("pointX"))
+                    site.setPointX(subJson.getString("pointX"));
+                if(!subJson.isNull("pointY"))
+                    site.setPointY(subJson.getString("pointY"));
+                if(!subJson.isNull("phone"))
+                    site.setPhone(subJson.getString("phone"));
+                if(!subJson.isNull("contactMan"))
+                    site.setContactMan(subJson.getString("contactMan"));
+                if(!subJson.isNull("contactPhone"))
+                    site.setContactMan(subJson.getString("contactPhone"));
+                if(!subJson.isNull("province"))
+                    site.setProvince(subJson.getString("province"));
+                sitelist.add(site);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return sitelist;
+    }
+
     public static ArrayList<CRiverInfoBean> getGuokongSite(String jsonData) {
         ArrayList<CRiverInfoBean> sitelist=new ArrayList<>();
         try {
@@ -308,29 +344,47 @@ public class JsonUtil {
         return sitelist;
     }
 
-    public static MapAreaInfo getAreaInfo2(String jsonData, String dataName) {
+    public static ArrayList<MapAreaInfo> getAreaInfo2(String jsonData, String dataName) {
+        ArrayList<MapAreaInfo> sitelist=new ArrayList<>();
         MapAreaInfo site = new MapAreaInfo();
         try {
             JSONObject obj=new JSONObject(jsonData);
             JSONArray items=obj.getJSONArray(dataName);
+            List<LatLng> points = new ArrayList<>();
+            String num="";
             for(int j=0;j<items.length();j++) {
-                JSONObject item=items.getJSONObject(j);
-                LogUtil.i("json", item.toString());
-                JSONObject subJson = item.getJSONObject("pointData");
-                List<LatLng> points = new ArrayList<LatLng>();
+                JSONObject subJson=items.getJSONObject(j);
+                LogUtil.i("json", subJson.toString());
                 Double lon = 0d, lat = 0d;
                 if (!subJson.isNull("POINT_X"))
                     lon = Double.valueOf(subJson.getString("POINT_X"));
                 if (!subJson.isNull("POINT_Y"))
                     lat = Double.valueOf(subJson.getString("POINT_Y"));
                 LatLng ll = new LatLng(lat, lon);
-                points.add(ll);
+                String tmpnum="";
+                if (!subJson.isNull("NUM"))
+                    tmpnum = subJson.getString("NUM");
+                if(num.equals(tmpnum)){
+                    points.add(ll);
+                }else {
+                    if (j != 0) {
+                        site.setPoints(points);
+                        sitelist.add(site);
+                        site = new MapAreaInfo();
+                        points=new ArrayList<>();
+                    }
+                    points.add(ll);
+                    num=tmpnum;
+                }
                 site.setPoints(points);
+                sitelist.add(site);
             }
+            site.setPoints(points);
+            sitelist.add(site);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return site;
+        return sitelist;
     }
 
     public static ArrayList<MapAreaInfo> getWaterSourceInfo(String jsonData) {
