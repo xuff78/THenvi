@@ -378,13 +378,12 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
                     baiduMap.clear();
                     kjList= JsonUtil.getKuajieSite(jsonData);
                     ArrayList<String> names=new ArrayList<>();
+                    View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.icon_layout, null);
+                    ImageView iconImg= (ImageView) mMarkerView.findViewById(R.id.iconImg);
+                    iconImg.setImageResource(R.mipmap.icon_kuajie);
                     for (RiverInfoBean bean : kjList) {
                         kjFindList.add(bean);
                         names.add(bean.getSNAME());
-                        View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.marker_layout, null);
-//                        mMarkerView.setBackgroundResource(R.mipmap.marker_blue_round);
-                        TextView nameTxt= (TextView) mMarkerView.findViewById(R.id.nameTxt);
-                        nameTxt.setText(bean.getSNAME());
                         LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLONGITUDE()));
                         Bundle bundle = new Bundle();
                         int dataType = 0;
@@ -406,13 +405,12 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
                     baiduMap.clear();
                     gkList= JsonUtil.getGuokongSite(jsonData);
                     ArrayList<String> names=new ArrayList<>();
+                    View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.icon_layout, null);
+                    ImageView iconImg= (ImageView) mMarkerView.findViewById(R.id.iconImg);
+                    iconImg.setImageResource(R.mipmap.icon_kuajie);
                     for (CRiverInfoBean bean : gkList) {
                         gkFindList.add(bean);
                         names.add(bean.getPNAME());
-                        View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.marker_layout, null);
-//                        mMarkerView.setBackgroundResource(R.mipmap.marker_blue_round);
-                        TextView nameTxt= (TextView) mMarkerView.findViewById(R.id.nameTxt);
-                        nameTxt.setText(bean.getPNAME());
                         LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLONGITUDE()));
                         Bundle bundle = new Bundle();
                         int dataType = 0;

@@ -11,6 +11,8 @@ public class ConstantUtil {
 	/** 当前地址 */
 	public static final String current_addr="current_addr";
 
+	public static final String AreaInfo="AreaInfo";
+
 	public static final String Api_Url="http://120.25.248.182:8080/";
 
 	public static final String method_Login="1/login";
@@ -22,6 +24,8 @@ public class ConstantUtil {
 	public static final String method_Shuizhi="1/shuizhi/list";
 
 	public static final String method_Yinshuiyuan="1/yinshuiyuan";
+
+	public static final int Zoom=15;
 
 
 	/** 水文站点列表 */
@@ -79,6 +83,12 @@ public class ConstantUtil {
 	public static final String method_ChuqinSiteList="1/chuqin/siteList";
 	public static final String method_ChuqinSiteDetail="1/chuqin/siteDetail";
 
+	public static final String method_TongliangList="1/tongliang/list";
+	public static final String method_TongliangChart="1/tongliang/chart";
+	public static final String method_TongliangShengdm="1/tongliang/shengdm";
+	public static final String method_TongliangKuajiedm="1/tongliang/kuajiedm";
 
+	public static final String method_warningList="1/tongliang/warningList";
+	public static final String method_warningChart="1/tongliang/warningChart";
 
 }

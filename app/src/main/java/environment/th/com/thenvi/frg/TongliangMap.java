@@ -1,10 +1,10 @@
 package environment.th.com.thenvi.frg;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.ZoomControls;
 
@@ -37,9 +38,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import environment.th.com.thenvi.R;
-import environment.th.com.thenvi.activity.ChatsInfoAct;
 import environment.th.com.thenvi.adapter.SiteListAdapter;
-import environment.th.com.thenvi.bean.WaterQualityBean;
 import environment.th.com.thenvi.bean.WaterQualityBean;
 import environment.th.com.thenvi.http.CallBack;
 import environment.th.com.thenvi.http.HttpHandler;
@@ -50,17 +49,16 @@ import environment.th.com.thenvi.view.MarkerSupportView;
 import environment.th.com.thenvi.view.MenuPopup;
 
 /**
- * Created by 可爱的蘑菇 on 2016/4/4.
+ * Created by 可爱的蘑菇 on 2016/4/16.
  */
-public class WaterQualityMap extends BaseFragment implements View.OnClickListener,
+public class TongliangMap extends BaseFragment implements View.OnClickListener,
         BaiduMap.OnMapClickListener {
 
     private HttpHandler handler;
     private MapView mMapView;
     private BaiduMap baiduMap;
     private LinearLayout menuLayout;
-    private DrawerLayout mDrawerLayout;
-    private TextView typeBtn, startDate;
+    private TextView endDate, startDate;
     private EditText searchEdt;
     private MenuPopup popup;
     private ListView siteListview;
@@ -71,13 +69,12 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
     private Marker currentMarker;
     private String materialType="", queryDate="";
     private DatePickerDialog datePickerDialog;
+    private SlidingDrawer slidingDrawer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View mView = inflater.inflate(R.layout.water_quality_layout, null);
-//        mCallBack = new MapRequestCallBack(getActivity());
-//        mCMHandler = new CMHandler(getActivity(), mCallBack);
+        View mView = inflater.inflate(R.layout.tongliang_layout, null);
         //获取地图控件引用
         mMapView = (MapView) mView.findViewById(R.id.mapView);
         mMapView.showZoomControls(false);
@@ -102,7 +99,7 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
                 }
                 WaterQualityBean bean = (WaterQualityBean) markerExtraInfo.getSerializable("InfoBean");
                 showSupportContent(marker.getPosition(), height, bean.getNAME(), bean);
-                
+
                 return true;
             }
         });
@@ -119,6 +116,7 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
     }
 
     private void initView(View v) {
+        slidingDrawer=(SlidingDrawer)v.findViewById(R.id.slidingDrawer);
         searchEdt = (EditText) v.findViewById(R.id.searchEdt);
         searchEdt.addTextChangedListener(txtWatcher);
         startDate = (TextView)v.findViewById(R.id.startDate);
@@ -129,53 +127,14 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
         String str = formatter.format(curDate);
         startDate.setText(str);
         siteListview = (ListView) v.findViewById(R.id.siteList);
-        mDrawerLayout = (DrawerLayout) v.findViewById(R.id.drawer_layout);
         menuLayout=(LinearLayout)v.findViewById(R.id.leftMenuView);
-        typeBtn=(TextView)v.findViewById(R.id.typeBtn);
-        typeBtn.setOnClickListener(this);
         v.findViewById(R.id.listLeftBtn).setOnClickListener(this);
-        final ArrayList<String> strings=new ArrayList<>();
-        strings.add("AMMONIA");
-        strings.add("BOD");
-        strings.add("COD");
-        strings.add("DISSOLVED_OXYGEN");
-        strings.add("NITRATE");
-        strings.add("TOTAL_PHOSPHORUS");
-        popup = new MenuPopup(getActivity(), strings, new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                typeBtn.setText(strings.get(i));
-                popup.dismiss();
-                switch (i){
-                    case 0:
-                        materialType="AMMONIA";
-                        break;
-                    case 1:
-                        materialType="BOD";
-                        break;
-                    case 2:
-                        materialType="COD";
-                        break;
-                    case 3:
-                        materialType="DISSOLVED_OXYGEN";
-                        break;
-                    case 4:
-                        materialType="NITRATE";
-                        break;
-                    case 5:
-                        materialType="TOTAL_PHOSPHORUS";
-                        break;
-                }
-            }
-        });
-        typeBtn.setText(strings.get(0));
     }
 
     AdapterView.OnItemClickListener itemClickListener=new AdapterView.OnItemClickListener(){
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            mDrawerLayout.closeDrawer(menuLayout);
             WaterQualityBean site= findList.get(i);
             showSupportContent(new LatLng(Double.valueOf(site.getY()),Double.valueOf(site.getX())), 75, site.getNAME(), site);
 
@@ -270,10 +229,10 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.listLeftBtn:
-                if(mDrawerLayout.isDrawerOpen(menuLayout))
-                    mDrawerLayout.closeDrawer(menuLayout);
+                if(slidingDrawer.isOpened())
+                    slidingDrawer.close();
                 else
-                    mDrawerLayout.openDrawer(menuLayout);
+                    slidingDrawer.open();
                 break;
             case R.id.typeBtn:
                 popup.showPopupWindow(view);

@@ -27,6 +27,7 @@ import environment.th.com.thenvi.frg.BookPage;
 import environment.th.com.thenvi.frg.CurrentLoactionMap;
 import environment.th.com.thenvi.frg.EmergencySuppliesMap;
 import environment.th.com.thenvi.frg.SewageDisposalMap;
+import environment.th.com.thenvi.frg.TongliangMap;
 import environment.th.com.thenvi.frg.WaterDatabaseMap;
 import environment.th.com.thenvi.frg.WaterInfoMap;
 import environment.th.com.thenvi.frg.WaterQualityMap;
@@ -109,7 +110,7 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.menu_btn3:
                 selectPos=2;
-                frg = new WaterQualityMap();
+                frg = new TongliangMap();
                 addListFragment(frg, "menu3");
                 break;
             case R.id.menu_btn5:

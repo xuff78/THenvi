@@ -12,7 +12,16 @@ public class MapAreaInfo {
 
     private String code="";
     private String SmPerimeter="";
+    private String num="0";
     private List<LatLng> points=new ArrayList<LatLng>();
+
+    public String getNum() {
+        return num;
+    }
+
+    public void setNum(String num) {
+        this.num = num;
+    }
 
     public String getCode() {
         return code;

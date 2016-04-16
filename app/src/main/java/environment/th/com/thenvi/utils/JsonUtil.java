@@ -29,6 +29,7 @@ import environment.th.com.thenvi.bean.MapAreaInfo;
 import environment.th.com.thenvi.bean.RiverInfoBean;
 import environment.th.com.thenvi.bean.WaterQualityBean;
 import environment.th.com.thenvi.bean.WaterSiteBean;
+import environment.th.com.thenvi.bean.WaterSourceBean;
 
 /**
  * Created by Administrator on 2015/9/7.
@@ -321,13 +322,15 @@ public class JsonUtil {
             JSONArray items=obj.getJSONArray(dataName);
             for(int j=0;j<items.length();j++) {
                 JSONObject item=items.getJSONObject(j);
-                LogUtil.i("json", item.toString());
+//                LogUtil.i("json", item.toString());
                 JSONArray array = item.getJSONArray("pointData");
                 MapAreaInfo site = new MapAreaInfo();
                 List<LatLng> points = new ArrayList<LatLng>();
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject subJson = array.getJSONObject(i);
                     Double lon = 0d, lat = 0d;
+                    if (!subJson.isNull("number"))
+                        site.setNum(subJson.getString("number"));
                     if (!subJson.isNull("POINT_X"))
                         lon = Double.valueOf(subJson.getString("POINT_X"));
                     if (!subJson.isNull("POINT_Y"))
@@ -387,14 +390,98 @@ public class JsonUtil {
         return sitelist;
     }
 
-    public static ArrayList<MapAreaInfo> getWaterSourceInfo(String jsonData) {
+    public static ArrayList<MapAreaInfo> getAreaInfo3(String jsonData, String dataName) {
         ArrayList<MapAreaInfo> sitelist=new ArrayList<>();
+        MapAreaInfo site = new MapAreaInfo();
+        try {
+            JSONObject obj=new JSONObject(jsonData);
+            JSONObject data=obj.getJSONObject(dataName);
+            List<LatLng> points = new ArrayList<>();
+            JSONArray items=data.getJSONArray("suhu");
+            for(int j=0;j<items.length();j++) {
+                JSONObject itemjson=items.getJSONObject(j);
+                JSONObject subJson=itemjson.getJSONObject("pointData");
+                LogUtil.i("json", subJson.toString());
+                Double lon = 0d, lat = 0d;
+                if (!subJson.isNull("POINT_X"))
+                    lon = Double.valueOf(subJson.getString("POINT_X"));
+                if (!subJson.isNull("POINT_Y"))
+                    lat = Double.valueOf(subJson.getString("POINT_Y"));
+                LatLng ll = new LatLng(lat, lon);
+                points.add(ll);
+            }
+            site.setPoints(points);
+            sitelist.add(site);
+
+            site = new MapAreaInfo();
+            points = new ArrayList<>();
+            items=data.getJSONArray("suzhe");
+            for(int j=0;j<items.length();j++) {
+                JSONObject itemjson=items.getJSONObject(j);
+                JSONObject subJson=itemjson.getJSONObject("pointData");
+                LogUtil.i("json", subJson.toString());
+                Double lon = 0d, lat = 0d;
+                if (!subJson.isNull("POINT_X"))
+                    lon = Double.valueOf(subJson.getString("POINT_X"));
+                if (!subJson.isNull("POINT_Y"))
+                    lat = Double.valueOf(subJson.getString("POINT_Y"));
+                LatLng ll = new LatLng(lat, lon);
+                points.add(ll);
+            }
+            site.setPoints(points);
+            sitelist.add(site);
+
+            site = new MapAreaInfo();
+            points = new ArrayList<>();
+            items=data.getJSONArray("zhehu");
+            for(int j=0;j<items.length();j++) {
+                JSONObject itemjson=items.getJSONObject(j);
+                JSONObject subJson=itemjson.getJSONObject("pointData");
+                LogUtil.i("json", subJson.toString());
+                Double lon = 0d, lat = 0d;
+                if (!subJson.isNull("POINT_X"))
+                    lon = Double.valueOf(subJson.getString("POINT_X"));
+                if (!subJson.isNull("POINT_Y"))
+                    lat = Double.valueOf(subJson.getString("POINT_Y"));
+                LatLng ll = new LatLng(lat, lon);
+                points.add(ll);
+            }
+            site.setPoints(points);
+            sitelist.add(site);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return sitelist;
+    }
+
+    public static ArrayList<WaterSourceBean> getWaterSourceInfo(String jsonData) {
+        ArrayList<WaterSourceBean> sitelist=new ArrayList<>();
         try {
             JSONObject obj=new JSONObject(jsonData);
             JSONArray items=obj.getJSONArray("siteList");
             for(int j=0;j<items.length();j++) {
-                JSONObject item=items.getJSONObject(j);
-                LogUtil.i("json", item.toString());
+                JSONObject subJson=items.getJSONObject(j);
+//                LogUtil.i("json", subJson.toString());
+                WaterSourceBean site=new WaterSourceBean();
+                if(!subJson.isNull("CICLR"))
+                    site.setCICLR(subJson.getString("CICLR"));
+                if(!subJson.isNull("LODEGREE"))
+                    site.setLODEGREE(subJson.getString("LODEGREE"));
+                if(!subJson.isNull("CODEN"))
+                    site.setCODEN(subJson.getString("CODEN"));
+                if(!subJson.isNull("CITY"))
+                    site.setCITY(subJson.getString("CITY"));
+                if(!subJson.isNull("WRESOURCE"))
+                    site.setWRESOURCE(subJson.getString("WRESOURCE"));
+                if(!subJson.isNull("INFORMATION"))
+                    site.setINFORMATION(subJson.getString("INFORMATION"));
+                if(!subJson.isNull("LATITUDE"))
+                    site.setLATITUDE(subJson.getString("LATITUDE"));
+                if(!subJson.isNull("REMARK"))
+                    site.setREMARK(subJson.getString("REMARK"));
+                if(!subJson.isNull("WWORKS"))
+                    site.setWWORKS(subJson.getString("WWORKS"));
+                sitelist.add(site);
 
             }
         } catch (JSONException e) {

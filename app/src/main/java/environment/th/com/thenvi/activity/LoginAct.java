@@ -11,6 +11,8 @@ import environment.th.com.thenvi.R;
 import environment.th.com.thenvi.http.CallBack;
 import environment.th.com.thenvi.http.HttpHandler;
 import environment.th.com.thenvi.services.BDLocationService;
+import environment.th.com.thenvi.utils.ConstantUtil;
+import environment.th.com.thenvi.utils.SharedPreferencesUtil;
 import environment.th.com.thenvi.utils.ToastUtils;
 
 /**
@@ -30,6 +32,7 @@ public class LoginAct  extends AppCompatActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        SharedPreferencesUtil.setString(this, ConstantUtil.AreaInfo, SharedPreferencesUtil.FAILURE_STRING);
         initHandler();
         initView();
     }

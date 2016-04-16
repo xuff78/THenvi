@@ -263,6 +263,49 @@ public class HttpHandler extends Handle {
 		request(ConstantUtil.method_ChuqinSiteDetail, params, true);
 	}
 
+	public void getTongliangList(String beginDate, String endDate) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("beginDate", beginDate);
+		params.put("endDate", endDate);
+		request(ConstantUtil.method_TongliangList, params, true);
+	}
+
+	public void getTongliangChart(String beginDate, String endDate, String keyPointId) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("beginDate", beginDate);
+		params.put("endDate", endDate);
+		params.put("keyPointId", keyPointId);
+		request(ConstantUtil.method_TongliangChart, params, true);
+	}
+
+	public void getShengdm(String id) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("id", id);
+		request(ConstantUtil.method_TongliangShengdm, params, true);
+	}
+
+	public void getKuajiedm(String id) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("id", id);
+		request(ConstantUtil.method_TongliangKuajiedm, params, true);
+	}
+
+	public void getWarningList(String queryDate, String queryType) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("queryDate", queryDate);
+		params.put("queryType", queryType);
+		request(ConstantUtil.method_warningList, params, true);
+	}
+
+	public void getWarningChart(String beginDate, String endDate, String keyPointId, String queryType) {
+		HashMap<String, String> params=new HashMap<>();
+		params.put("beginDate", beginDate);
+		params.put("endDate", endDate);
+		params.put("keyPointId", keyPointId);
+		params.put("queryType", queryType);
+		request(ConstantUtil.method_warningChart, params, true);
+	}
+
 	protected void request(String method, HashMap<String, String> params, boolean showDialog) {
 		String progressInfo = "";
 		String url= ConstantUtil.Api_Url+method;

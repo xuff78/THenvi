@@ -401,6 +401,7 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
         MapStatus mMapStatus = new MapStatus.Builder()
                 .target(endpositon)
                 .targetScreen(p)
+                .zoom(ConstantUtil.Zoom)
                 .build();
         MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
         //改变地图状态
@@ -500,11 +501,12 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                     CopList= JsonUtil.getCompanyList(jsonData);
                     ArrayList<String> names=new ArrayList<>();
                     CopFindList.clear();
+                    View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.icon_layout, null);
+                    ImageView iconImg= (ImageView) mMarkerView.findViewById(R.id.iconImg);
+                    iconImg.setImageResource(R.mipmap.icon_yibanqiye);
                     for (CompanyBean bean : CopList) {
                         CopFindList.add(bean);
                         names.add(bean.getPSNAME());
-                        ImageView mMarkerView = new ImageView(getActivity());
-                        mMarkerView.setImageResource(R.mipmap.marker_yiban);
                         LatLng point = new LatLng(Double.parseDouble(bean.getY()), Double.parseDouble(bean.getX()));
                         Bundle bundle = new Bundle();
                         int dataType = 0;
@@ -527,11 +529,12 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                     WsList= JsonUtil.getCompanyList(jsonData);
                     ArrayList<String> names=new ArrayList<>();
                     WsFindList.clear();
+                    View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.icon_layout, null);
+                    ImageView iconImg= (ImageView) mMarkerView.findViewById(R.id.iconImg);
+                    iconImg.setImageResource(R.mipmap.icon_wushuichuli);
                     for (CompanyBean bean : WsList) {
                         WsFindList.add(bean);
                         names.add(bean.getPSNAME());
-                        ImageView mMarkerView = new ImageView(getActivity());
-                        mMarkerView.setImageResource(R.mipmap.marker_gongye);
                         LatLng point = new LatLng(Double.parseDouble(bean.getY()), Double.parseDouble(bean.getX()));
                         Bundle bundle = new Bundle();
                         int dataType = 0;
@@ -555,14 +558,15 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                     ArrayList<String> names=new ArrayList<>();
                     GyFindList.clear();
                     int showNum=GyList.size();
-                    if(showNum>60)
-                        showNum=60;
+                    if(showNum>40)
+                        showNum=40;
+                    View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.icon_layout, null);
+                    ImageView iconImg= (ImageView) mMarkerView.findViewById(R.id.iconImg);
+                    iconImg.setImageResource(R.mipmap.icon_yibanqiye);
                     for(int i=0;i<showNum;i++){
                         GongyeBean bean=GyList.get(i);
                         GyFindList.add(bean);
                         names.add(bean.getRUNIT());
-                        ImageView mMarkerView = new ImageView(getActivity());
-                        mMarkerView.setImageResource(R.mipmap.marker_yiban);
                         LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLONGITUDE()));
                         Bundle bundle = new Bundle();
                         int dataType = 0;
@@ -585,11 +589,12 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                     Ws2List= JsonUtil.getCompany2List(jsonData);
                     ArrayList<String> names=new ArrayList<>();
                     Ws2FindList.clear();
+                    View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.icon_layout, null);
+                    ImageView iconImg= (ImageView) mMarkerView.findViewById(R.id.iconImg);
+                    iconImg.setImageResource(R.mipmap.icon_wushuichuli);
                     for (Company2Bean bean : Ws2List) {
                         Ws2FindList.add(bean);
                         names.add(bean.getNAME());
-                        ImageView mMarkerView = new ImageView(getActivity());
-                        mMarkerView.setImageResource(R.mipmap.marker_gongye);
                         LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLODEGREE()));
                         Bundle bundle = new Bundle();
                         int dataType = 0;
@@ -613,14 +618,16 @@ public class SewageDisposalMap extends BaseFragment implements View.OnClickListe
                     ArrayList<String> names=new ArrayList<>();
                     CqFindList.clear();
                     int showNum=CqList.size();
-                    if(showNum>60)
-                        showNum=60;
+                    if(showNum>40)
+                        showNum=40;
+
+                    View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.icon_layout, null);
+                    ImageView iconImg= (ImageView) mMarkerView.findViewById(R.id.iconImg);
+                    iconImg.setImageResource(R.mipmap.icon_chuxu);
                     for(int i=0;i<showNum;i++){
                         ChuqinBean bean=CqList.get(i);
                         CqFindList.add(bean);
                         names.add(bean.getFARM());
-                        ImageView mMarkerView = new ImageView(getActivity());
-                        mMarkerView.setImageResource(R.mipmap.marker_chuqin);
                         LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLODEGREE()));
                         Bundle bundle = new Bundle();
                         int dataType = 0;

@@ -227,6 +227,7 @@ public class EmergencySuppliesMap  extends BaseFragment implements View.OnClickL
         MapStatus mMapStatus = new MapStatus.Builder()
                 .target(endpositon)
                 .targetScreen(p)
+                .zoom(ConstantUtil.Zoom)
                 .build();
         MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
         //改变地图状态

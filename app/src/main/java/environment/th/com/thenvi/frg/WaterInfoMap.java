@@ -252,6 +252,7 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
         MapStatus mMapStatus = new MapStatus.Builder()
                 .target(endpositon)
                 .targetScreen(p)
+                .zoom(ConstantUtil.Zoom)
                 .build();
         MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
         //改变地图状态
@@ -352,13 +353,17 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
                     siteList= JsonUtil.getSiteList(jsonData);
                     ArrayList<String> names=new ArrayList<>();
                     findList.clear();
+                    View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.icon_layout, null);
+                    ImageView iconImg= (ImageView) mMarkerView.findViewById(R.id.iconImg);
+                    if(method.equals(ConstantUtil.method_SiteList))
+                        iconImg.setImageResource(R.mipmap.icon_shuiwen);
+                    else if(method.equals(ConstantUtil.method_RainSiteList))
+                        iconImg.setImageResource(R.mipmap.icon_yuliang);
+                    else if(method.equals(ConstantUtil.method_GateDamSiteList))
+                        iconImg.setImageResource(R.mipmap.icon_zaba);
                     for (WaterSiteBean bean : siteList) {
                         findList.add(bean);
                         names.add(bean.getHSNAME());
-                        View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.marker_layout, null);
-//                        mMarkerView.setBackgroundResource(R.mipmap.marker_blue_round);
-                        TextView nameTxt= (TextView) mMarkerView.findViewById(R.id.nameTxt);
-                        nameTxt.setText(bean.getHSNAME());
                         LatLng point = new LatLng(Double.parseDouble(bean.getLATITUDE()), Double.parseDouble(bean.getLONGITUDE()));
                         Bundle bundle = new Bundle();
                         int dataType = 0;
