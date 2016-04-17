@@ -1,6 +1,7 @@
 package environment.th.com.thenvi.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by 可爱的蘑菇 on 2016/4/4.
@@ -14,6 +15,16 @@ public class WaterQualityBean implements Serializable{
     private String CODE="";
 
     public static String Name="WaterQualityBean";
+
+    public ArrayList<PopupInfoItem> getInfos(){
+        ArrayList<PopupInfoItem> datas = new ArrayList<>();
+        datas.add(new PopupInfoItem("水质等级", LEVEL+""));
+        if(CODE.length()>0)
+            datas.add(new PopupInfoItem("代号", CODE));
+        datas.add(new PopupInfoItem("经度", Y));
+        datas.add(new PopupInfoItem("纬度", X));
+        return datas;
+    }
 
     public String getCODE() {
         return CODE;

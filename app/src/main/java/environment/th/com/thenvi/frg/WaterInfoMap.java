@@ -34,6 +34,7 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.model.LatLng;
 
 import java.util.ArrayList;
@@ -43,13 +44,16 @@ import environment.th.com.thenvi.R;
 import environment.th.com.thenvi.activity.ChatsInfoAct;
 import environment.th.com.thenvi.activity.MainMenuAct;
 import environment.th.com.thenvi.adapter.SiteListAdapter;
+import environment.th.com.thenvi.bean.MapAreaInfo;
 import environment.th.com.thenvi.bean.PopupInfoItem;
 import environment.th.com.thenvi.bean.WaterSiteBean;
 import environment.th.com.thenvi.http.CallBack;
 import environment.th.com.thenvi.http.HttpHandler;
+import environment.th.com.thenvi.utils.ActUtil;
 import environment.th.com.thenvi.utils.ConstantUtil;
 import environment.th.com.thenvi.utils.JsonUtil;
 import environment.th.com.thenvi.utils.ScreenUtil;
+import environment.th.com.thenvi.utils.SharedPreferencesUtil;
 import environment.th.com.thenvi.view.MarkerSupportView;
 import environment.th.com.thenvi.view.MenuPopup;
 
@@ -57,7 +61,7 @@ import environment.th.com.thenvi.view.MenuPopup;
  * Created by Administrator on 2016/3/9.
  */
 public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
-        BaiduMap.OnMapClickListener {
+        BaiduMap.OnMapClickListener, BaiduMap.OnMapStatusChangeListener {
 
     private HttpHandler handler;
     private MapView mMapView;
@@ -73,6 +77,8 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
     private MarkerSupportView content;
     private ArrayList<WaterSiteBean> siteList=new ArrayList<>();
     private ArrayList<WaterSiteBean> findList=new ArrayList<>();
+    private ArrayList<Overlay> maplayers=new ArrayList<>();
+    private ArrayList<Marker> sitelayers=new ArrayList<>();
     private Marker currentMarker;
 
     @Override
@@ -93,6 +99,7 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
 //        baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         //卫星地图
         baiduMap.setMapType(BaiduMap.MAP_TYPE_SATELLITE);
+        baiduMap.setOnMapStatusChangeListener(this);
         baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
@@ -136,6 +143,14 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
             case 2:
                 handler.getGateDamSiteList();
                 break;
+        }
+        String MapData= SharedPreferencesUtil.getString(getActivity(), ConstantUtil.AreaInfo);
+        if(!MapData.equals(SharedPreferencesUtil.FAILURE_STRING)){
+            maplayers.clear();
+            ArrayList<MapAreaInfo> areaInfo = JsonUtil.getAreaInfo(MapData, "fenqu");
+            maplayers.addAll(ActUtil.showAreaSpace(getActivity(), baiduMap, areaInfo));
+            ArrayList<MapAreaInfo> areaInfo2 = JsonUtil.getAreaInfo(MapData, "duanMian");
+            maplayers.addAll(ActUtil.showWorkingLine(baiduMap, areaInfo2));
         }
         return mView;
     }
@@ -257,6 +272,7 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
         MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
         //改变地图状态
         baiduMap.setMapStatus(mMapStatusUpdate);
+        ActUtil.hideLayers(maplayers);
 
     }
 
@@ -274,6 +290,7 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
             Marker marker = (Marker) (baiduMap.addOverlay(option));
             bundle.putInt("height", height);
             marker.setExtraInfo(bundle);
+            sitelayers.add(marker);
         }catch (Exception e){
 
         }
@@ -349,10 +366,11 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
                         ||method.equals(ConstantUtil.method_GateDamSiteList)){
                     baiduMap.hideInfoWindow();
                     mInfoWindow = null;
-                    baiduMap.clear();
                     siteList= JsonUtil.getSiteList(jsonData);
                     ArrayList<String> names=new ArrayList<>();
                     findList.clear();
+                    ActUtil.removeLayers(sitelayers);
+                    sitelayers.clear();
                     View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.icon_layout, null);
                     ImageView iconImg= (ImageView) mMarkerView.findViewById(R.id.iconImg);
                     if(method.equals(ConstantUtil.method_SiteList))
@@ -386,5 +404,19 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
                 }
             }
         });
+    }
+
+    @Override
+    public void onMapStatusChangeStart(MapStatus mapStatus) {
+        ActUtil.changeLayerStatus(maplayers, mapStatus);
+    }
+
+    @Override
+    public void onMapStatusChange(MapStatus mapStatus) {
+
+    }
+
+    @Override
+    public void onMapStatusChangeFinish(MapStatus mapStatus) {
     }
 }

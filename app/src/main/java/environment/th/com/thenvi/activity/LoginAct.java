@@ -32,7 +32,7 @@ public class LoginAct  extends AppCompatActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        SharedPreferencesUtil.setString(this, ConstantUtil.AreaInfo, SharedPreferencesUtil.FAILURE_STRING);
+//        SharedPreferencesUtil.setString(this, ConstantUtil.AreaInfo, SharedPreferencesUtil.FAILURE_STRING);
         initHandler();
         initView();
     }

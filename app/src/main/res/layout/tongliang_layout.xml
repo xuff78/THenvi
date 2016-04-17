@@ -39,7 +39,7 @@
             android:layout_centerVertical="true"
             android:id="@+id/findTypeBtn"
             android:layout_alignParentRight="true"
-            android:text="模拟数据"
+            android:text="区域通量"
             android:gravity="center"
             android:layout_width="80dip"
             android:layout_height="match_parent"/>
@@ -48,25 +48,35 @@
         android:background="@color/transwhite"
         android:layout_width="match_parent"
         android:layout_height="45dip">
+        <LinearLayout
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <TextView
             android:id="@+id/startDate"
             android:textSize="14sp"
             android:gravity="center"
-            android:layout_marginLeft="50dip"
-            android:layout_centerVertical="true"
             android:background="@mipmap/of_white_btn"
             android:layout_width="100dip"
             android:layout_height="32dip" />
+            <ImageView
+                android:textSize="14sp"
+                android:src="@mipmap/icon_arrow_right"
+                android:gravity="center"
+                android:layout_toRightOf="@+id/startDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         <TextView
             android:id="@+id/endDate"
             android:textSize="14sp"
-            android:layout_marginLeft="30dip"
             android:gravity="center"
             android:layout_toRightOf="@+id/startDate"
-            android:layout_centerVertical="true"
             android:background="@mipmap/of_white_btn"
             android:layout_width="100dip"
             android:layout_height="32dip" />
+        </LinearLayout>
         <TextView
             android:id="@+id/findOut"
             android:textSize="14sp"
@@ -89,14 +99,21 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="340dp"
         android:handle="@+id/handle"
         android:content="@+id/leftMenuView">
-        <Button
+        <RelativeLayout
             android:id="@+id/handle"
-            android:text="拉我"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/arrowIcon"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/icon_drag"
+            android:layout_width="40dip"
+            android:layout_height="40dip" />
+        </RelativeLayout>
         <LinearLayout
             android:id="@+id/leftMenuView"
             android:background="@color/white"
@@ -108,14 +125,58 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="45dip">
-                <EditText
-                    android:id="@+id/searchEdt"
-                    style="@style/txt_black_13"
-                    android:hint="输入要查找的内容"
-                    android:background="@mipmap/of_white_btn"
+                android:layout_height="40dip">
+                <TextView
+                    android:text="省界"
+                    android:gravity="center"
+                    style="@style/txt_black_11"
+                    android:layout_width="65dip"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:text="跨界区域"
+                    android:gravity="center"
+                    style="@style/txt_black_11"
+                    android:layout_width="65dip"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:text="类型"
+                    android:gravity="center"
+                    style="@style/txt_black_11"
+                    android:layout_width="40dip"
+                    android:layout_height="match_parent" />
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="35dip" />
+                    android:layout_height="match_parent">
+                <TextView
+                    android:text="COD(t)"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    style="@style/txt_black_11"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:text="NH3N(t)"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    style="@style/txt_black_11"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:text="TP(t)"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    style="@style/txt_black_11"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:text="TN(t)"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    style="@style/txt_black_11"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+                </LinearLayout>
             </LinearLayout>
             <View
                 android:background="@color/light_gray"
@@ -124,8 +185,8 @@
             <ListView
                 android:id="@+id/siteList"
                 android:scrollbars="none"
-                android:divider="@color/light_gray"
-                android:dividerHeight="1px"
+                android:divider="@color/trans"
+                android:dividerHeight="0px"
                 android:cacheColorHint="@color/trans"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>

@@ -42,7 +42,7 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
     public BDLocationService locationService;
     public Fragment frg;
     public MyLocationListener listenerLocation=new MyLocationListener();
-    public View selectBtn=null, select2Btn=null, menu_level2_layout;
+    public View selectBtn=null, select2Btn=null, menu_level2_layout, menu_leve13_layout, menu_leve14_layout;
     private int selectPos=0;
 
     @Override
@@ -73,24 +73,32 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
         findViewById(R.id.menu_btn24).setOnClickListener(listener);
         findViewById(R.id.menu_btn25).setOnClickListener(listener);
 
+
         menu_level2_layout=findViewById(R.id.menu_level2_layout);
-        menu_level2_layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hideMenu();
-            }
-        });
+
+        menu_leve13_layout=findViewById(R.id.menu_leve13_layout);
+        findViewById(R.id.menu_btn31).setOnClickListener(listener2);
+        findViewById(R.id.menu_btn32).setOnClickListener(listener2);
+        findViewById(R.id.menu_btn33).setOnClickListener(listener2);
+
+
+        menu_leve14_layout=findViewById(R.id.menu_leve14_layout);
     }
+
+    int lastShown=-1;
 
     @Override
     public void onClick(View view) {
-        boolean hide=false;
-        if(menu_level2_layout.isShown()) {
-            hideMenu();
-            hide=true;
+        int tmpshown=lastShown;
+        if(lastShown==1) {
+            hideMenu(menu_level2_layout, 1);
+        }else if(lastShown==2) {
+            hideMenu(menu_leve13_layout, 2);
         }
-        if(view.getId()==R.id.menu_btn2&&!menu_level2_layout.isShown()&&!hide) {
-            showMenu();
+        if(view.getId()==R.id.menu_btn2&&tmpshown!=1) {
+            showMenu(menu_level2_layout, 1);
+        }else if(view.getId()==R.id.menu_btn3&&tmpshown!=2) {
+            showMenu(menu_leve13_layout, 2);
         }
         if(selectBtn==view)
             return;
@@ -110,7 +118,7 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
                 break;
             case R.id.menu_btn3:
                 selectPos=2;
-                frg = new TongliangMap();
+                frg = new WaterQualityMap();
                 addListFragment(frg, "menu3");
                 break;
             case R.id.menu_btn5:
@@ -120,6 +128,7 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
                 break;
         }
     }
+
 
     View.OnClickListener listener = new View.OnClickListener() {
         @Override
@@ -155,37 +164,76 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
         }
     };
 
-    private void hideMenu(){
-        Animation anima= AnimationUtils.loadAnimation(this ,R.anim.trans_down_out);
-        anima.setAnimationListener(animalistener);
-        menu_level2_layout.startAnimation(anima);
-    }
-
-    private void showMenu(){
-        Animation anima= AnimationUtils.loadAnimation(this ,R.anim.trans_up_in);
-        anima.setAnimationListener(animalistener);
-        menu_level2_layout.startAnimation(anima);
-    }
-
-    Animation.AnimationListener animalistener=new Animation.AnimationListener() {
+    View.OnClickListener listener2 = new View.OnClickListener() {
         @Override
-        public void onAnimationStart(Animation animation) {
-
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            if(menu_level2_layout.isShown())
-                menu_level2_layout.setVisibility(View.GONE);
-            else
-                menu_level2_layout.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation animation) {
-
+        public void onClick(View view) {
+            if(select2Btn==view)
+                return;
+            select2Btn.setBackgroundResource(R.color.trans);
+            select2Btn=view;
+            view.setBackgroundResource(R.color.alphagray);
+            view.setSelected(true);
+            switch (view.getId()) {
+                case R.id.menu_btn31:
+                    frg = new WaterQualityMap();
+                    addListFragment(frg, "menu31");
+                    break;
+                case R.id.menu_btn32:
+                    frg = new TongliangMap();
+                    addListFragment(frg, "menu32");
+                    break;
+                case R.id.menu_btn33:
+//                    frg = new WaterSource();
+//                    addListFragment(frg, "menu33");
+                    break;
+            }
+            hideMenu(menu_leve13_layout, 2);
         }
     };
+
+    private void hideMenu(final View v, int pos){
+        lastShown=-pos;
+        Animation anima= AnimationUtils.loadAnimation(this ,R.anim.trans_down_out);
+        anima.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                v.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        v.startAnimation(anima);
+    }
+
+    private void showMenu(final View v, int pos){
+        lastShown=pos;
+        Animation anima= AnimationUtils.loadAnimation(this ,R.anim.trans_up_in);
+        anima.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                v.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        v.startAnimation(anima);
+    }
 
     private void initLocation() {
         locationService =  new BDLocationService(getApplicationContext());

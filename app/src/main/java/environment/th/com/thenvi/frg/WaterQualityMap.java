@@ -38,6 +38,7 @@ import java.util.Date;
 
 import environment.th.com.thenvi.R;
 import environment.th.com.thenvi.activity.ChatsInfoAct;
+import environment.th.com.thenvi.activity.MainMenuAct;
 import environment.th.com.thenvi.adapter.SiteListAdapter;
 import environment.th.com.thenvi.bean.WaterQualityBean;
 import environment.th.com.thenvi.bean.WaterQualityBean;
@@ -102,7 +103,7 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
                 }
                 WaterQualityBean bean = (WaterQualityBean) markerExtraInfo.getSerializable("InfoBean");
                 showSupportContent(marker.getPosition(), height, bean.getNAME(), bean);
-                
+                content.setListView(bean.getInfos());
                 return true;
             }
         });
@@ -128,6 +129,7 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
         Date curDate = new Date(System.currentTimeMillis());//获取当前时间
         String str = formatter.format(curDate);
         startDate.setText(str);
+        v.findViewById(R.id.findTypeBtn).setOnClickListener(this);
         siteListview = (ListView) v.findViewById(R.id.siteList);
         mDrawerLayout = (DrawerLayout) v.findViewById(R.id.drawer_layout);
         menuLayout=(LinearLayout)v.findViewById(R.id.leftMenuView);
@@ -178,6 +180,7 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
             mDrawerLayout.closeDrawer(menuLayout);
             WaterQualityBean site= findList.get(i);
             showSupportContent(new LatLng(Double.valueOf(site.getY()),Double.valueOf(site.getX())), 75, site.getNAME(), site);
+            content.setListView(site.getInfos());
 
         }
     };
@@ -286,6 +289,9 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
                 break;
             case R.id.findOut:
                 handler.getShuizhiInfo(materialType, queryDate);
+                break;
+            case R.id.findTypeBtn:
+                ((MainMenuAct)getActivity()).addListFragment(new TongliangMap(),"menu31");
                 break;
         }
     }

@@ -20,10 +20,6 @@ public class WaterSourceBean implements Serializable{
 
     public ArrayList<PopupInfoItem> getInfos(){
         ArrayList<PopupInfoItem> datas = new ArrayList<>();
-        if(INFORMATION.length()>0)
-            datas.add(new PopupInfoItem("详细信息", INFORMATION));
-        if(CICLR.length()>0)
-            datas.add(new PopupInfoItem("范围", CICLR));
         if(CODEN.length()>0)
             datas.add(new PopupInfoItem("代号", CODEN));
         if(CITY.length()>0)
@@ -34,6 +30,10 @@ public class WaterSourceBean implements Serializable{
             datas.add(new PopupInfoItem("水源地", WRESOURCE));
         datas.add(new PopupInfoItem("经度", LODEGREE));
         datas.add(new PopupInfoItem("纬度", LATITUDE));
+        if(CICLR.length()>0)
+            datas.add(new PopupInfoItem("范围", CICLR));
+        if(INFORMATION.length()>0)
+            datas.add(new PopupInfoItem("详细信息", INFORMATION));
         return datas;
     }
 

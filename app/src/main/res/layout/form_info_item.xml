@@ -18,6 +18,7 @@
         android:layout_toRightOf="@+id/nameTxt"
         android:layout_alignParentRight="true"
         android:gravity="center_vertical|right"
-        android:layout_height="40dip"
+        android:layout_height="wrap_content"
+        android:minHeight="40dip"
         style="@style/txt_black_14" />
 </RelativeLayout>

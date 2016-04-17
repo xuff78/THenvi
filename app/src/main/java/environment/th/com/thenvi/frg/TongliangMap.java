@@ -3,8 +3,6 @@ package environment.th.com.thenvi.frg;
 import android.app.DatePickerDialog;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SlidingPaneLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -38,10 +36,16 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import environment.th.com.thenvi.R;
+import environment.th.com.thenvi.activity.MainMenuAct;
 import environment.th.com.thenvi.adapter.SiteListAdapter;
+import environment.th.com.thenvi.adapter.TongliangAdapter;
+import environment.th.com.thenvi.bean.MapAreaInfo;
+import environment.th.com.thenvi.bean.MapPointInfo;
+import environment.th.com.thenvi.bean.TongliangBean;
 import environment.th.com.thenvi.bean.WaterQualityBean;
 import environment.th.com.thenvi.http.CallBack;
 import environment.th.com.thenvi.http.HttpHandler;
+import environment.th.com.thenvi.utils.ActUtil;
 import environment.th.com.thenvi.utils.ConstantUtil;
 import environment.th.com.thenvi.utils.JsonUtil;
 import environment.th.com.thenvi.utils.ScreenUtil;
@@ -52,19 +56,18 @@ import environment.th.com.thenvi.view.MenuPopup;
  * Created by 可爱的蘑菇 on 2016/4/16.
  */
 public class TongliangMap extends BaseFragment implements View.OnClickListener,
-        BaiduMap.OnMapClickListener {
+        BaiduMap.OnMapClickListener, TongliangAdapter.OnAreaItemClick {
 
     private HttpHandler handler;
     private MapView mMapView;
     private BaiduMap baiduMap;
     private LinearLayout menuLayout;
     private TextView endDate, startDate;
-    private EditText searchEdt;
     private MenuPopup popup;
     private ListView siteListview;
     public InfoWindow mInfoWindow;
     private MarkerSupportView content;
-    private ArrayList<WaterQualityBean> siteList=new ArrayList<>();
+    private ArrayList<TongliangBean> siteList=new ArrayList<>();
     private ArrayList<WaterQualityBean> findList=new ArrayList<>();
     private Marker currentMarker;
     private String materialType="", queryDate="";
@@ -111,21 +114,24 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
         initHandler();
         initView(mView);
 
-        handler.getShuizhiInfo("COD","2011-01-01");
+//        handler.getShuizhiInfo("COD","2011-01-01");
+        handler.getTongliangList("2011-12-17", "2011-12-20");
         return mView;
     }
 
     private void initView(View v) {
         slidingDrawer=(SlidingDrawer)v.findViewById(R.id.slidingDrawer);
-        searchEdt = (EditText) v.findViewById(R.id.searchEdt);
-        searchEdt.addTextChangedListener(txtWatcher);
         startDate = (TextView)v.findViewById(R.id.startDate);
         startDate.setOnClickListener(this);
+        endDate = (TextView)v.findViewById(R.id.endDate);
+        endDate.setOnClickListener(this);
         v.findViewById(R.id.findOut).setOnClickListener(this);
+        v.findViewById(R.id.findTypeBtn).setOnClickListener(this);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date curDate = new Date(System.currentTimeMillis());//获取当前时间
         String str = formatter.format(curDate);
         startDate.setText(str);
+        endDate.setText(str);
         siteListview = (ListView) v.findViewById(R.id.siteList);
         menuLayout=(LinearLayout)v.findViewById(R.id.leftMenuView);
         v.findViewById(R.id.listLeftBtn).setOnClickListener(this);
@@ -138,32 +144,6 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
             WaterQualityBean site= findList.get(i);
             showSupportContent(new LatLng(Double.valueOf(site.getY()),Double.valueOf(site.getX())), 75, site.getNAME(), site);
 
-        }
-    };
-
-    TextWatcher txtWatcher=new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-            findList.clear();
-            ArrayList<String> names=new ArrayList<>();
-            for (int i=0;i<siteList.size();i++){
-                WaterQualityBean site=siteList.get(i);
-                if(site.getNAME().startsWith(editable.toString())) {
-                    findList.add(site);
-                    names.add(site.getNAME());
-                }
-            }
-            siteListview.setAdapter(new SiteListAdapter(getActivity(), names));
         }
     };
 
@@ -239,21 +219,37 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
                 break;
             case R.id.startDate:
                 String[] dateStart=startDate.getText().toString().split("-");
+                isStart=true;
                 datePickerDialog=new DatePickerDialog(getActivity(), mDateSetListener, Integer.valueOf(dateStart[0]),
                         Integer.valueOf(dateStart[1])-1, Integer.valueOf(dateStart[2]));
                 datePickerDialog.show();
                 break;
+            case R.id.endDate:
+                String[] dateEnd=startDate.getText().toString().split("-");
+                isStart=false;
+                datePickerDialog=new DatePickerDialog(getActivity(), mDateSetListener, Integer.valueOf(dateEnd[0]),
+                        Integer.valueOf(dateEnd[1])-1, Integer.valueOf(dateEnd[2]));
+                datePickerDialog.show();
+                break;
             case R.id.findOut:
-                handler.getShuizhiInfo(materialType, queryDate);
+                handler.getTongliangList(startDate.getText().toString(), endDate.getText().toString());
+//                handler.getShuizhiInfo(materialType, queryDate);
+                break;
+            case R.id.findTypeBtn:
+                ((MainMenuAct)getActivity()).addListFragment(new WaterQualityMap(),"menu32");
                 break;
         }
     }
 
+    boolean isStart=true;
     DatePickerDialog.OnDateSetListener mDateSetListener=new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             System.out.println("---> 设置后: year="+year+", month="+monthOfYear+",day="+dayOfMonth);
-            startDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+            if(isStart)
+                startDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
+            else
+                endDate.setText(year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
         }
     };
 
@@ -297,64 +293,37 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
         handler=new HttpHandler(getActivity(), new CallBack(getActivity()){
             @Override
             public void doSuccess(String method, String jsonData) {
-                if(method.equals(ConstantUtil.method_Shuizhi)){
+                if(method.equals(ConstantUtil.method_TongliangList)){
                     baiduMap.hideInfoWindow();
                     mInfoWindow = null;
                     baiduMap.clear();
-                    siteList= JsonUtil.getWaterQualityInfo(jsonData);
-                    ArrayList<String> names=new ArrayList<>();
-                    findList.clear();
-                    for (WaterQualityBean bean : siteList) {
-                        findList.add(bean);
-                        names.add(bean.getNAME());
-                        View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.level_layout, null);
-                        TextView nameTxt= (TextView) mMarkerView.findViewById(R.id.nameTxt);
-                        String level="";
-                        switch (bean.getLEVEL()){
-                            case 1:
-                                level="Ⅰ";
-                                nameTxt.setBackgroundResource(R.mipmap.water_lv1);
-                                break;
-                            case 2:
-                                level="Ⅱ";
-                                nameTxt.setBackgroundResource(R.mipmap.water_lv2);
-                                break;
-                            case 3:
-                                level="Ⅲ";
-                                nameTxt.setBackgroundResource(R.mipmap.water_lv3);
-                                break;
-                            case 4:
-                                level="Ⅳ";
-                                nameTxt.setBackgroundResource(R.mipmap.water_lv4);
-                                break;
-                            case 5:
-                                level="Ⅴ";
-                                nameTxt.setBackgroundResource(R.mipmap.water_lv5);
-                                break;
-                            case 6:
-                                level="劣V";
-                                nameTxt.setBackgroundResource(R.mipmap.water_lvl5);
-                                break;
-                        }
-
-                        nameTxt.setText(level);
-                        LatLng point = new LatLng(Double.parseDouble(bean.getY()), Double.parseDouble(bean.getX()));
-                        Bundle bundle = new Bundle();
-                        int dataType = 0;
-                        bundle.putInt("mark_type", dataType);
-                        bundle.putSerializable("InfoBean", bean);
-                        //将标记添加到地图上
-                        addMarkerToMap(point, bundle, mMarkerView);
-                    }
-                    siteListview.setAdapter(new SiteListAdapter(getActivity(), names));
-                    siteListview.setOnItemClickListener(itemClickListener);
-                    if(siteList.size()>0){
-                        WaterQualityBean bean = siteList.get(siteList.size()/2);
-                        LatLng point = new LatLng(Double.parseDouble(bean.getY()), Double.parseDouble(bean.getX()));
-                        refreshMapStatus(point, 10);
-                    }
+                    siteList= JsonUtil.getTongliangList(jsonData);
+                    siteListview.setAdapter(new TongliangAdapter(getActivity(), siteList, TongliangMap.this));
+                    slidingDrawer.open();
+                }else if(method.equals(ConstantUtil.method_TongliangShengdm)){
+//                    baiduMap.clear();
+//                    ArrayList<MapAreaInfo> datalist=JsonUtil.getTongliangMapArea(jsonData);
+//                    ActUtil.showAreaSpace(getActivity(), baiduMap, datalist, getResources().getColor(R.color.normal_blue));
+//                    refreshMapStatus(datalist.get(0).getPoints().get(0), 11);
+                }else if(method.equals(ConstantUtil.method_TongliangKuajiedm)){
+//                    baiduMap.clear();
+//                    ArrayList<MapAreaInfo> datalist=JsonUtil.getTongliangMapArea(jsonData);
+//                    ActUtil.showAreaSpace(getActivity(), baiduMap, datalist, getResources().getColor(R.color.normal_blue));
+//                    refreshMapStatus(datalist.get(0).getPoints().get(0), 11);
                 }
             }
         });
+    }
+
+    @Override
+    public void onFirstNameClick(int pos) {
+        TongliangBean bean=siteList.get(pos);
+//        handler.getShengdm(bean.getFirstId());
+    }
+
+    @Override
+    public void onSeccondNameClick(int pos) {
+        TongliangBean bean=siteList.get(pos);
+//        handler.getKuajiedm(bean.getSecondId());
     }
 }

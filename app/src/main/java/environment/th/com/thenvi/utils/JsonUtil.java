@@ -27,6 +27,8 @@ import environment.th.com.thenvi.bean.GongyeBean;
 import environment.th.com.thenvi.bean.JsonMessage;
 import environment.th.com.thenvi.bean.MapAreaInfo;
 import environment.th.com.thenvi.bean.RiverInfoBean;
+import environment.th.com.thenvi.bean.TongliangBean;
+import environment.th.com.thenvi.bean.TongliangItem;
 import environment.th.com.thenvi.bean.WaterQualityBean;
 import environment.th.com.thenvi.bean.WaterSiteBean;
 import environment.th.com.thenvi.bean.WaterSourceBean;
@@ -329,8 +331,8 @@ public class JsonUtil {
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject subJson = array.getJSONObject(i);
                     Double lon = 0d, lat = 0d;
-                    if (!subJson.isNull("number"))
-                        site.setNum(subJson.getString("number"));
+                    if (!subJson.isNull("6mian"))
+                        site.setNum(subJson.getString("6mian"));
                     if (!subJson.isNull("POINT_X"))
                         lon = Double.valueOf(subJson.getString("POINT_X"));
                     if (!subJson.isNull("POINT_Y"))
@@ -1168,5 +1170,84 @@ public class JsonUtil {
             e.printStackTrace();
         }
         return jsonData;
+    }
+
+    public static ArrayList<TongliangBean> getTongliangList(String jsonData) {
+        ArrayList<TongliangBean> sitelist=new ArrayList<>();
+        try {
+            JSONArray items=new JSONArray(jsonData);
+            for(int j=0;j<items.length();j++) {
+                TongliangBean tlbean=new TongliangBean();
+                JSONObject item=items.getJSONObject(j);
+                if(!item.isNull("firstName"))
+                    tlbean.setFirstName(item.getString("firstName"));
+                if(!item.isNull("secondId"))
+                    tlbean.setSecondId(item.getString("secondId"));
+                if(!item.isNull("firstId"))
+                    tlbean.setFirstId(item.getString("firstId"));
+                if(!item.isNull("secondName"))
+                    tlbean.setSecondName(item.getString("secondName"));
+                tlbean.setNegativeList(getTongliangitem(item.toString(), "negativeList"));
+                tlbean.setPositiveList(getTongliangitem(item.toString(), "positiveList"));
+                tlbean.setNetList(getTongliangitem(item.toString(), "netList"));
+                sitelist.add(tlbean);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return sitelist;
+    }
+
+    public static ArrayList<TongliangItem> getTongliangitem(String jsonData, String name){
+        ArrayList<TongliangItem> sites=new ArrayList();
+        try {
+            JSONObject json=new JSONObject(jsonData);
+            if(!json.isNull(name)) {
+                JSONArray array=json.getJSONArray(name);
+                for(int i=0;i<array.length();i++){
+                    JSONObject subJson=array.getJSONObject(i);
+                    TongliangItem book=new TongliangItem();
+                    if(!subJson.isNull("AMMONIA"))
+                        book.setAMMONIA(subJson.getString("AMMONIA"));
+                    if(!subJson.isNull("COD"))
+                        book.setCOD(subJson.getString("COD"));
+                    if(!subJson.isNull("TN"))
+                        book.setTN(subJson.getString("TN"));
+                    if(!subJson.isNull("TP"))
+                        book.setTP(subJson.getString("TP"));
+                    sites.add(book);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if(sites.size()==0){
+            sites.add(new TongliangItem());
+        }
+        return sites;
+    }
+
+    public static ArrayList<MapAreaInfo> getTongliangMapArea(String jsonData) {
+        ArrayList<MapAreaInfo> sitelist=new ArrayList<>();
+        MapAreaInfo bean=new MapAreaInfo();
+        try {
+            JSONArray items=new JSONArray(jsonData);
+            List<LatLng> points = new ArrayList<LatLng>();
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject subJson = items.getJSONObject(i);
+                Double lon = 0d, lat = 0d;
+                if (!subJson.isNull("x"))
+                    lon = Double.valueOf(subJson.getString("x"));
+                if (!subJson.isNull("y"))
+                    lat = Double.valueOf(subJson.getString("y"));
+                LatLng ll = new LatLng(lat, lon);
+                points.add(ll);
+            }
+            bean.setPoints(points);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        sitelist.add(bean);
+        return sitelist;
     }
 }

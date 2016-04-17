@@ -28,6 +28,7 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.model.LatLng;
 
 import org.json.JSONException;
@@ -40,20 +41,23 @@ import environment.th.com.thenvi.activity.ChatsInfoAct;
 import environment.th.com.thenvi.adapter.SiteListAdapter;
 import environment.th.com.thenvi.bean.CRiverInfoBean;
 import environment.th.com.thenvi.bean.EmergencySupplies;
+import environment.th.com.thenvi.bean.MapAreaInfo;
 import environment.th.com.thenvi.bean.PopupInfoItem;
 import environment.th.com.thenvi.bean.RiverInfoBean;
 import environment.th.com.thenvi.http.CallBack;
 import environment.th.com.thenvi.http.HttpHandler;
+import environment.th.com.thenvi.utils.ActUtil;
 import environment.th.com.thenvi.utils.ConstantUtil;
 import environment.th.com.thenvi.utils.JsonUtil;
 import environment.th.com.thenvi.utils.ScreenUtil;
+import environment.th.com.thenvi.utils.SharedPreferencesUtil;
 import environment.th.com.thenvi.view.MarkerSupportView;
 import environment.th.com.thenvi.view.MenuPopup;
 
 /**
  * Created by Administrator on 2016/4/15.
  */
-public class EmergencySuppliesMap  extends BaseFragment implements View.OnClickListener, BaiduMap.OnMapClickListener {
+public class EmergencySuppliesMap  extends BaseFragment implements View.OnClickListener, BaiduMap.OnMapClickListener, BaiduMap.OnMapStatusChangeListener {
 
     private HttpHandler handler;
     private MapView mMapView;
@@ -70,6 +74,8 @@ public class EmergencySuppliesMap  extends BaseFragment implements View.OnClickL
     private ArrayList<EmergencySupplies> kjList = new ArrayList<>();
     private ArrayList<EmergencySupplies> kjFindList = new ArrayList<>();
     private Marker currentMarker;
+    private ArrayList<Overlay> maplayers=new ArrayList<>();
+    private ArrayList<Marker> sitelayers=new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,6 +90,7 @@ public class EmergencySuppliesMap  extends BaseFragment implements View.OnClickL
         mMapView.showZoomControls(false);
         mMapView.showScaleControl(true);
         baiduMap = mMapView.getMap();
+        baiduMap.setOnMapStatusChangeListener(this);
 
         baiduMap.setOnMapClickListener(this);
         baiduMap.setMyLocationEnabled(true);
@@ -132,6 +139,14 @@ public class EmergencySuppliesMap  extends BaseFragment implements View.OnClickL
             case 2:
                 handler.getYingjiWuziList();
                 break;
+        }
+        String MapData= SharedPreferencesUtil.getString(getActivity(), ConstantUtil.AreaInfo);
+        if(!MapData.equals(SharedPreferencesUtil.FAILURE_STRING)){
+            maplayers.clear();
+            ArrayList<MapAreaInfo> areaInfo = JsonUtil.getAreaInfo(MapData, "fenqu");
+            maplayers.addAll(ActUtil.showAreaSpace(getActivity(), baiduMap, areaInfo));
+            ArrayList<MapAreaInfo> areaInfo2 = JsonUtil.getAreaInfo(MapData, "duanMian");
+            maplayers.addAll(ActUtil.showWorkingLine(baiduMap, areaInfo2));
         }
         return mView;
     }
@@ -232,6 +247,7 @@ public class EmergencySuppliesMap  extends BaseFragment implements View.OnClickL
         MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
         //改变地图状态
         baiduMap.setMapStatus(mMapStatusUpdate);
+        ActUtil.hideLayers(maplayers);
 
     }
 
@@ -249,6 +265,7 @@ public class EmergencySuppliesMap  extends BaseFragment implements View.OnClickL
             Marker marker = (Marker) (baiduMap.addOverlay(option));
             bundle.putInt("height", height);
             marker.setExtraInfo(bundle);
+            sitelayers.add(marker);
         } catch (Exception e) {
 
         }
@@ -325,7 +342,9 @@ public class EmergencySuppliesMap  extends BaseFragment implements View.OnClickL
                             method.equals(ConstantUtil.method_YingjiWuziList)) {
                         baiduMap.hideInfoWindow();
                         mInfoWindow = null;
-                        baiduMap.clear();
+                        ActUtil.removeLayers(sitelayers);
+                        sitelayers.clear();
+                        kjFindList.clear();
                         kjList = JsonUtil.getEmergencyInfo(jsonData);
                         ArrayList<String> names = new ArrayList<>();
                         for (EmergencySupplies bean : kjList) {
@@ -356,5 +375,20 @@ public class EmergencySuppliesMap  extends BaseFragment implements View.OnClickL
                     }
             }
         });
+    }
+
+    @Override
+    public void onMapStatusChangeStart(MapStatus mapStatus) {
+        ActUtil.changeLayerStatus(maplayers, mapStatus);
+    }
+
+    @Override
+    public void onMapStatusChange(MapStatus mapStatus) {
+
+    }
+
+    @Override
+    public void onMapStatusChangeFinish(MapStatus mapStatus) {
+
     }
 }

@@ -154,6 +154,7 @@ public class WaterSource extends BaseFragment implements BaiduMap.OnMapClickList
         mMapView.showScaleControl(true);
         baiduMap = mMapView.getMap();
         baiduMap.setMyLocationEnabled(true);
+        baiduMap.setOnMapClickListener(this);
         //普通地图
 //        baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         //卫星地图
@@ -189,6 +190,8 @@ public class WaterSource extends BaseFragment implements BaiduMap.OnMapClickList
     }
 
     private void initView(View v) {
+        TextView titleTxt = (TextView) v.findViewById(R.id.titleTxt);
+        titleTxt.setText("饮水源");
         searchEdt = (EditText) v.findViewById(R.id.searchEdt);
         searchEdt.addTextChangedListener(txtWatcher);
         siteListview = (ListView) v.findViewById(R.id.siteList);

@@ -28,6 +28,7 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.model.LatLng;
 
 import java.io.Serializable;
@@ -37,14 +38,17 @@ import environment.th.com.thenvi.R;
 import environment.th.com.thenvi.activity.ChatsInfoAct;
 import environment.th.com.thenvi.adapter.SiteListAdapter;
 import environment.th.com.thenvi.bean.CRiverInfoBean;
+import environment.th.com.thenvi.bean.MapAreaInfo;
 import environment.th.com.thenvi.bean.PopupInfoItem;
 import environment.th.com.thenvi.bean.RiverInfoBean;
 import environment.th.com.thenvi.bean.WaterSiteBean;
 import environment.th.com.thenvi.http.CallBack;
 import environment.th.com.thenvi.http.HttpHandler;
+import environment.th.com.thenvi.utils.ActUtil;
 import environment.th.com.thenvi.utils.ConstantUtil;
 import environment.th.com.thenvi.utils.JsonUtil;
 import environment.th.com.thenvi.utils.ScreenUtil;
+import environment.th.com.thenvi.utils.SharedPreferencesUtil;
 import environment.th.com.thenvi.view.MarkerSupportView;
 import environment.th.com.thenvi.view.MenuPopup;
 
@@ -52,7 +56,7 @@ import environment.th.com.thenvi.view.MenuPopup;
  * Created by Administrator on 2016/3/21.
  */
 public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListener,
-        BaiduMap.OnMapClickListener {
+        BaiduMap.OnMapClickListener, BaiduMap.OnMapStatusChangeListener {
 
     private HttpHandler handler;
     private MapView mMapView;
@@ -72,6 +76,8 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
     private ArrayList<CRiverInfoBean> gkList=new ArrayList<>();
     private ArrayList<CRiverInfoBean> gkFindList=new ArrayList<>();
     private Marker currentMarker;
+    private ArrayList<Overlay> maplayers=new ArrayList<>();
+    private ArrayList<Marker> sitelayers=new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,6 +92,7 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
         mMapView.showZoomControls(false);
         mMapView.showScaleControl(true);
         baiduMap = mMapView.getMap();
+        baiduMap.setOnMapStatusChangeListener(this);
 
         baiduMap.setOnMapClickListener(this);
         baiduMap.setMyLocationEnabled(true);
@@ -146,6 +153,14 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
 //                handler.getGateDamSiteList();
                 break;
         }
+        String MapData= SharedPreferencesUtil.getString(getActivity(), ConstantUtil.AreaInfo);
+        if(!MapData.equals(SharedPreferencesUtil.FAILURE_STRING)){
+            maplayers.clear();
+            ArrayList<MapAreaInfo> areaInfo = JsonUtil.getAreaInfo(MapData, "fenqu");
+            maplayers.addAll(ActUtil.showAreaSpace(getActivity(), baiduMap, areaInfo));
+            ArrayList<MapAreaInfo> areaInfo2 = JsonUtil.getAreaInfo(MapData, "duanMian");
+            maplayers.addAll(ActUtil.showWorkingLine(baiduMap, areaInfo2));
+        }
         return mView;
     }
 
@@ -161,7 +176,6 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
         final ArrayList<String> strings=new ArrayList<>();
         strings.add("跨界断面");
         strings.add("国控断面");
-        strings.add("自动检测站");
         popup = new MenuPopup(getActivity(), strings, new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -283,6 +297,7 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
         MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
         //改变地图状态
         baiduMap.setMapStatus(mMapStatusUpdate);
+        ActUtil.hideLayers(maplayers);
 
     }
 
@@ -300,6 +315,7 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
             Marker marker = (Marker) (baiduMap.addOverlay(option));
             bundle.putInt("height", height);
             marker.setExtraInfo(bundle);
+            sitelayers.add(marker);
         }catch (Exception e){
 
         }
@@ -375,7 +391,9 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
                 if(method.equals(ConstantUtil.method_KuajieSiteList)){
                     baiduMap.hideInfoWindow();
                     mInfoWindow = null;
-                    baiduMap.clear();
+                    ActUtil.removeLayers(sitelayers);
+                    sitelayers.clear();
+                    kjFindList.clear();
                     kjList= JsonUtil.getKuajieSite(jsonData);
                     ArrayList<String> names=new ArrayList<>();
                     View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.icon_layout, null);
@@ -402,7 +420,9 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
                 }else if(method.equals(ConstantUtil.method_GuokongSiteList)){
                     baiduMap.hideInfoWindow();
                     mInfoWindow = null;
-                    baiduMap.clear();
+                    ActUtil.removeLayers(sitelayers);
+                    sitelayers.clear();
+                    gkFindList.clear();
                     gkList= JsonUtil.getGuokongSite(jsonData);
                     ArrayList<String> names=new ArrayList<>();
                     View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.icon_layout, null);
@@ -429,5 +449,19 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
                 }
             }
         });
+    }
+
+    @Override
+    public void onMapStatusChangeStart(MapStatus mapStatus) {
+        ActUtil.changeLayerStatus(maplayers, mapStatus);
+    }
+
+    @Override
+    public void onMapStatusChange(MapStatus mapStatus) {
+
+    }
+
+    @Override
+    public void onMapStatusChangeFinish(MapStatus mapStatus) {
     }
 }

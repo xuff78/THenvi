@@ -22,6 +22,7 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolygonOptions;
 import com.baidu.mapapi.map.PolylineOptions;
@@ -34,9 +35,11 @@ import java.util.List;
 import environment.th.com.thenvi.R;
 import environment.th.com.thenvi.activity.MainMenuAct;
 import environment.th.com.thenvi.bean.MapAreaInfo;
+import environment.th.com.thenvi.bean.MapPointInfo;
 import environment.th.com.thenvi.http.CallBack;
 import environment.th.com.thenvi.http.HttpHandler;
 import environment.th.com.thenvi.services.BDLocationService;
+import environment.th.com.thenvi.utils.ActUtil;
 import environment.th.com.thenvi.utils.ConstantUtil;
 import environment.th.com.thenvi.utils.JsonUtil;
 import environment.th.com.thenvi.utils.SharedPreferencesUtil;
@@ -52,7 +55,7 @@ public class CurrentLoactionMap extends BaseFragment {
     private LinearLayout mNavigationView;
     //DrawerLayout控件
     private DrawerLayout mDrawerLayout;
-//    private ArrayList<MapAreaInfo> areaInfo=new ArrayList<>();
+    private ArrayList<MapPointInfo> areaInfo=new ArrayList<>();
     private HttpHandler handler;
     private Handler postHandler=new Handler();
 
@@ -64,30 +67,40 @@ public class CurrentLoactionMap extends BaseFragment {
             public void doSuccess(String method, final String jsonData) {
                 SharedPreferencesUtil.setString(getActivity(), ConstantUtil.AreaInfo, jsonData);
                 ArrayList<MapAreaInfo> areaInfo = JsonUtil.getAreaInfo(jsonData, "fenqu");
-                showAreaSpace(areaInfo);
+                ActUtil.showAreaSpace(getActivity(), baiduMap, areaInfo);
 
+                ArrayList<MapAreaInfo> areaInfo2 = JsonUtil.getAreaInfo(jsonData, "duanMian");
+                ActUtil.showWorkingLine(baiduMap, areaInfo2);
 
                 postHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        ArrayList<MapAreaInfo> areaInfo = JsonUtil.getAreaInfo(jsonData, "duanMian");
-                        showAreaSpace(areaInfo, getResources().getColor(R.color.trans));
+                        if(getActivity()!=null) {
+                            ArrayList<MapAreaInfo> areaInfo = JsonUtil.getAreaInfo3(jsonData, "xian");
+                            showWorkingLine(areaInfo, new int[]{0xFFFFD700, 0xFFEE0000, 0xFF436EEE});
+                        }
                     }
                 },2000);
-
-                postHandler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ArrayList<MapAreaInfo> areaInfo = JsonUtil.getAreaInfo3(jsonData, "xian");
-                        showWorkingLine(areaInfo, new int[]{0xFFFFD700, 0xFFEE0000, 0xFF436EEE});
-                    }
-                },4000);
 
                 if(areaInfo.size()>0) {
                     List<LatLng> points=areaInfo.get(areaInfo.size()/2).getPoints();
                     if(points.size()>0) {
-                        refreshMapStatus(points.get(0), 10);
+                        refreshMapStatus(points.get(0), 11);
                     }
+                }
+
+                for(int i=0;i<CurrentLoactionMap.this.areaInfo.size();i++) {
+                    View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.marker_layout, null);
+                    mMarkerView.setBackgroundResource(0);
+                    MapPointInfo point = CurrentLoactionMap.this.areaInfo.get(i);
+                    TextView nameTxt = (TextView) mMarkerView.findViewById(R.id.nameTxt);
+                    nameTxt.setText(point.getNum());
+                    if(i<6)
+                        nameTxt.setTextSize(26);
+                    else
+                        nameTxt.setTextSize(10);
+                    //将标记添加到地图上
+                    addMarkerToMap(point.getLatLng(), null, mMarkerView, 0);
                 }
             }
         };
@@ -116,7 +129,7 @@ public class CurrentLoactionMap extends BaseFragment {
             child.setVisibility(View.INVISIBLE);
         }
 
-        initView(mView);
+        initPoint();
 
 //        LatLng current_point=new LatLng(39.919209, 116.368666);
 //        refreshMapStatus(current_point, 16);
@@ -130,26 +143,24 @@ public class CurrentLoactionMap extends BaseFragment {
         return mView;
     }
 
-    private void initView(View v) {
-
-    }
+    int[] indexz={-30, -30, -30, 30, 30, 30};
 
     public void showAreaSpace(ArrayList<MapAreaInfo> areaInfo) {
         int color=0;
         int linecolor=getResources().getColor(R.color.bg_coffee);
         for(int i=0;i<areaInfo.size();i++) {
-            if(i<7){
-                color=0x88FF7F24;
-            }else if(i<11){
-                color=0x88008B45;
-            }else if(i<17){
-                color=0x8800C5CD;
-            }else if(i<25){
-                color=0x88CD3333;
-            }else if(i<28){
-                color=0x551b93e5;
-            }else if(i<32){
-                color=0x88CD2990;
+            if(i==0){
+                color=0x66FF7F24;
+            }else if(i==1){
+                color=0x66008B45;
+            }else if(i==2){
+                color=0x6600C5CD;
+            }else if(i==3){
+                color=0x66CD3333;
+            }else if(i==4){
+                color=0x661b93e5;
+            }else if(i==5){
+                color=0x66CD2990;
             }
             List<LatLng> infos = areaInfo.get(i).getPoints();
             OverlayOptions polygonOption = new PolygonOptions()
@@ -157,14 +168,9 @@ public class CurrentLoactionMap extends BaseFragment {
                     .stroke(new Stroke(3, linecolor))
                     .fillColor(color);
             //在地图上添加多边形Option，用于显示
-            baiduMap.addOverlay(polygonOption);
+            Overlay ol=baiduMap.addOverlay(polygonOption);
 
-//            View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.marker_layout, null);
-//            TextView nameTxt = (TextView) mMarkerView.findViewById(R.id.nameTxt);
-//            nameTxt.setText(areaInfo.get(i).getNum());
-//            LatLng point = infos.get(0);
-//            //将标记添加到地图上
-//            addMarkerToMap(point, null, mMarkerView);
+
         }
     }
 
@@ -173,7 +179,7 @@ public class CurrentLoactionMap extends BaseFragment {
             List<LatLng> infos = areaInfo.get(i).getPoints();
             OverlayOptions polygonOption = new PolygonOptions()
                     .points(infos)
-                    .stroke(new Stroke(3, Color.WHITE))
+                    .stroke(new Stroke(2, 0x66ffffff))
                     .fillColor(color);
             //在地图上添加多边形Option，用于显示
             baiduMap.addOverlay(polygonOption);
@@ -199,16 +205,23 @@ public class CurrentLoactionMap extends BaseFragment {
         }
     }
 
-    public void showWorkingSpace(ArrayList<MapAreaInfo> areaInfo, int color) {
-        for(int i=0;i<areaInfo.size();i++) {
-            List<LatLng> infos = areaInfo.get(i).getPoints();
-            OverlayOptions polygonOption = new PolygonOptions()
-                    .points(infos)
-                    .stroke(new Stroke(3, color))
-                    .fillColor(0x551b93e5);
-            //在地图上添加多边形Option，用于显示
-            baiduMap.addOverlay(polygonOption);
-//        }
+    public void addMarkerToMap(LatLng point, Bundle bundle, View markerView, int index) {
+        try {
+            BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromView(markerView);//fromResource(R.mipmap.touxiang2x);
+            int height = markerView.getHeight();//获取marker的高度
+
+            //构建MarkerOption，用于在地图上添加Marker  OverlayOptions
+            MarkerOptions option = new MarkerOptions()
+                    .position(point)
+                    .perspective(true)
+                    .icon(bitmapDescriptor);
+//                    .zIndex(index);
+            //在地图上添加Marker，并显示
+            Marker marker = (Marker) (baiduMap.addOverlay(option));
+            bundle.putInt("height", height);
+            marker.setExtraInfo(bundle);
+        } catch (Exception e) {
+
         }
     }
 
@@ -221,7 +234,6 @@ public class CurrentLoactionMap extends BaseFragment {
                     .color(color);
             //在地图上添加多边形Option，用于显示
             baiduMap.addOverlay(polygonOption);
-//        }
         }
     }
 
@@ -272,6 +284,51 @@ public class CurrentLoactionMap extends BaseFragment {
     public void onDestroy() {
         mMapView.onDestroy();
         super.onDestroy();
+    }
+
+    private void initPoint() {
+        areaInfo.add(new MapPointInfo("①", 121.01955045100,	31.38602669180));
+        areaInfo.add(new MapPointInfo("②", 120.649934629,31.0187802021));
+        areaInfo.add(new MapPointInfo("③", 120.32059745500,	30.68944302740));
+        areaInfo.add(new MapPointInfo("④", 120.87265185500,	30.77947765070));
+        areaInfo.add(new MapPointInfo("⑤", 121.19725036600,	30.87188160620));
+        areaInfo.add(new MapPointInfo("⑥", 121.05272110200,	31.09459883220));
+
+
+        areaInfo.add(new MapPointInfo("13#", 120.17606819100,30.73682967120));
+        areaInfo.add(new MapPointInfo("14#", 120.17369885900,30.57571508220));
+        areaInfo.add(new MapPointInfo("11#", 120.24477882500,30.89320559590));
+        areaInfo.add(new MapPointInfo("12#", 120.37509209500,30.78658564730));
+        areaInfo.add(new MapPointInfo("16#", 120.51725202700,	30.65627237670));
+        areaInfo.add(new MapPointInfo("15#", 120.38456942400,	30.54017509930));
+        areaInfo.add(new MapPointInfo("10#", 120.50755257300,	30.89672257340));
+        areaInfo.add(new MapPointInfo("18#", 120.74033946100,	30.85940559130));
+        areaInfo.add(new MapPointInfo("19#", 120.75277845500,	30.76877863500));
+        areaInfo.add(new MapPointInfo("17#", 120.60173352800,	30.77410963240));
+
+        areaInfo.add(new MapPointInfo("20#", 120.90619271400,	30.7231689903));
+        areaInfo.add(new MapPointInfo("22#", 120.93758636600,	30.83985860080));
+        areaInfo.add(new MapPointInfo("21#", 120.89849238500,	30.95003254770));
+        areaInfo.add(new MapPointInfo("9#", 120.72790046700,	31.00334252200));
+        areaInfo.add(new MapPointInfo("28#", 120.99978133600,	31.07975348520));
+        areaInfo.add(new MapPointInfo("27#", 121.06553030400,	30.90738456820));
+        areaInfo.add(new MapPointInfo("26#", 121.18992024400,	30.83630460250));
+        areaInfo.add(new MapPointInfo("23#", 121.10640128400,	30.76344763760));
+        areaInfo.add(new MapPointInfo("24#", 121.11706327900,	30.66926668300));
+        areaInfo.add(new MapPointInfo("25#", 121.33208017600,	30.75278564270));
+
+        areaInfo.add(new MapPointInfo("5#", 121.01932832600,	31.21658241930));
+        areaInfo.add(new MapPointInfo("6#", 120.92514737200,	31.21835941840));
+        areaInfo.add(new MapPointInfo("8#", 120.67814449100,	31.13839445690));
+        areaInfo.add(new MapPointInfo("7#", 120.78476443900,	31.27877738930));
+        areaInfo.add(new MapPointInfo("29#", 121.09218529100,	31.20414342520));
+        areaInfo.add(new MapPointInfo("30#", 121.17570425100,	31.32320236790));
+        areaInfo.add(new MapPointInfo("1#", 121.11647094600,	31.61699955970));
+        areaInfo.add(new MapPointInfo("2#", 121.12594827500,	31.48668628910));
+        areaInfo.add(new MapPointInfo("31", 121.23256822400,	31.44403830970));
+
+        areaInfo.add(new MapPointInfo("3#", 121.07856163100,	31.33978769320));
+        areaInfo.add(new MapPointInfo("4#", 120.93640170000,	31.40139033020));
     }
 
 }

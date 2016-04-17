@@ -59,6 +59,64 @@
             style="@style/txt_black_12" />
     </LinearLayout>
     <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/menu_leve13_layout"
+        android:orientation="horizontal"
+        android:layout_above="@id/bottomLayout"
+        android:background="@drawable/shape_menu_level2"
+        android:layout_width="match_parent"
+        android:layout_height="40dip">
+        <TextView
+            android:id="@+id/menu_btn31"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="水质模拟"
+            android:layout_height="match_parent"
+            android:drawablePadding="5dip"
+            style="@style/txt_black_12" />
+        <TextView
+            android:id="@+id/menu_btn32"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="区域通量"
+            android:layout_height="match_parent"
+            android:drawablePadding="5dip"
+            style="@style/txt_black_12" />
+        <TextView
+            android:id="@+id/menu_btn33"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="通量超标预警"
+            android:layout_height="match_parent"
+            android:drawablePadding="5dip"
+            style="@style/txt_black_12" />
+    </LinearLayout>
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/menu_leve14_layout"
+        android:orientation="horizontal"
+        android:layout_above="@id/bottomLayout"
+        android:background="@drawable/shape_menu_level2"
+        android:layout_width="match_parent"
+        android:layout_height="40dip">
+        <TextView
+            android:id="@+id/menu_btn41"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="危化品样式"
+            android:layout_height="match_parent"
+            android:drawablePadding="5dip"
+            style="@style/txt_black_12" />
+        <TextView
+            android:id="@+id/menu_btn42"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="法律法规"
+            android:layout_height="match_parent"
+            android:drawablePadding="5dip"
+            style="@style/txt_black_12" />
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/bottomLayout"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
