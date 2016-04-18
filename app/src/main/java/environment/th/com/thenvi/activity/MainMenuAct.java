@@ -28,6 +28,7 @@ import environment.th.com.thenvi.frg.CurrentLoactionMap;
 import environment.th.com.thenvi.frg.EmergencySuppliesMap;
 import environment.th.com.thenvi.frg.SewageDisposalMap;
 import environment.th.com.thenvi.frg.TongliangMap;
+import environment.th.com.thenvi.frg.TongliangYujinMap;
 import environment.th.com.thenvi.frg.WaterDatabaseMap;
 import environment.th.com.thenvi.frg.WaterInfoMap;
 import environment.th.com.thenvi.frg.WaterQualityMap;
@@ -183,8 +184,8 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
                     addListFragment(frg, "menu32");
                     break;
                 case R.id.menu_btn33:
-//                    frg = new WaterSource();
-//                    addListFragment(frg, "menu33");
+                    frg = new TongliangYujinMap();
+                    addListFragment(frg, "menu33");
                     break;
             }
             hideMenu(menu_leve13_layout, 2);
