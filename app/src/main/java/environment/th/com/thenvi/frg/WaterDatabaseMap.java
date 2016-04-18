@@ -77,7 +77,7 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
     private ArrayList<CRiverInfoBean> gkFindList=new ArrayList<>();
     private Marker currentMarker;
     private ArrayList<Overlay> maplayers=new ArrayList<>();
-    private ArrayList<Marker> sitelayers=new ArrayList<>();
+    private ArrayList<Overlay> sitelayers=new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

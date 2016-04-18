@@ -26,6 +26,7 @@ import environment.th.com.thenvi.bean.EmergencySupplies;
 import environment.th.com.thenvi.bean.GongyeBean;
 import environment.th.com.thenvi.bean.JsonMessage;
 import environment.th.com.thenvi.bean.MapAreaInfo;
+import environment.th.com.thenvi.bean.MapPointInfo;
 import environment.th.com.thenvi.bean.RiverInfoBean;
 import environment.th.com.thenvi.bean.TongliangBean;
 import environment.th.com.thenvi.bean.TongliangItem;
@@ -1229,25 +1230,54 @@ public class JsonUtil {
 
     public static ArrayList<MapAreaInfo> getTongliangMapArea(String jsonData) {
         ArrayList<MapAreaInfo> sitelist=new ArrayList<>();
-        MapAreaInfo bean=new MapAreaInfo();
         try {
             JSONArray items=new JSONArray(jsonData);
-            List<LatLng> points = new ArrayList<LatLng>();
-            for (int i = 0; i < items.length(); i++) {
-                JSONObject subJson = items.getJSONObject(i);
-                Double lon = 0d, lat = 0d;
-                if (!subJson.isNull("x"))
-                    lon = Double.valueOf(subJson.getString("x"));
-                if (!subJson.isNull("y"))
-                    lat = Double.valueOf(subJson.getString("y"));
-                LatLng ll = new LatLng(lat, lon);
-                points.add(ll);
+            for(int j=0;j<items.length();j++) {
+                JSONObject item=items.getJSONObject(j);
+//                LogUtil.i("json", item.toString());
+                JSONArray array = item.getJSONArray("pointData1");
+                MapAreaInfo site = new MapAreaInfo();
+                List<LatLng> points = new ArrayList<>();
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject subJson = array.getJSONObject(i);
+                    Double lon = 0d, lat = 0d;
+                    if (!subJson.isNull("POINT_X"))
+                        lon = Double.valueOf(subJson.getString("POINT_X"));
+                    if (!subJson.isNull("POINT_Y"))
+                        lat = Double.valueOf(subJson.getString("POINT_Y"));
+                    LatLng ll = new LatLng(lat, lon);
+                    points.add(ll);
+                }
+                site.setPoints(points);
+                sitelist.add(site);
             }
-            bean.setPoints(points);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        sitelist.add(bean);
+        return sitelist;
+    }
+
+    public static ArrayList<MapPointInfo> getPoints(String jsonData) {
+        ArrayList<MapPointInfo> sitelist=new ArrayList<>();
+        try {
+            JSONObject obj=new JSONObject(jsonData);
+            JSONArray array=obj.getJSONArray("duanMianDian");
+            for(int i=0;i<array.length();i++){
+                JSONObject subJson = array.getJSONObject(i);
+                Double lon = 0d, lat = 0d;
+                String name="";
+                if(!subJson.isNull("NAME"))
+                    name=subJson.getString("NAME");
+                if (!subJson.isNull("X"))
+                    lat = Double.valueOf(subJson.getString("X"));
+                if (!subJson.isNull("Y"))
+                    lon = Double.valueOf(subJson.getString("Y"));
+                MapPointInfo site=new MapPointInfo(name, lat, lon);
+                sitelist.add(site);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return sitelist;
     }
 }

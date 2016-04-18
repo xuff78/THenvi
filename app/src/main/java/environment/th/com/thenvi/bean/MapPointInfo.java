@@ -2,10 +2,12 @@ package environment.th.com.thenvi.bean;
 
 import com.baidu.mapapi.model.LatLng;
 
+import java.io.Serializable;
+
 /**
  * Created by 可爱的蘑菇 on 2016/4/17.
  */
-public class MapPointInfo {
+public class MapPointInfo implements Serializable{
 
     private LatLng latLng;
     private String num;

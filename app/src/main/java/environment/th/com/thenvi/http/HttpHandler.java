@@ -270,6 +270,11 @@ public class HttpHandler extends Handle {
 		request(ConstantUtil.method_TongliangList, params, true);
 	}
 
+	public void getTongliangMap() {
+		HashMap<String, String> params=new HashMap<>();
+		request(ConstantUtil.method_TongliangMap, params, true);
+	}
+
 	public void getTongliangChart(String beginDate, String endDate, String keyPointId) {
 		HashMap<String, String> params=new HashMap<>();
 		params.put("beginDate", beginDate);

@@ -150,7 +150,7 @@ public class ActUtil {
         }
     }
 
-    public static void removeLayers(ArrayList<Marker> layers) {
+    public static void removeLayers(ArrayList<Overlay> layers) {
         for(int i=0;i<layers.size();i++) {
             layers.get(i).remove();
         }

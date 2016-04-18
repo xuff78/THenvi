@@ -94,32 +94,13 @@
         android:layout_height="fill_parent"
         android:clickable="true" />
     </LinearLayout>
-    <SlidingDrawer
-        android:id="@+id/slidingDrawer"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="340dp"
-        android:handle="@+id/handle"
-        android:content="@+id/leftMenuView">
-        <RelativeLayout
-            android:id="@+id/handle"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/arrowIcon"
-            android:layout_alignParentRight="true"
-            android:src="@mipmap/icon_drag"
-            android:layout_width="40dip"
-            android:layout_height="40dip" />
-        </RelativeLayout>
         <LinearLayout
+            android:layout_alignParentBottom="true"
             android:id="@+id/leftMenuView"
             android:background="@color/white"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="220dip">
             <LinearLayout
                 android:padding="5dip"
                 android:orientation="horizontal"
@@ -191,5 +172,4 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </LinearLayout>
-    </SlidingDrawer>
 </RelativeLayout>

@@ -8,6 +8,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -29,6 +31,7 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.model.LatLng;
 
 import java.text.SimpleDateFormat;
@@ -43,12 +46,14 @@ import environment.th.com.thenvi.bean.MapAreaInfo;
 import environment.th.com.thenvi.bean.MapPointInfo;
 import environment.th.com.thenvi.bean.TongliangBean;
 import environment.th.com.thenvi.bean.WaterQualityBean;
+import environment.th.com.thenvi.bean.WaterSourceBean;
 import environment.th.com.thenvi.http.CallBack;
 import environment.th.com.thenvi.http.HttpHandler;
 import environment.th.com.thenvi.utils.ActUtil;
 import environment.th.com.thenvi.utils.ConstantUtil;
 import environment.th.com.thenvi.utils.JsonUtil;
 import environment.th.com.thenvi.utils.ScreenUtil;
+import environment.th.com.thenvi.utils.SharedPreferencesUtil;
 import environment.th.com.thenvi.view.MarkerSupportView;
 import environment.th.com.thenvi.view.MenuPopup;
 
@@ -72,7 +77,8 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
     private Marker currentMarker;
     private String materialType="", queryDate="";
     private DatePickerDialog datePickerDialog;
-    private SlidingDrawer slidingDrawer;
+    private View leftMenuView;
+    private ArrayList<Overlay> showPoints=new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -95,13 +101,8 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
             public boolean onMarkerClick(Marker marker) {
                 currentMarker = marker;
                 Bundle markerExtraInfo = marker.getExtraInfo();
-                int height = 0;
-                if (markerExtraInfo != null) {
-                    height = markerExtraInfo.getInt("height");
-                    height += 5;
-                }
-                WaterQualityBean bean = (WaterQualityBean) markerExtraInfo.getSerializable("InfoBean");
-                showSupportContent(marker.getPosition(), height, bean.getNAME(), bean);
+                MapPointInfo bean = (MapPointInfo) markerExtraInfo.getSerializable("InfoBean");
+//                showSupportContent(marker.getPosition(), height, bean.getNAME(), bean);
 
                 return true;
             }
@@ -116,11 +117,18 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
 
 //        handler.getShuizhiInfo("COD","2011-01-01");
         handler.getTongliangList("2011-12-17", "2011-12-20");
+
+        String tongliangMap=SharedPreferencesUtil.getString(getActivity(), ConstantUtil.TongliangMap);
+        if(tongliangMap.equals(SharedPreferencesUtil.FAILURE_STRING)) {
+            handler.getTongliangMap();
+        }else {
+            showTongliangMap(tongliangMap);
+        }
         return mView;
     }
 
     private void initView(View v) {
-        slidingDrawer=(SlidingDrawer)v.findViewById(R.id.slidingDrawer);
+        leftMenuView=v.findViewById(R.id.leftMenuView);
         startDate = (TextView)v.findViewById(R.id.startDate);
         startDate.setOnClickListener(this);
         endDate = (TextView)v.findViewById(R.id.endDate);
@@ -187,7 +195,6 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
                     .icon(bitmapDescriptor).zIndex(9);
             //在地图上添加Marker，并显示
             Marker marker = (Marker) (baiduMap.addOverlay(option));
-            bundle.putInt("height", height);
             marker.setExtraInfo(bundle);
         }catch (Exception e){
 
@@ -209,10 +216,10 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.listLeftBtn:
-                if(slidingDrawer.isOpened())
-                    slidingDrawer.close();
+                if(leftMenuView.isShown())
+                    hideMenu(leftMenuView);
                 else
-                    slidingDrawer.open();
+                    showMenu(leftMenuView);
                 break;
             case R.id.typeBtn:
                 popup.showPopupWindow(view);
@@ -296,34 +303,103 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
                 if(method.equals(ConstantUtil.method_TongliangList)){
                     baiduMap.hideInfoWindow();
                     mInfoWindow = null;
-                    baiduMap.clear();
                     siteList= JsonUtil.getTongliangList(jsonData);
                     siteListview.setAdapter(new TongliangAdapter(getActivity(), siteList, TongliangMap.this));
-                    slidingDrawer.open();
+                    showMenu(leftMenuView);
                 }else if(method.equals(ConstantUtil.method_TongliangShengdm)){
-//                    baiduMap.clear();
-//                    ArrayList<MapAreaInfo> datalist=JsonUtil.getTongliangMapArea(jsonData);
-//                    ActUtil.showAreaSpace(getActivity(), baiduMap, datalist, getResources().getColor(R.color.normal_blue));
-//                    refreshMapStatus(datalist.get(0).getPoints().get(0), 11);
+                    if(showPoints.size()>0) {
+                        ActUtil.removeLayers(showPoints);
+                        showPoints.clear();
+                    }
+                    ArrayList<MapAreaInfo> datalist=JsonUtil.getTongliangMapArea(jsonData);
+                    showPoints=ActUtil.showAreaSpace(getActivity(), baiduMap, datalist, 0xaaAEEEEE);
+                    refreshMapStatus(datalist.get(0).getPoints().get(0), 10);
                 }else if(method.equals(ConstantUtil.method_TongliangKuajiedm)){
-//                    baiduMap.clear();
-//                    ArrayList<MapAreaInfo> datalist=JsonUtil.getTongliangMapArea(jsonData);
-//                    ActUtil.showAreaSpace(getActivity(), baiduMap, datalist, getResources().getColor(R.color.normal_blue));
-//                    refreshMapStatus(datalist.get(0).getPoints().get(0), 11);
+                    if(showPoints.size()>0) {
+                        ActUtil.removeLayers(showPoints);
+                        showPoints.clear();
+                    }
+                    ArrayList<MapAreaInfo> datalist=JsonUtil.getTongliangMapArea(jsonData);
+                    showPoints=ActUtil.showAreaSpace(getActivity(), baiduMap, datalist, 0xaaAEEEEE);
+                    refreshMapStatus(datalist.get(0).getPoints().get(0), 10);
+                }else if(method.equals(ConstantUtil.method_TongliangMap)){
+                    SharedPreferencesUtil.setString(getActivity(), ConstantUtil.TongliangMap, jsonData);
+                    showTongliangMap(jsonData);
                 }
             }
         });
     }
 
+    private void showTongliangMap(String jsonData) {
+        ArrayList<MapAreaInfo> infos=JsonUtil.getAreaInfo(jsonData, "14fenqu");
+        ArrayList<MapPointInfo> points=JsonUtil.getPoints(jsonData);
+        int width=ScreenUtil.dip2px(getActivity(),12);
+        LinearLayout.LayoutParams llp=new LinearLayout.LayoutParams(width,width);
+        for (MapPointInfo bean : points) {
+            View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.icon_layout, null);
+            ImageView nameTxt= (ImageView) mMarkerView.findViewById(R.id.iconImg);
+            nameTxt.setImageResource(R.mipmap.icon_duanmian);
+            nameTxt.setLayoutParams(llp);
+            Bundle bundle=new Bundle();
+            bundle.putSerializable("InfoBean", bean);
+            addMarkerToMap(bean.getLatLng(), bundle, mMarkerView);
+        }
+        ActUtil.showAreaSpace(getActivity(), baiduMap, infos, 0x99CCCCCC);
+        if(infos.size()>0)
+        refreshMapStatus(infos.get(0).getPoints().get(0), 10);
+    }
+
     @Override
     public void onFirstNameClick(int pos) {
         TongliangBean bean=siteList.get(pos);
-//        handler.getShengdm(bean.getFirstId());
+        handler.getShengdm(bean.getFirstId());
     }
 
     @Override
     public void onSeccondNameClick(int pos) {
         TongliangBean bean=siteList.get(pos);
-//        handler.getKuajiedm(bean.getSecondId());
+        handler.getKuajiedm(bean.getSecondId());
+    }
+
+    private void hideMenu(final View v){
+        Animation anima= AnimationUtils.loadAnimation(getActivity() ,R.anim.trans_down_out);
+        anima.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                v.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        v.startAnimation(anima);
+    }
+
+    private void showMenu(final View v){
+        Animation anima= AnimationUtils.loadAnimation(getActivity() ,R.anim.trans_up_in);
+        anima.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                v.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        v.startAnimation(anima);
     }
 }

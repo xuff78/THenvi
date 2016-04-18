@@ -78,7 +78,7 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
     private ArrayList<WaterSiteBean> siteList=new ArrayList<>();
     private ArrayList<WaterSiteBean> findList=new ArrayList<>();
     private ArrayList<Overlay> maplayers=new ArrayList<>();
-    private ArrayList<Marker> sitelayers=new ArrayList<>();
+    private ArrayList<Overlay> sitelayers=new ArrayList<>();
     private Marker currentMarker;
 
     @Override

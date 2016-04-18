@@ -75,7 +75,7 @@ public class EmergencySuppliesMap  extends BaseFragment implements View.OnClickL
     private ArrayList<EmergencySupplies> kjFindList = new ArrayList<>();
     private Marker currentMarker;
     private ArrayList<Overlay> maplayers=new ArrayList<>();
-    private ArrayList<Marker> sitelayers=new ArrayList<>();
+    private ArrayList<Overlay> sitelayers=new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
