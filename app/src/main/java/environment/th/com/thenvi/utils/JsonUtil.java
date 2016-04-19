@@ -30,6 +30,7 @@ import environment.th.com.thenvi.bean.MapPointInfo;
 import environment.th.com.thenvi.bean.RiverInfoBean;
 import environment.th.com.thenvi.bean.TongliangBean;
 import environment.th.com.thenvi.bean.TongliangItem;
+import environment.th.com.thenvi.bean.TongliangYujingBean;
 import environment.th.com.thenvi.bean.WaterQualityBean;
 import environment.th.com.thenvi.bean.WaterSiteBean;
 import environment.th.com.thenvi.bean.WaterSourceBean;
@@ -1274,6 +1275,35 @@ public class JsonUtil {
                     lon = Double.valueOf(subJson.getString("Y"));
                 MapPointInfo site=new MapPointInfo(name, lat, lon);
                 sitelist.add(site);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return sitelist;
+    }
+
+    public static ArrayList<TongliangYujingBean> getTongliangYujingList(String jsonData) {
+        ArrayList<TongliangYujingBean> sitelist=new ArrayList<>();
+        try {
+            JSONArray items=new JSONArray(jsonData);
+            for(int j=0;j<items.length();j++) {
+                TongliangYujingBean tlbean=new TongliangYujingBean();
+                JSONObject item=items.getJSONObject(j);
+                if(!item.isNull("tongLiangYuZhi"))
+                    tlbean.setTongLiangYuZhi(item.getString("tongLiangYuZhi"));
+                if(!item.isNull("duanMianName"))
+                    tlbean.setDuanMianName(item.getString("duanMianName"));
+                if(!item.isNull("provinceName"))
+                    tlbean.setProvinceName(item.getString("provinceName"));
+                if(!item.isNull("chaoBiaoTongLiang"))
+                    tlbean.setChaoBiaoTongLiang(item.getString("chaoBiaoTongLiang"));
+                if(!item.isNull("chaoBiaoBeiShu"))
+                    tlbean.setChaoBiaoBeiShu(item.getString("chaoBiaoBeiShu"));
+                if(!item.isNull("x"))
+                    tlbean.setX(item.getString("x"));
+                if(!item.isNull("y"))
+                    tlbean.setY(item.getString("y"));
+                sitelist.add(tlbean);
             }
         } catch (JSONException e) {
             e.printStackTrace();

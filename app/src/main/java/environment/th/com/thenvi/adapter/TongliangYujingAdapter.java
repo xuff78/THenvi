@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import environment.th.com.thenvi.R;
 import environment.th.com.thenvi.bean.TongliangBean;
 import environment.th.com.thenvi.bean.TongliangItem;
+import environment.th.com.thenvi.bean.TongliangYujingBean;
 import environment.th.com.thenvi.utils.ScreenUtil;
 
 /**
@@ -24,10 +25,10 @@ public class TongliangYujingAdapter   extends BaseAdapter {
 
     private LayoutInflater mInflater;
     private Context con;
-    private ArrayList<TongliangBean> dataList;
+    private ArrayList<TongliangYujingBean> dataList;
     private int itemHeight = 0;
 
-    public TongliangYujingAdapter(Context context, ArrayList<TongliangBean> dataList) {
+    public TongliangYujingAdapter(Context context, ArrayList<TongliangYujingBean> dataList) {
         this.mInflater = LayoutInflater.from(context);
         this.dataList = dataList;
         con = context;
@@ -61,6 +62,13 @@ public class TongliangYujingAdapter   extends BaseAdapter {
         TextView dataTxt2 = (TextView)v.findViewById(R.id.dataTxt2);
         TextView dataTxt3 = (TextView)v.findViewById(R.id.dataTxt3);
         TextView dataTxt4 = (TextView)v.findViewById(R.id.dataTxt4);
+
+        TongliangYujingBean bean=dataList.get(position);
+        nameTxt1.setText(bean.getProvinceName());
+        dataTxt1.setText(bean.getDuanMianName());
+        dataTxt2.setText(bean.getTongLiangYuZhi());
+        dataTxt3.setText(bean.getChaoBiaoTongLiang());
+        dataTxt4.setText(bean.getChaoBiaoBeiShu());
 
         return v;
     }

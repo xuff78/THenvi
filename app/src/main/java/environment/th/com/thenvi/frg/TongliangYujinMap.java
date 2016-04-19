@@ -41,7 +41,9 @@ import environment.th.com.thenvi.adapter.TongliangYujingAdapter;
 import environment.th.com.thenvi.bean.MapAreaInfo;
 import environment.th.com.thenvi.bean.MapPointInfo;
 import environment.th.com.thenvi.bean.TongliangBean;
+import environment.th.com.thenvi.bean.TongliangYujingBean;
 import environment.th.com.thenvi.bean.WaterQualityBean;
+import environment.th.com.thenvi.bean.WaterSiteBean;
 import environment.th.com.thenvi.http.CallBack;
 import environment.th.com.thenvi.http.HttpHandler;
 import environment.th.com.thenvi.utils.ActUtil;
@@ -56,7 +58,7 @@ import environment.th.com.thenvi.view.MenuPopup;
  * Created by 可爱的蘑菇 on 2016/4/18.
  */
 public class TongliangYujinMap extends BaseFragment implements View.OnClickListener,
-        BaiduMap.OnMapClickListener, TongliangAdapter.OnAreaItemClick {
+        BaiduMap.OnMapClickListener{
 
     private HttpHandler handler;
     private MapView mMapView;
@@ -67,7 +69,7 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
     private ListView siteListview;
     public InfoWindow mInfoWindow;
     private MarkerSupportView content;
-    private ArrayList<TongliangBean> siteList=new ArrayList<>();
+    private ArrayList<TongliangYujingBean> siteList=new ArrayList<>();
     private ArrayList<WaterQualityBean> findList=new ArrayList<>();
     private Marker currentMarker;
     private String materialType="", queryDate="";
@@ -112,7 +114,7 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
         initView(mView);
 
 //        handler.getShuizhiInfo("COD","2011-01-01");
-        handler.getWarningList("2011-01-01", "COD");
+        handler.getWarningList("2011-01-01", "3");
 
         String tongliangMap= SharedPreferencesUtil.getString(getActivity(), ConstantUtil.TongliangMap);
         if(tongliangMap.equals(SharedPreferencesUtil.FAILURE_STRING)) {
@@ -141,6 +143,7 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
 
         typeBtn=(TextView)v.findViewById(R.id.typeBtn);
         typeBtn.setOnClickListener(this);
+        typeBtn.setText("COD");
         final ArrayList<String> strings=new ArrayList<>();
         strings.add("COD");
         strings.add("AMMONIA");
@@ -249,7 +252,16 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
                 datePickerDialog.show();
                 break;
             case R.id.findOut:
-                handler.getTongliangList(startDate.getText().toString(), endDate.getText().toString());
+                String type=typeBtn.getText().toString();
+                if(type.equals("COD"))
+                    type="3";
+                else if(type.equals("AMMONIA"))
+                    type="4";
+                else if(type.equals("TP"))
+                    type="5";
+                else if(type.equals("TN"))
+                    type="6";
+                handler.getWarningList(startDate.getText().toString(), type);
 //                handler.getShuizhiInfo(materialType, queryDate);
                 break;
             case R.id.findTypeBtn:
@@ -311,11 +323,12 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
             @Override
             public void doSuccess(String method, String jsonData) {
                 if(method.equals(ConstantUtil.method_warningList)){
-//                    baiduMap.hideInfoWindow();
-//                    mInfoWindow = null;
-//                    siteList= JsonUtil.getWarn(jsonData);
-//                    siteListview.setAdapter(new TongliangYujingAdapter(getActivity(), siteList, TongliangYujinMap.this));
-//                    showMenu(leftMenuView);
+                    baiduMap.hideInfoWindow();
+                    mInfoWindow = null;
+                    siteList= JsonUtil.getTongliangYujingList(jsonData);
+                    siteListview.setAdapter(new TongliangYujingAdapter(getActivity(), siteList));
+                    showMenu(leftMenuView);
+                    showTongliangyujin();
                 }else if(method.equals(ConstantUtil.method_TongliangShengdm)){
                     if(showPoints.size()>0) {
                         ActUtil.removeLayers(showPoints);
@@ -340,6 +353,19 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
         });
     }
 
+    private void showTongliangyujin() {
+        for (TongliangYujingBean bean : siteList) {
+            View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.tongliang_mark, null);
+            LatLng point = new LatLng(Double.parseDouble(bean.getX()), Double.parseDouble(bean.getY()));
+            Bundle bundle = new Bundle();
+            int dataType = 0;
+            bundle.putInt("mark_type", dataType);
+            bundle.putSerializable("InfoBean", bean);
+            //将标记添加到地图上
+            addMarkerToMap(point, bundle, mMarkerView);
+        }
+    }
+
     private void showTongliangMap(String jsonData) {
         ArrayList<MapAreaInfo> infos=JsonUtil.getAreaInfo(jsonData, "14fenqu");
 //        ArrayList<MapPointInfo> points=JsonUtil.getPoints(jsonData);
@@ -358,18 +384,6 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
 //        ActUtil.showWorkingLine(baiduMap, infos);
         if(infos.size()>0)
             refreshMapStatus(infos.get(0).getPoints().get(0), 10);
-    }
-
-    @Override
-    public void onFirstNameClick(int pos) {
-        TongliangBean bean=siteList.get(pos);
-        handler.getShengdm(bean.getFirstId());
-    }
-
-    @Override
-    public void onSeccondNameClick(int pos) {
-        TongliangBean bean=siteList.get(pos);
-        handler.getKuajiedm(bean.getSecondId());
     }
 
     private void hideMenu(final View v){

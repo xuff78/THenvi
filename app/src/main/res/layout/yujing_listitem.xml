@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/light_gray"
+    android:paddingBottom="1px"
     android:layout_width="match_parent"
     android:layout_height="40dip">
     <TextView
@@ -9,8 +10,10 @@
         android:background="@color/white"
         android:gravity="center"
         style="@style/txt_black_11"
+        android:paddingLeft="4dip"
+        android:paddingRight="4dip"
         android:layout_width="60dip"
-        android:layout_height="match_parent" />
+        android:layout_height="40dip" />
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -18,7 +21,8 @@
         <TextView
             android:id="@+id/dataTxt1"
             android:layout_marginLeft="1px"
-            android:layout_marginBottom="1px"
+            android:paddingLeft="4dip"
+            android:paddingRight="4dip"
             android:text=""
             android:gravity="center"
             style="@style/txt_black_11"
@@ -29,7 +33,6 @@
         <TextView
             android:id="@+id/dataTxt2"
             android:layout_marginLeft="1px"
-            android:layout_marginBottom="1px"
             android:background="@color/white"
             android:text=""
             android:gravity="center"
@@ -40,7 +43,6 @@
         <TextView
             android:id="@+id/dataTxt3"
             android:layout_marginLeft="1px"
-            android:layout_marginBottom="1px"
             android:background="@color/white"
             android:text=""
             android:gravity="center"
@@ -51,7 +53,6 @@
         <TextView
             android:id="@+id/dataTxt4"
             android:layout_marginLeft="1px"
-            android:layout_marginBottom="1px"
             android:background="@color/white"
             android:text=""
             android:gravity="center"
