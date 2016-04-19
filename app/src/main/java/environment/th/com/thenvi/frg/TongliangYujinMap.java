@@ -69,7 +69,7 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
     private ListView siteListview;
     public InfoWindow mInfoWindow;
     private MarkerSupportView content;
-    private ArrayList<TongliangYujingBean> siteList=new ArrayList<>();
+    private ArrayList<ArrayList<TongliangYujingBean>> siteList=new ArrayList<ArrayList<TongliangYujingBean>>();
     private ArrayList<WaterQualityBean> findList=new ArrayList<>();
     private Marker currentMarker;
     private String materialType="", queryDate="";
@@ -99,7 +99,7 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
             public boolean onMarkerClick(Marker marker) {
                 currentMarker = marker;
                 Bundle markerExtraInfo = marker.getExtraInfo();
-                MapPointInfo bean = (MapPointInfo) markerExtraInfo.getSerializable("InfoBean");
+                TongliangYujingBean bean = (TongliangYujingBean) markerExtraInfo.getSerializable("InfoBean");
 //                showSupportContent(marker.getPosition(), height, bean.getNAME(), bean);
 
                 return true;
@@ -114,7 +114,7 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
         initView(mView);
 
 //        handler.getShuizhiInfo("COD","2011-01-01");
-        handler.getWarningList("2011-01-01", "3");
+        handler.getWarningList("2011-12-17", "2011-12-20", "3");
 
         String tongliangMap= SharedPreferencesUtil.getString(getActivity(), ConstantUtil.TongliangMap);
         if(tongliangMap.equals(SharedPreferencesUtil.FAILURE_STRING)) {
@@ -196,6 +196,8 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
 
     }
 
+
+    private ArrayList<Overlay> sitelayers=new ArrayList<>();
     public void addMarkerToMap(LatLng point, Bundle bundle, View markerView) {
         try {
             BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromView(markerView);//fromResource(R.mipmap.touxiang2x);
@@ -209,6 +211,7 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
             //在地图上添加Marker，并显示
             Marker marker = (Marker) (baiduMap.addOverlay(option));
             marker.setExtraInfo(bundle);
+            sitelayers.add(marker);
         }catch (Exception e){
 
         }
@@ -261,7 +264,7 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
                     type="5";
                 else if(type.equals("TN"))
                     type="6";
-                handler.getWarningList(startDate.getText().toString(), type);
+                handler.getWarningList(startDate.getText().toString(), endDate.getText().toString(), type);
 //                handler.getShuizhiInfo(materialType, queryDate);
                 break;
             case R.id.findTypeBtn:
@@ -326,9 +329,11 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
                     baiduMap.hideInfoWindow();
                     mInfoWindow = null;
                     siteList= JsonUtil.getTongliangYujingList(jsonData);
-                    siteListview.setAdapter(new TongliangYujingAdapter(getActivity(), siteList));
-                    showMenu(leftMenuView);
-                    showTongliangyujin();
+                    if(siteList.size()>0) {
+                        siteListview.setAdapter(new TongliangYujingAdapter(getActivity(), siteList.get(0)));
+                        showMenu(leftMenuView);
+                        showTongliangyujin(siteList.get(0));
+                    }
                 }else if(method.equals(ConstantUtil.method_TongliangShengdm)){
                     if(showPoints.size()>0) {
                         ActUtil.removeLayers(showPoints);
@@ -353,16 +358,31 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
         });
     }
 
-    private void showTongliangyujin() {
-        for (TongliangYujingBean bean : siteList) {
-            View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.tongliang_mark, null);
-            LatLng point = new LatLng(Double.parseDouble(bean.getX()), Double.parseDouble(bean.getY()));
-            Bundle bundle = new Bundle();
-            int dataType = 0;
-            bundle.putInt("mark_type", dataType);
-            bundle.putSerializable("InfoBean", bean);
-            //将标记添加到地图上
-            addMarkerToMap(point, bundle, mMarkerView);
+    private void showTongliangyujin(ArrayList<TongliangYujingBean> beans) {
+        for (TongliangYujingBean bean : beans) {
+            float beishu=Float.valueOf(bean.getChaoBiaoTongLiang());
+            int resId=0;
+            if(beishu>1&&beishu<5){
+                resId=R.drawable.shape_round_tongliangyujin3;
+            }else if(beishu<10&&beishu>=5){
+                resId=R.drawable.shape_round_tongliangyujin2;
+            }else if(beishu>10){
+                resId=R.drawable.shape_round_tongliangyujin1;
+            }
+            if(resId!=0) {
+                View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.tongliang_mark, null);
+                TextView numTxt= (TextView) mMarkerView.findViewById(R.id.numTxt);
+                View roundIcon=mMarkerView.findViewById(R.id.roundIcon);
+                roundIcon.setBackgroundResource(resId);
+                numTxt.setText(bean.getChaoBiaoTongLiang());
+                LatLng point = new LatLng(Double.parseDouble(bean.getY()), Double.parseDouble(bean.getX()));
+                Bundle bundle = new Bundle();
+                int dataType = 0;
+                bundle.putInt("mark_type", dataType);
+                bundle.putSerializable("InfoBean", bean);
+                //将标记添加到地图上
+                addMarkerToMap(point, bundle, mMarkerView);
+            }
         }
     }
 

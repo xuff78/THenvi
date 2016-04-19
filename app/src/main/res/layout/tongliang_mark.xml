@@ -9,10 +9,10 @@
         android:paddingRight="3dip"
         android:layout_toRightOf="@+id/roundIcon"
         android:gravity="center"
-        style="@style/txt_black_12"
+        style="@style/txt_black_11"
         android:text="11.11"
         android:layout_width="wrap_content"
-        android:layout_height="30dip" />
+        android:layout_height="20dip" />
     <View
         android:layout_below="@+id/numTxt"
         android:id="@+id/roundIcon"

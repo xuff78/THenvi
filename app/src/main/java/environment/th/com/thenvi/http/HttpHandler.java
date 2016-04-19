@@ -295,9 +295,10 @@ public class HttpHandler extends Handle {
 		request(ConstantUtil.method_TongliangKuajiedm, params, true);
 	}
 
-	public void getWarningList(String queryDate, String queryType) {
+	public void getWarningList(String beginDate, String endDate, String queryType) {
 		HashMap<String, String> params=new HashMap<>();
-		params.put("queryDate", queryDate);
+		params.put("beginDate", beginDate);
+		params.put("endDate", endDate);
 		params.put("queryType", queryType);
 		request(ConstantUtil.method_warningList, params, true);
 	}

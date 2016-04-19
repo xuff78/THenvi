@@ -10,9 +10,9 @@
         android:background="@color/white"
         android:gravity="center"
         style="@style/txt_black_11"
-        android:paddingLeft="4dip"
-        android:paddingRight="4dip"
-        android:layout_width="60dip"
+        android:paddingLeft="2dip"
+        android:paddingRight="2dip"
+        android:layout_width="70dip"
         android:layout_height="40dip" />
     <LinearLayout
         android:orientation="horizontal"

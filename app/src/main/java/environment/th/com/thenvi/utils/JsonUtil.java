@@ -1236,7 +1236,7 @@ public class JsonUtil {
             for(int j=0;j<items.length();j++) {
                 JSONObject item=items.getJSONObject(j);
 //                LogUtil.i("json", item.toString());
-                JSONArray array = item.getJSONArray("pointData1");
+                JSONArray array = item.getJSONArray("pointData");
                 MapAreaInfo site = new MapAreaInfo();
                 List<LatLng> points = new ArrayList<>();
                 for (int i = 0; i < array.length(); i++) {
@@ -1282,28 +1282,34 @@ public class JsonUtil {
         return sitelist;
     }
 
-    public static ArrayList<TongliangYujingBean> getTongliangYujingList(String jsonData) {
-        ArrayList<TongliangYujingBean> sitelist=new ArrayList<>();
+    public static ArrayList<ArrayList<TongliangYujingBean>> getTongliangYujingList(String jsonData) {
+        ArrayList<ArrayList<TongliangYujingBean>> sitelist=new ArrayList<ArrayList<TongliangYujingBean>>();
         try {
-            JSONArray items=new JSONArray(jsonData);
-            for(int j=0;j<items.length();j++) {
-                TongliangYujingBean tlbean=new TongliangYujingBean();
-                JSONObject item=items.getJSONObject(j);
-                if(!item.isNull("tongLiangYuZhi"))
-                    tlbean.setTongLiangYuZhi(item.getString("tongLiangYuZhi"));
-                if(!item.isNull("duanMianName"))
-                    tlbean.setDuanMianName(item.getString("duanMianName"));
-                if(!item.isNull("provinceName"))
-                    tlbean.setProvinceName(item.getString("provinceName"));
-                if(!item.isNull("chaoBiaoTongLiang"))
-                    tlbean.setChaoBiaoTongLiang(item.getString("chaoBiaoTongLiang"));
-                if(!item.isNull("chaoBiaoBeiShu"))
-                    tlbean.setChaoBiaoBeiShu(item.getString("chaoBiaoBeiShu"));
-                if(!item.isNull("x"))
-                    tlbean.setX(item.getString("x"));
-                if(!item.isNull("y"))
-                    tlbean.setY(item.getString("y"));
-                sitelist.add(tlbean);
+            JSONArray itemArray=new JSONArray(jsonData);
+            for(int i=0;i<itemArray.length();i++) {
+                JSONObject obj=itemArray.getJSONObject(i);
+                JSONArray items=obj.getJSONArray("data");
+                ArrayList<TongliangYujingBean> subitem = new ArrayList<>();
+                for (int j = 0; j < items.length(); j++) {
+                    TongliangYujingBean tlbean = new TongliangYujingBean();
+                    JSONObject item = items.getJSONObject(j);
+                    if (!item.isNull("tongLiangYuZhi"))
+                        tlbean.setTongLiangYuZhi(item.getString("tongLiangYuZhi"));
+                    if (!item.isNull("duanMianName"))
+                        tlbean.setDuanMianName(item.getString("duanMianName"));
+                    if (!item.isNull("provinceName"))
+                        tlbean.setProvinceName(item.getString("provinceName"));
+                    if (!item.isNull("chaoBiaoTongLiang"))
+                        tlbean.setChaoBiaoTongLiang(item.getString("chaoBiaoTongLiang"));
+                    if (!item.isNull("chaoBiaoBeiShu"))
+                        tlbean.setChaoBiaoBeiShu(item.getString("chaoBiaoBeiShu"));
+                    if (!item.isNull("x"))
+                        tlbean.setX(item.getString("x"));
+                    if (!item.isNull("y"))
+                        tlbean.setY(item.getString("y"));
+                    subitem.add(tlbean);
+                }
+                sitelist.add(subitem);
             }
         } catch (JSONException e) {
             e.printStackTrace();
