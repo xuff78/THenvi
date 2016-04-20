@@ -4,6 +4,6 @@
     android:layout_height="match_parent">
     <WebView
         android:id="@+id/mWebView"
-        android:layout_width="320dip"
+        android:layout_width="360dip"
         android:layout_height="290dip"/>
 </LinearLayout>

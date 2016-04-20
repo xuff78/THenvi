@@ -29,6 +29,7 @@ import environment.th.com.thenvi.bean.MapAreaInfo;
 import environment.th.com.thenvi.bean.MapPointInfo;
 import environment.th.com.thenvi.bean.RiverInfoBean;
 import environment.th.com.thenvi.bean.TongliangBean;
+import environment.th.com.thenvi.bean.TongliangDataBean;
 import environment.th.com.thenvi.bean.TongliangItem;
 import environment.th.com.thenvi.bean.TongliangYujingBean;
 import environment.th.com.thenvi.bean.WaterQualityBean;
@@ -1332,5 +1333,26 @@ public class JsonUtil {
             e.printStackTrace();
         }
         return sitelist;
+    }
+
+    public static ArrayList<TongliangDataBean> getTongliangChatsData(String jsonStr, String key) {
+        ArrayList<TongliangDataBean> sites=new ArrayList<>();
+        try {
+            JSONObject json=new JSONObject(jsonStr);
+            if(!json.isNull(key)) {
+                JSONArray items=json.getJSONArray(key);
+                for(int j=0;j<items.length();j++) {
+                    JSONObject subJson = items.getJSONObject(j);
+                    TongliangDataBean site = new TongliangDataBean();
+                    if (!subJson.isNull("CICLR"))
+                        site.setDate(subJson.getString("CICLR"));
+                    if (!subJson.isNull("LODEGREE"))
+                        site.setValue(subJson.getString("LODEGREE"));
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return sites;
     }
 }

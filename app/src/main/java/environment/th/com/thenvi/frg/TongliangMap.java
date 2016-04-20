@@ -54,6 +54,8 @@ import environment.th.com.thenvi.utils.ConstantUtil;
 import environment.th.com.thenvi.utils.JsonUtil;
 import environment.th.com.thenvi.utils.ScreenUtil;
 import environment.th.com.thenvi.utils.SharedPreferencesUtil;
+import environment.th.com.thenvi.view.ChatsDialog;
+import environment.th.com.thenvi.view.ChatsDialog2;
 import environment.th.com.thenvi.view.MarkerSupportView;
 import environment.th.com.thenvi.view.MenuPopup;
 
@@ -327,6 +329,12 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
                 }else if(method.equals(ConstantUtil.method_TongliangMap)){
                     SharedPreferencesUtil.setString(getActivity(), ConstantUtil.TongliangMap, jsonData);
                     showTongliangMap(jsonData);
+                }else if(method.equals(ConstantUtil.method_TongliangChart)){
+//                    ChatsDialog2 dialog = new ChatsDialog2();
+//                    Bundle b=new Bundle();
+//                    b.putString("jsonData", jsonData);
+//                    dialog.setArguments(b);
+//                    dialog.show(getFragmentManager(), "loginDialog2");
                 }
             }
         });
