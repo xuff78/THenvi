@@ -11,10 +11,19 @@ public class MapPointInfo implements Serializable{
 
     private LatLng latLng;
     private String num;
+    private String code;
 
     public MapPointInfo(String num, double x, double y) {
         this.num = num;
         this.latLng=new LatLng(y,x);
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public LatLng getLatLng() {

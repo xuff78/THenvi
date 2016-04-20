@@ -1274,6 +1274,8 @@ public class JsonUtil {
                 if (!subJson.isNull("Y"))
                     lon = Double.valueOf(subJson.getString("Y"));
                 MapPointInfo site=new MapPointInfo(name, lat, lon);
+                if(!subJson.isNull("CODE"))
+                    site.setCode(subJson.getString("CODE"));
                 sitelist.add(site);
             }
         } catch (JSONException e) {
@@ -1310,6 +1312,21 @@ public class JsonUtil {
                     subitem.add(tlbean);
                 }
                 sitelist.add(subitem);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return sitelist;
+    }
+
+    public static ArrayList<String> getYujingDate(String jsonData) {
+        ArrayList<String> sitelist=new ArrayList<>();
+        try {
+            JSONArray itemArray=new JSONArray(jsonData);
+            for(int i=0;i<itemArray.length();i++) {
+                JSONObject obj=itemArray.getJSONObject(i);
+                if(!obj.isNull("date"))
+                    sitelist.add(obj.getString("date"));
             }
         } catch (JSONException e) {
             e.printStackTrace();

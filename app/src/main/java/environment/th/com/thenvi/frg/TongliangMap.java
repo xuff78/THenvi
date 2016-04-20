@@ -103,7 +103,7 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
                 Bundle markerExtraInfo = marker.getExtraInfo();
                 MapPointInfo bean = (MapPointInfo) markerExtraInfo.getSerializable("InfoBean");
 //                showSupportContent(marker.getPosition(), height, bean.getNAME(), bean);
-
+                handler.getTongliangChart(startDate.getText().toString(), endDate.getText().toString(), bean.getCode());
                 return true;
             }
         });
@@ -116,6 +116,8 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
         initView(mView);
 
 //        handler.getShuizhiInfo("COD","2011-01-01");
+        startDate.setText("2011-12-17");
+        endDate.setText("2011-12-20");
         handler.getTongliangList("2011-12-17", "2011-12-20");
 
         String tongliangMap=SharedPreferencesUtil.getString(getActivity(), ConstantUtil.TongliangMap);

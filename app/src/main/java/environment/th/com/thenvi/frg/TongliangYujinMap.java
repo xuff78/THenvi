@@ -3,6 +3,7 @@ package environment.th.com.thenvi.frg;
 import android.app.DatePickerDialog;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ZoomControls;
 
@@ -33,6 +35,8 @@ import com.baidu.mapapi.model.LatLng;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import environment.th.com.thenvi.R;
 import environment.th.com.thenvi.activity.MainMenuAct;
@@ -51,6 +55,7 @@ import environment.th.com.thenvi.utils.ConstantUtil;
 import environment.th.com.thenvi.utils.JsonUtil;
 import environment.th.com.thenvi.utils.ScreenUtil;
 import environment.th.com.thenvi.utils.SharedPreferencesUtil;
+import environment.th.com.thenvi.view.ChatsDialog;
 import environment.th.com.thenvi.view.MarkerSupportView;
 import environment.th.com.thenvi.view.MenuPopup;
 
@@ -60,7 +65,7 @@ import environment.th.com.thenvi.view.MenuPopup;
 public class TongliangYujinMap extends BaseFragment implements View.OnClickListener,
         BaiduMap.OnMapClickListener{
 
-    private HttpHandler handler;
+    private HttpHandler mHandler;
     private MapView mMapView;
     private BaiduMap baiduMap;
     private LinearLayout menuLayout;
@@ -76,7 +81,12 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
     private DatePickerDialog datePickerDialog;
     private View leftMenuView;
     private ArrayList<Overlay> showPoints=new ArrayList<>();
-    private TextView typeBtn;
+    private ArrayList<String> dates=new ArrayList<>();
+    private TextView typeBtn, dateTxt;
+    private ImageView playBtn;
+    private SeekBar seekBar;
+    private int stepWidth=1;
+    private boolean isPlay=false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -99,9 +109,9 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
             public boolean onMarkerClick(Marker marker) {
                 currentMarker = marker;
                 Bundle markerExtraInfo = marker.getExtraInfo();
-                TongliangYujingBean bean = (TongliangYujingBean) markerExtraInfo.getSerializable("InfoBean");
+                int pos = markerExtraInfo.getInt("pos", 0);
 //                showSupportContent(marker.getPosition(), height, bean.getNAME(), bean);
-
+                getChatsInfo(pos);
                 return true;
             }
         });
@@ -114,11 +124,11 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
         initView(mView);
 
 //        handler.getShuizhiInfo("COD","2011-01-01");
-        handler.getWarningList("2011-12-17", "2011-12-20", "3");
+        mHandler.getWarningList("2011-12-17", "2011-12-20", "3");
 
         String tongliangMap= SharedPreferencesUtil.getString(getActivity(), ConstantUtil.TongliangMap);
         if(tongliangMap.equals(SharedPreferencesUtil.FAILURE_STRING)) {
-            handler.getTongliangMap();
+            mHandler.getTongliangMap();
         }else {
             showTongliangMap(tongliangMap);
         }
@@ -126,6 +136,26 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
     }
 
     private void initView(View v) {
+        seekBar=(SeekBar) v.findViewById(R.id.seekBar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        dateTxt=(TextView)v.findViewById(R.id.dateTxt);
+        playBtn=(ImageView) v.findViewById(R.id.playBtn);
+        playBtn.setOnClickListener(this);
         leftMenuView=v.findViewById(R.id.leftMenuView);
         startDate = (TextView)v.findViewById(R.id.startDate);
         startDate.setOnClickListener(this);
@@ -138,6 +168,13 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
         startDate.setText(str);
         endDate.setText(str);
         siteListview = (ListView) v.findViewById(R.id.siteList);
+        siteListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                TongliangYujingBean bean=siteList.get(seekBar.getProgress()).get(i);
+                getChatsInfo(i);
+            }
+        });
         menuLayout=(LinearLayout)v.findViewById(R.id.leftMenuView);
         v.findViewById(R.id.listLeftBtn).setOnClickListener(this);
 
@@ -158,15 +195,24 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
         });
     }
 
-    AdapterView.OnItemClickListener itemClickListener=new AdapterView.OnItemClickListener(){
-
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            WaterQualityBean site= findList.get(i);
-            showSupportContent(new LatLng(Double.valueOf(site.getY()),Double.valueOf(site.getX())), 75, site.getNAME(), site);
-
+    private void getChatsInfo(int pos) {
+        ArrayList<String> tongliangyuzhi=new ArrayList<String>();
+        ArrayList<String> tongliangzhi=new ArrayList<String>();
+        String name=siteList.get(0).get(pos).getDuanMianName();
+        for(int i=0;i<siteList.size();i++){
+            ArrayList<TongliangYujingBean> sites=siteList.get(i);
+            tongliangyuzhi.add(sites.get(pos).getTongLiangYuZhi());
+            tongliangzhi.add(sites.get(pos).getChaoBiaoTongLiang());
         }
-    };
+        ChatsDialog dialog = new ChatsDialog();
+        Bundle b=new Bundle();
+        b.putStringArrayList("tongliangyuzhi", tongliangyuzhi);
+        b.putStringArrayList("tongliangzhi", tongliangzhi);
+        b.putStringArrayList("date", dates);
+        b.putString("name", name);
+        dialog.setArguments(b);
+        dialog.show(getFragmentManager(), "loginDialog");
+    }
 
     public void showSupportContent(LatLng endpositon, int height, String title, final WaterQualityBean bean) {
 
@@ -255,6 +301,9 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
                 datePickerDialog.show();
                 break;
             case R.id.findOut:
+                playBtn.setImageResource(R.mipmap.map_icon_play);
+                isPlay=false;
+                stopTimer();
                 String type=typeBtn.getText().toString();
                 if(type.equals("COD"))
                     type="3";
@@ -264,11 +313,21 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
                     type="5";
                 else if(type.equals("TN"))
                     type="6";
-                handler.getWarningList(startDate.getText().toString(), endDate.getText().toString(), type);
+                mHandler.getWarningList(startDate.getText().toString(), endDate.getText().toString(), type);
 //                handler.getShuizhiInfo(materialType, queryDate);
                 break;
             case R.id.findTypeBtn:
                 ((MainMenuAct)getActivity()).addListFragment(new WaterQualityMap(),"menu32");
+                break;
+            case R.id.playBtn:
+                if(isPlay){
+                    stopTimer();
+                    playBtn.setImageResource(R.mipmap.map_icon_play);
+                }else{
+                    startTimer();
+                    playBtn.setImageResource(R.mipmap.map_icon_pause);
+                }
+                isPlay=!isPlay;
                 break;
         }
     }
@@ -322,17 +381,22 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
     }
 
     private void initHandler() {
-        handler=new HttpHandler(getActivity(), new CallBack(getActivity()){
+        mHandler=new HttpHandler(getActivity(), new CallBack(getActivity()){
             @Override
             public void doSuccess(String method, String jsonData) {
                 if(method.equals(ConstantUtil.method_warningList)){
                     baiduMap.hideInfoWindow();
                     mInfoWindow = null;
                     siteList= JsonUtil.getTongliangYujingList(jsonData);
+                    playBtn.setImageResource(R.mipmap.map_icon_play);
+                    seekBar.setProgress(0);
+                    seekBar.setMax(siteList.size());
                     if(siteList.size()>0) {
+                        dates=JsonUtil.getYujingDate(jsonData);
                         siteListview.setAdapter(new TongliangYujingAdapter(getActivity(), siteList.get(0)));
                         showMenu(leftMenuView);
                         showTongliangyujin(siteList.get(0));
+                        dateTxt.setText(dates.get(0));
                     }
                 }else if(method.equals(ConstantUtil.method_TongliangShengdm)){
                     if(showPoints.size()>0) {
@@ -359,7 +423,8 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
     }
 
     private void showTongliangyujin(ArrayList<TongliangYujingBean> beans) {
-        for (TongliangYujingBean bean : beans) {
+        for (int i=0; i<beans.size();i++) {
+            TongliangYujingBean bean=beans.get(i);
             float beishu=Float.valueOf(bean.getChaoBiaoTongLiang());
             int resId=0;
             if(beishu>1&&beishu<5){
@@ -377,9 +442,7 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
                 numTxt.setText(bean.getChaoBiaoTongLiang());
                 LatLng point = new LatLng(Double.parseDouble(bean.getY()), Double.parseDouble(bean.getX()));
                 Bundle bundle = new Bundle();
-                int dataType = 0;
-                bundle.putInt("mark_type", dataType);
-                bundle.putSerializable("InfoBean", bean);
+                bundle.putInt("pos", i);
                 //将标记添加到地图上
                 addMarkerToMap(point, bundle, mMarkerView);
             }
@@ -446,5 +509,57 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
             }
         });
         v.startAnimation(anima);
+    }
+
+    private Handler handler=new Handler();
+    private TimerTask task;
+    private Timer timer=new Timer();
+    private void startTimer() {
+
+        task = new TimerTask(){
+
+            @Override
+            public void run() {
+                handler.post(new Runnable(){
+
+                    @Override
+                    public void run() {
+                        toNextInfo();
+                    }
+
+                });
+            }
+
+        };
+        timer.scheduleAtFixedRate(task, 0, 1000);
+    }
+
+    private void toNextInfo() {
+        if(seekBar.getProgress()+stepWidth>=100||seekBar.getProgress()+stepWidth>(siteList.size()-1)*stepWidth) {
+            seekBar.setProgress(0);
+            dateTxt.setText(dates.get(0));
+            playBtn.setImageResource(R.mipmap.map_icon_play);
+            isPlay=false;
+            stopTimer();
+        }else {
+            int progress=seekBar.getProgress() + stepWidth;
+            seekBar.setProgress(progress);
+
+            dateTxt.setText(dates.get(progress));
+            siteListview.setAdapter(new TongliangYujingAdapter(getActivity(), siteList.get(progress)));
+            showTongliangyujin(siteList.get(progress));
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(task!=null)
+            stopTimer();
+    }
+
+    private void stopTimer() {
+        if(task!=null)
+            task.cancel();
     }
 }
