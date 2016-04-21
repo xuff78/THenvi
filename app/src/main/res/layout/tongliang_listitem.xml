@@ -9,14 +9,14 @@
         android:layout_height="wrap_content">
         <RelativeLayout
             android:orientation="vertical"
-            android:layout_width="65dip"
+            android:layout_width="60dip"
             android:layout_height="match_parent">
             <TextView
                 android:id="@+id/nameTxt1"
                 android:text="江苏到上海"
                 android:gravity="center"
                 style="@style/txt_black_10"
-                android:layout_width="65dip"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent" />
             <View
                 android:layout_alignParentBottom="true"
@@ -38,7 +38,7 @@
                 android:text="江苏到上海"
                 android:gravity="center"
                 style="@style/txt_black_10"
-                android:layout_width="60dip"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent" />
             <View
                 android:layout_alignParentBottom="true"

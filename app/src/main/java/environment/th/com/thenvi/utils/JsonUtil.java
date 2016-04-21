@@ -67,6 +67,30 @@ public class JsonUtil {
         return data;
     }
 
+    public static String getString(String jsonStr, String key) {
+        String data="";
+        try {
+            JSONObject json=new JSONObject(jsonStr);
+            if(!json.isNull(key))
+                data=json.getString(key);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
+    public static int getJsonInt(String jsonStr, String key) {
+        int data=0;
+        try {
+            JSONObject json=new JSONObject(jsonStr);
+            if(!json.isNull(key))
+                data=json.getInt(key);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
     public static ArrayList<WaterSiteBean> getSiteList(String jsonData) {
         ArrayList<WaterSiteBean> sitelist=new ArrayList<>();
         try {
@@ -994,6 +1018,26 @@ public class JsonUtil {
         return jsonData;
     }
 
+    public static ArrayList<BookBean> getPDFTypes(String jsonData){
+        ArrayList<BookBean> sites=new ArrayList();
+        try {
+
+            JSONArray array=new JSONArray(jsonData);
+            for(int i=0;i<array.length();i++){
+                JSONObject subJson=array.getJSONObject(i);
+                BookBean book=new BookBean();
+                if(!subJson.isNull("TYPES"))
+                    book.setBookName(subJson.getString("TYPES"));
+                if(!subJson.isNull("TCODE"))
+                    book.setType(subJson.getString("TCODE"));
+                sites.add(book);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return sites;
+    }
+
     public static ArrayList<BookBean> getPDFInfo(String jsonData){
         ArrayList<BookBean> sites=new ArrayList();
         try {
@@ -1344,10 +1388,10 @@ public class JsonUtil {
                 for(int j=0;j<items.length();j++) {
                     JSONObject subJson = items.getJSONObject(j);
                     TongliangDataBean site = new TongliangDataBean();
-                    if (!subJson.isNull("CICLR"))
-                        site.setDate(subJson.getString("CICLR"));
-                    if (!subJson.isNull("LODEGREE"))
-                        site.setValue(subJson.getString("LODEGREE"));
+                    if (!subJson.isNull("date"))
+                        site.setDate(subJson.getString("date"));
+                    if (!subJson.isNull("value"))
+                        site.setValue(subJson.getString("value"));
                 }
             }
         } catch (JSONException e) {

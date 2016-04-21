@@ -19,6 +19,7 @@ public class ConstantUtil {
 	public static final String method_Login="1/login";
 
 	public static final String method_PDF="1/pdf/list";
+	public static final String method_PDFTypes="1/pdf/typeList";
 
 	public static final String method_zidong="1/shp";
 

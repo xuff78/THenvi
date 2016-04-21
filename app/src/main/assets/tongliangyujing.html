@@ -34,7 +34,7 @@
 
         // 基于准备好的dom，初始化echarts图表
         var myChart2 = echarts.init(document.getElementById('main2'));
-
+        myChart2.showLoading({text: "加载中..."});
         var option2 = {
     tooltip : {
         trigger: 'axis',
@@ -68,7 +68,7 @@
         }
     },
     title: {
-        text:"时刻",
+        text:"",
         x: 'right',                 // 水平安放位置，默认为左对齐，可选为：
                                    // 'center' ¦ 'left' ¦ 'right'
                                    // ¦ {number}（x坐标，单位px）
@@ -131,7 +131,7 @@
         {
             type : 'value',
             name : '通量值\n(t/d)',
-            splitNumber: 5,
+            splitNumber: 6,
             axisLine: {            // 坐标轴线
                 show: true,        // 默认显示，属性show控制显示与否
                 lineStyle: {       // 属性lineStyle控制线条样式
@@ -143,7 +143,7 @@
              axisLabel : {
                 textStyle: {
                     color: 'white',
-                    fontSize: 11
+                    fontSize: 6
                 }
             },
             splitLine: {           // 分隔线
@@ -235,6 +235,7 @@
 
         // 为echarts对象加载数据
         myChart2.setOption(option2);
+        myChart2.hideLoading();
         };
 
     </script>

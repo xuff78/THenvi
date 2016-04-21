@@ -46,21 +46,10 @@
 
         // 基于准备好的dom，初始化echarts图表
         var myChart2 = echarts.init(document.getElementById('main2'));
-
+        myChart2.showLoading({text:"加载中..."});
         var option2 = {
     tooltip : {
-        trigger: 'axis',
-        formatter:function(params)
-        {
-
-            var relVal = params[0].name+"<br/>";
-
-            relVal += "闸上水量：" + params[0].value + "万方<br/>";
-            relVal += "闸下水量：" + params[1].value + "万方<br/>";
-            relVal += "引水量：" + params[2].value + "m<br/>";
-            relVal += "排水量：" + params[3].value + "m";
-            return relVal;
-        }
+        trigger: 'axis'
     },
     grid: {
         x: 30,
@@ -85,13 +74,13 @@
     <!--},-->
     calculable : false,
     legend: {
-        data:['闸上水量','闸下水量','引水量','排水量'],
+        data:['AMMONIA','COD','TN','TP'],
         textStyle: {
             color: 'white'          // 图例文字颜色
         }
     },
     title: {
-        text:"时刻",
+        text:"",
         x: 'right',                 // 水平安放位置，默认为左对齐，可选为：
                                    // 'center' ¦ 'left' ¦ 'right'
                                    // ¦ {number}（x坐标，单位px）
@@ -153,8 +142,8 @@
     yAxis : [
         {
             type : 'value',
-            name : '引排水量\n(万方)',
-            splitNumber: 5,
+            name : '浓度',
+            splitNumber: 6,
             axisLine: {            // 坐标轴线
                 show: true,        // 默认显示，属性show控制显示与否
                 lineStyle: {       // 属性lineStyle控制线条样式
@@ -166,7 +155,7 @@
              axisLabel : {
                 textStyle: {
                     color: 'white',
-                    fontSize: 11
+                    fontSize: 6
                 }
             },
             splitLine: {           // 分隔线
@@ -221,7 +210,7 @@
     ],
     series : [
         {
-            name:'闸上水量',
+            name:'AMMONIA',
             type:'line',
             yAxisIndex: 0,
             itemStyle: {
@@ -232,7 +221,7 @@
             data:m_list1
         },
         {
-            name:'闸下水量',
+            name:'COD',
             type:'line',
             yAxisIndex: 0,
             itemStyle: {
@@ -243,7 +232,7 @@
             data:m_list2
         },
         {
-            name:'引水量',
+            name:'TN',
             type:'line',
             yAxisIndex: 0,
             itemStyle: {
@@ -254,7 +243,7 @@
             data:m_list3
         },
         {
-            name:'排水量',
+            name:'TP',
             type:'line',
             yAxisIndex: 0,
             itemStyle: {
@@ -269,6 +258,7 @@
 
         // 为echarts对象加载数据
         myChart2.setOption(option2);
+        myChart2.hideLoading();
         };
 
     </script>

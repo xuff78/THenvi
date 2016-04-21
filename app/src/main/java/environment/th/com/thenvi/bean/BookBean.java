@@ -7,9 +7,18 @@ public class BookBean {
 
     private String bookName="";
     private String bookUrl="";
+    private String type="";
     private boolean isDownload=false;
     private int progress=-1;
     private String id="";
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getId() {
         return id;

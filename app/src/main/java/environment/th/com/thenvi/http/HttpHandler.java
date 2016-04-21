@@ -169,9 +169,17 @@ public class HttpHandler extends Handle {
 		request(ConstantUtil.method_GuokongSiteList, params, true);
 	}
 
-	public void getPDFlist() {
+	public void getPDFlist(String typeCode, int page) {
 		HashMap<String, String> params=new HashMap<>();
+		params.put("typeCode", typeCode);
+		params.put("page", page+"");
+		params.put("rows", "20");
 		request(ConstantUtil.method_PDF, params, true);
+	}
+
+	public void getPDFType() {
+		HashMap<String, String> params=new HashMap<>();
+		request(ConstantUtil.method_PDFTypes, params, true);
 	}
 
 	public void getGuokongSiteDetail(String hsname, String rsname) {

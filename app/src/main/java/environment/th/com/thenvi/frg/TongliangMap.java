@@ -330,11 +330,11 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
                     SharedPreferencesUtil.setString(getActivity(), ConstantUtil.TongliangMap, jsonData);
                     showTongliangMap(jsonData);
                 }else if(method.equals(ConstantUtil.method_TongliangChart)){
-//                    ChatsDialog2 dialog = new ChatsDialog2();
-//                    Bundle b=new Bundle();
-//                    b.putString("jsonData", jsonData);
-//                    dialog.setArguments(b);
-//                    dialog.show(getFragmentManager(), "loginDialog2");
+                    ChatsDialog2 dialog = new ChatsDialog2();
+                    Bundle b=new Bundle();
+                    b.putString("jsonData", jsonData);
+                    dialog.setArguments(b);
+                    dialog.show(getFragmentManager(), "loginDialog2");
                 }
             }
         });
