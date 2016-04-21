@@ -124,7 +124,9 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
         initView(mView);
 
 //        handler.getShuizhiInfo("COD","2011-01-01");
-        mHandler.getWarningList("2011-12-17", "2011-12-20", "3");
+        mHandler.getWarningList("2011-12-10", "2011-12-20", "3");
+        startDate.setText("2011-12-17");
+        endDate.setText("2011-12-20");
 
         String tongliangMap= SharedPreferencesUtil.getString(getActivity(), ConstantUtil.TongliangMap);
         if(tongliangMap.equals(SharedPreferencesUtil.FAILURE_STRING)) {
@@ -425,7 +427,7 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
     private void showTongliangyujin(ArrayList<TongliangYujingBean> beans) {
         for (int i=0; i<beans.size();i++) {
             TongliangYujingBean bean=beans.get(i);
-            float beishu=Float.valueOf(bean.getChaoBiaoTongLiang());
+            float beishu=Float.valueOf(bean.getChaoBiaoBeiShu());
             int resId=0;
             if(beishu>1&&beishu<5){
                 resId=R.drawable.shape_round_tongliangyujin3;

@@ -1390,8 +1390,9 @@ public class JsonUtil {
                     TongliangDataBean site = new TongliangDataBean();
                     if (!subJson.isNull("date"))
                         site.setDate(subJson.getString("date"));
-                    if (!subJson.isNull("value"))
-                        site.setValue(subJson.getString("value"));
+                    if (!subJson.isNull("data"))
+                        site.setValue(subJson.getString("data"));
+                    sites.add(site);
                 }
             }
         } catch (JSONException e) {

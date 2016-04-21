@@ -118,9 +118,9 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
         initView(mView);
 
 //        handler.getShuizhiInfo("COD","2011-01-01");
-        startDate.setText("2011-12-17");
-        endDate.setText("2011-12-20");
-        handler.getTongliangList("2011-12-17", "2011-12-20");
+        startDate.setText("2011-12-10");
+        endDate.setText("2011-12-27");
+        handler.getTongliangList("2011-12-10", "2011-12-27");
 
         String tongliangMap=SharedPreferencesUtil.getString(getActivity(), ConstantUtil.TongliangMap);
         if(tongliangMap.equals(SharedPreferencesUtil.FAILURE_STRING)) {
