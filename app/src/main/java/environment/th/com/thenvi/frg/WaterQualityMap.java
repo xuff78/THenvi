@@ -115,7 +115,9 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
         initHandler();
         initView(mView);
 
-        handler.getShuizhiInfo("COD","2011-01-01");
+        handler.getShuizhiInfo("AMMONIA","2011-01-01");
+        materialType="AMMONIA";
+        startDate.setText("2011-01-01");
         return mView;
     }
 
@@ -288,7 +290,7 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
                 datePickerDialog.show();
                 break;
             case R.id.findOut:
-                handler.getShuizhiInfo(materialType, queryDate);
+                handler.getShuizhiInfo(materialType, startDate.getText().toString());
                 break;
             case R.id.findTypeBtn:
                 ((MainMenuAct)getActivity()).addListFragment(new TongliangMap(),"menu31");
