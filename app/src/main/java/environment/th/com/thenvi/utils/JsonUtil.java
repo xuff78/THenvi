@@ -519,21 +519,21 @@ public class JsonUtil {
         return sitelist;
     }
 
-    public static ArrayList<ChatKuaJie> getChatKuajie(String jsonData) {
+    public static ArrayList<ChatKuaJie> getChatKuajie(String jsonData, int showPos) {
         ArrayList<ChatKuaJie> sitelist=new ArrayList<>();
         try {
             JSONArray array=new JSONArray(jsonData);
             for(int i=0;i<array.length();i++){
                 JSONObject subJson=array.getJSONObject(i);
                 ChatKuaJie site=new ChatKuaJie();
-                if(!subJson.isNull("NN"))
-                    site.setNN(subJson.getString("NN"));
-                if(!subJson.isNull("CODN"))
+                if(!subJson.isNull("CODN")&&showPos==0)
                     site.setCODN(subJson.getString("CODN"));
-                if(!subJson.isNull("NDN"))
+                if(!subJson.isNull("NDN")&&showPos==1)
                     site.setNDN(subJson.getString("NDN"));
-                if(!subJson.isNull("PN"))
+                if(!subJson.isNull("PN")&&showPos==2)
                     site.setPN(subJson.getString("PN"));
+                if(!subJson.isNull("NN")&&showPos==3)
+                    site.setNN(subJson.getString("NN"));
                 if(!subJson.isNull("FLOW"))
                     site.setFLOW(subJson.getString("FLOW"));
                 if(!subJson.isNull("DATA"))
@@ -546,7 +546,7 @@ public class JsonUtil {
         return sitelist;
     }
 
-    public static ArrayList<ChatGuokong> getChatGuokong(String jsonData) {
+    public static ArrayList<ChatGuokong> getChatGuokong(String jsonData, int showPos) {
         ArrayList<ChatGuokong> sitelist=new ArrayList<>();
         try {
             JSONArray array=new JSONArray(jsonData);
@@ -555,13 +555,13 @@ public class JsonUtil {
                 ChatGuokong site=new ChatGuokong();
                 if(!subJson.isNull("CLCLE"))
                     site.setCLCLE(subJson.getString("CLCLE"));
-                if(!subJson.isNull("PH"))
+                if(!subJson.isNull("PH")&&showPos==0)
                     site.setPH(subJson.getString("PH"));
-                if(!subJson.isNull("DO"))
+                if(!subJson.isNull("DO")&&showPos==1)
                     site.setDO(subJson.getString("DO"));
-                if(!subJson.isNull("CODMN"))
+                if(!subJson.isNull("CODMN")&&showPos==2)
                     site.setCODMN(subJson.getString("CODMN"));
-                if(!subJson.isNull("NH3N"))
+                if(!subJson.isNull("NH3N")&&showPos==3)
                     site.setNH3N(subJson.getString("NH3N"));
                 if(!subJson.isNull("WQUALITY"))
                     site.setWQUALITY(subJson.getString("WQUALITY"));

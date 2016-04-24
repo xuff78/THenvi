@@ -120,7 +120,7 @@ public class ActUtil {
             List<LatLng> infos = areaInfo.get(i).getPoints();
             PolylineOptions polygonOption = new PolylineOptions()
                     .points(infos)
-                    .width(2)
+                    .width(5)
                     .color(0x66ffffff);
             //在地图上添加多边形Option，用于显示
             layers.add(baiduMap.addOverlay(polygonOption));

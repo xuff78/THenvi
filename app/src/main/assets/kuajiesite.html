@@ -55,19 +55,7 @@
 
         var option2 = {
     tooltip : {
-        trigger: 'axis',
-        formatter:function(params)
-        {
-
-            var relVal = params[0].name+"<br/>";
-
-            relVal += "总氮浓度：" + params[0].value + "mg/l<br/>";
-            relVal += "总磷浓度：" + params[1].value + "mg/l<br/>";
-            relVal += "氨氮浓度：" + params[2].value + "mg/l<br/>";
-            relVal += "COD浓度：" + params[3].value + "mg/l<br/>";
-            relVal += "流量：" + params[4].value + "方/秒";
-            return relVal;
-        }
+        trigger: 'axis'
     },
     grid: {
         x: 30,
@@ -160,37 +148,6 @@
     yAxis : [
         {
             type : 'value',
-            name : '',
-            splitNumber: 10,
-            axisLine: {            // 坐标轴线
-                show: true,        // 默认显示，属性show控制显示与否
-                lineStyle: {       // 属性lineStyle控制线条样式
-                    color: 'white',
-                    width: 1,
-                    type: 'solid'
-                }
-             },
-             axisLabel : {
-                textStyle: {
-                    color: 'white',
-                    fontSize: 11
-                }
-            },
-            splitLine: {           // 分隔线
-                show: true,        // 默认显示，属性show控制显示与否
-                // onGap: null,
-                lineStyle: {
-                    color: ['#969696'],
-                    width: 1,
-                    type: 'solid'
-                }
-            }
-            <!--axisLabel : {-->
-                <!--formatter: '{value} °C'-->
-            <!--}-->
-        },
-        {
-            type : 'value',
             name : '流量\n(方/秒)',
             splitNumber: 5,
             axisLine: {            // 坐标轴线
@@ -222,16 +179,45 @@
                     color:['rgba(70,130,180,0.2)','rgba(71,71,71,0.2)']
                 }
             }
-        }
-
+        },
+        {
+            type : 'value',
+            name : '浓度\n(mg/l)',
+            splitNumber: 10,
+            axisLine: {            // 坐标轴线
+                show: true,        // 默认显示，属性show控制显示与否
+                lineStyle: {       // 属性lineStyle控制线条样式
+                    color: 'white',
+                    width: 1,
+                    type: 'solid'
+                }
+             },
+             axisLabel : {
+                textStyle: {
+                    color: 'white',
+                    fontSize: 11
+                }
+            },
+            splitLine: {           // 分隔线
+                show: true,        // 默认显示，属性show控制显示与否
+                // onGap: null,
+                lineStyle: {
+                    color: ['#969696'],
+                    width: 1,
+                    type: 'solid'
+                }
+            }
+            <!--axisLabel : {-->
+                <!--formatter: '{value} °C'-->
+            <!--}-->
+        },
 
     ],
     series : [
         {
             name:'COD浓度',
-            type:'bar',
-            yAxisIndex: 0,
-            stack: '浓度',
+            type:'line',
+            yAxisIndex: 1,
             itemStyle: {
                 normal: {
                     color: '#5CACEE',
@@ -241,9 +227,8 @@
         },
         {
             name:'氨氮浓度',
-            type:'bar',
-            yAxisIndex: 0,
-            stack: '浓度',
+            type:'line',
+            yAxisIndex: 1,
             itemStyle: {
                 normal: {
                     color: '#7A67EE',
@@ -253,9 +238,8 @@
         },
         {
             name:'总磷浓度',
-            type:'bar',
-            yAxisIndex: 0,
-            stack: '浓度',
+            type:'line',
+            yAxisIndex: 1,
             itemStyle: {
                 normal: {
                     color: '#458B74',
@@ -265,20 +249,19 @@
         },
         {
             name:'总氮浓度',
-            type:'bar',
-            yAxisIndex: 0,
-            stack: '浓度',
+            type:'line',
+            yAxisIndex: 1,
             itemStyle: {
                 normal: {
-                    color: '#D1EEEE',
+                    color: '#FF0000',
                 }
             },
             data:m_list4
         },
         {
             name:'流量',
-            type:'line',
-            yAxisIndex: 1,
+            type:'bar',
+            yAxisIndex: 0,
             itemStyle: {
                 normal: {
                     color: '#D1EEEE',

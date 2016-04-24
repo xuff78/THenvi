@@ -16,12 +16,12 @@
             android:layout_height="45dip" />
         <TextView
             android:layout_gravity="center"
-            android:text="TH跨界区"
+            android:text="统计图表"
             android:layout_centerInParent="true"
             style="@style/txt_white_15" />
     </RelativeLayout>
     <LinearLayout
-        android:layout_marginTop="15dip"
+        android:layout_marginTop="10dip"
         android:gravity="center"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -58,7 +58,7 @@
     </LinearLayout>
 
     <FrameLayout
-        android:layout_marginTop="50dip"
+        android:layout_marginTop="10dip"
         android:id="@+id/mainFrame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
