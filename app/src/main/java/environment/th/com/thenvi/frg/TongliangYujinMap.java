@@ -465,7 +465,7 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
 //            bundle.putSerializable("InfoBean", bean);
 //            addMarkerToMap(bean.getLatLng(), bundle, mMarkerView);
 //        }
-        ActUtil.showAreaSpace(getActivity(), baiduMap, infos, 0x99CCCCCC);
+        ActUtil.showAreaSpace(getActivity(), baiduMap, infos, 0x44A4D3EE, getResources().getColor(R.color.hardtranswhite));
 //        ActUtil.showWorkingLine(baiduMap, infos);
         if(infos.size()>0)
             refreshMapStatus(infos.get(0).getPoints().get(0), 10);

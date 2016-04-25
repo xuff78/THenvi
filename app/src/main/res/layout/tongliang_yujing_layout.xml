@@ -4,11 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
         <RelativeLayout
+            android:id="@+id/titleLayout"
             android:background="@color/appBackground"
             android:layout_width="match_parent"
             android:layout_height="45dip">
@@ -43,8 +40,15 @@
                 android:layout_alignParentRight="true"
                 style="@style/txt_white_14" />
         </RelativeLayout>
+    <com.baidu.mapapi.map.MapView
+        android:layout_below="@+id/titleLayout"
+        android:id="@+id/mapView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:clickable="true" />
         <RelativeLayout
-            android:background="@color/alphagray"
+            android:layout_below="@+id/titleLayout"
+            android:background="@color/normaltranswhite"
             android:layout_width="match_parent"
             android:layout_height="45dip">
             <LinearLayout
@@ -86,13 +90,6 @@
                 android:layout_width="70dip"
                 android:layout_height="match_parent" />
         </RelativeLayout>
-
-        <com.baidu.mapapi.map.MapView
-            android:id="@+id/mapView"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:clickable="true" />
-    </LinearLayout>
     <LinearLayout
         android:visibility="gone"
         android:layout_alignParentBottom="true"

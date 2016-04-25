@@ -316,7 +316,7 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
                         showPoints.clear();
                     }
                     ArrayList<MapAreaInfo> datalist=JsonUtil.getTongliangMapArea(jsonData);
-                    showPoints=ActUtil.showAreaSpace(getActivity(), baiduMap, datalist, 0xaaAEEEEE);
+                    showPoints=ActUtil.showAreaSpace(getActivity(), baiduMap, datalist, 0xaaA4D3EE);
                     refreshMapStatus(datalist.get(0).getPoints().get(0), 10);
                 }else if(method.equals(ConstantUtil.method_TongliangKuajiedm)){
                     if(showPoints.size()>0) {
@@ -324,7 +324,7 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
                         showPoints.clear();
                     }
                     ArrayList<MapAreaInfo> datalist=JsonUtil.getTongliangMapArea(jsonData);
-                    showPoints=ActUtil.showAreaSpace(getActivity(), baiduMap, datalist, 0xaaAEEEEE);
+                    showPoints=ActUtil.showAreaSpace(getActivity(), baiduMap, datalist, 0xaaA4D3EE);
                     refreshMapStatus(datalist.get(0).getPoints().get(0), 10);
                 }else if(method.equals(ConstantUtil.method_TongliangMap)){
                     SharedPreferencesUtil.setString(getActivity(), ConstantUtil.TongliangMap, jsonData);
@@ -354,7 +354,7 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
             bundle.putSerializable("InfoBean", bean);
             addMarkerToMap(bean.getLatLng(), bundle, mMarkerView);
         }
-        ActUtil.showAreaSpace(getActivity(), baiduMap, infos, 0x99CCCCCC);
+        ActUtil.showAreaSpace(getActivity(), baiduMap, infos, 0x44A4D3EE, getResources().getColor(R.color.hardtranswhite));
         if(infos.size()>0)
         refreshMapStatus(infos.get(0).getPoints().get(0), 10);
     }

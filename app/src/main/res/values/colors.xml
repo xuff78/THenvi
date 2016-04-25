@@ -9,6 +9,8 @@
     <color name="alphagray">#22000000</color>
     <color name="transgray">#88000000</color>
     <color name="transwhite">#bbffffff</color>
+    <color name="normaltranswhite">#99ffffff</color>
+    <color name="hardtranswhite">#66ffffff</color>
 
     <!-- 商城使用字体颜色 -->
     <color name="highlight_gray">#eaeaea</color><!--高亮灰 -->

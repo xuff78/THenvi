@@ -64,7 +64,8 @@ public class TongliangYujingAdapter   extends BaseAdapter {
         TextView dataTxt4 = (TextView)v.findViewById(R.id.dataTxt4);
 
         TongliangYujingBean bean=dataList.get(position);
-        nameTxt1.setText(bean.getProvinceName());
+        if(position!=0&&!bean.getProvinceName().equals(dataList.get(position-1).getProvinceName()))
+            nameTxt1.setText(bean.getProvinceName());
         dataTxt1.setText(bean.getDuanMianName());
         dataTxt2.setText(bean.getTongLiangYuZhi());
         dataTxt3.setText(bean.getChaoBiaoTongLiang());

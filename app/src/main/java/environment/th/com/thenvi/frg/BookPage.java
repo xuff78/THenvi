@@ -127,7 +127,7 @@ public class BookPage  extends BaseFragment implements AdapterCallBack, AdapterV
         page=1;
         currentType=types.get(i).getType();
         books.clear();
-        adapter2 = new AreaListAdapter(getActivity(), books, 0);
+        adapter2 = new AreaListAdapter(getActivity(), books, 1);
         areaList2.setAdapter(adapter2);
         handler.getPDFlist(currentType, page);
         selected=i;

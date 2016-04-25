@@ -84,6 +84,22 @@ public class ActUtil {
         return layers;
     }
 
+    public static ArrayList<Overlay> showAreaSpace(Activity act, BaiduMap baiduMap,
+                                                   ArrayList<MapAreaInfo> areaInfo, int filterColor, int line) {
+        ArrayList<Overlay> layers=new ArrayList<>();
+        for(int i=0;i<areaInfo.size();i++) {
+            List<LatLng> infos = areaInfo.get(i).getPoints();
+            OverlayOptions polygonOption = new PolygonOptions()
+                    .points(infos)
+                    .stroke(new Stroke(3, line))
+                    .fillColor(filterColor);
+            //在地图上添加多边形Option，用于显示
+            Overlay ol=baiduMap.addOverlay(polygonOption);
+            layers.add(ol);
+        }
+        return layers;
+    }
+
     public static ArrayList<Overlay> showAreaSpace(Activity act, BaiduMap baiduMap, ArrayList<MapAreaInfo> areaInfo) {
         ArrayList<Overlay> layers=new ArrayList<>();
         int color=0;

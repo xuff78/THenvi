@@ -20,7 +20,7 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:gravity="center"
-            android:text="数据"
+            android:text="业务数据"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -80,6 +80,9 @@
             android:layout_width="70dip"
             android:layout_height="match_parent" />
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <android.support.v4.widget.DrawerLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -125,4 +128,103 @@
                 android:layout_height="match_parent"/>
         </LinearLayout>
     </android.support.v4.widget.DrawerLayout>
+        <LinearLayout
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@color/transwhite"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_width="38dip"
+            android:layout_height="wrap_content">
+            <TextView
+                android:padding="2dp"
+                android:id="@+id/title"
+                android:background="@color/hard_gray"
+                style="@style/txt_white_10"
+                android:text="mg/l"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:layout_marginTop="5dp"
+                style="@style/txt_white_10"
+                android:text="劣V"
+                android:background="@mipmap/water_lvl5"
+                android:layout_width="20dip"
+                android:layout_height="20dip" />
+            <TextView
+                android:id="@+id/ll5"
+                android:gravity="center"
+                android:text="1.5-2.0"
+                style="@style/txt_black_8"
+                android:layout_width="match_parent"
+                android:layout_height="20dip" />
+            <Button
+                style="@style/txt_white_10"
+                android:text="V"
+                android:background="@mipmap/water_lv5"
+                android:layout_width="20dip"
+                android:layout_height="20dip" />
+            <TextView
+                android:id="@+id/l5"
+                android:gravity="center"
+                android:text="1.5-2.0"
+                style="@style/txt_black_8"
+                android:layout_width="match_parent"
+                android:layout_height="20dip" />
+            <Button
+                style="@style/txt_white_10"
+                android:text="Ⅳ"
+                android:background="@mipmap/water_lv4"
+                android:layout_width="20dip"
+                android:layout_height="20dip" />
+            <TextView
+                android:id="@+id/l4"
+                android:gravity="center"
+                android:text="1.5-2.0"
+                style="@style/txt_black_8"
+                android:layout_width="match_parent"
+                android:layout_height="20dip" />
+            <Button
+                style="@style/txt_white_10"
+                android:text="Ⅲ"
+                android:background="@mipmap/water_lv3"
+                android:layout_width="20dip"
+                android:layout_height="20dip" />
+            <TextView
+                android:id="@+id/l3"
+                android:gravity="center"
+                android:text="1.5-2.0"
+                style="@style/txt_black_8"
+                android:layout_width="match_parent"
+                android:layout_height="20dip" />
+            <Button
+                style="@style/txt_white_10"
+                android:text="Ⅱ"
+                android:background="@mipmap/water_lv2"
+                android:layout_width="20dip"
+                android:layout_height="20dip" />
+            <TextView
+                android:id="@+id/l2"
+                android:gravity="center"
+                android:text="1.5-2.0"
+                style="@style/txt_black_8"
+                android:layout_width="match_parent"
+                android:layout_height="20dip" />
+            <Button
+                style="@style/txt_white_10"
+                android:text="Ⅰ"
+                android:background="@mipmap/water_lv1"
+                android:layout_width="20dip"
+                android:layout_height="20dip" />
+            <TextView
+                android:id="@+id/l1"
+                android:gravity="center"
+                android:text="1.5-2.0"
+                style="@style/txt_black_8"
+                android:layout_width="match_parent"
+                android:layout_height="20dip" />
+
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
