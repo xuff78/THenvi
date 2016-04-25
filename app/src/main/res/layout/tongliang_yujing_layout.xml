@@ -20,7 +20,7 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:gravity="center"
-                android:text="数据"
+                android:text="通量超标预警"
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

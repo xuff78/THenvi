@@ -63,7 +63,7 @@ import environment.th.com.thenvi.view.MenuPopup;
  * Created by 可爱的蘑菇 on 2016/4/16.
  */
 public class TongliangMap extends BaseFragment implements View.OnClickListener,
-        BaiduMap.OnMapClickListener, TongliangAdapter.OnAreaItemClick {
+        BaiduMap.OnMapClickListener, TongliangAdapter.OnAreaItemClick, BaiduMap.OnMapStatusChangeListener {
 
     private HttpHandler handler;
     private MapView mMapView;
@@ -81,6 +81,7 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
     private DatePickerDialog datePickerDialog;
     private View leftMenuView;
     private ArrayList<Overlay> showPoints=new ArrayList<>();
+    private ArrayList<Overlay> showAreas=new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -97,6 +98,7 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
         //普通地图
 //        baiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         //卫星地图
+        baiduMap.setOnMapStatusChangeListener(this);
         baiduMap.setMapType(BaiduMap.MAP_TYPE_SATELLITE);
         baiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
@@ -354,7 +356,7 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
             bundle.putSerializable("InfoBean", bean);
             addMarkerToMap(bean.getLatLng(), bundle, mMarkerView);
         }
-        ActUtil.showAreaSpace(getActivity(), baiduMap, infos, 0x44A4D3EE, getResources().getColor(R.color.hardtranswhite));
+        showAreas=ActUtil.showAreaSpace(getActivity(), baiduMap, infos, 0x44A4D3EE, getResources().getColor(R.color.hardtranswhite));
         if(infos.size()>0)
         refreshMapStatus(infos.get(0).getPoints().get(0), 10);
     }
@@ -411,5 +413,20 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
             }
         });
         v.startAnimation(anima);
+    }
+
+    @Override
+    public void onMapStatusChangeStart(MapStatus mapStatus) {
+        ActUtil.changeLayerStatus(showAreas, mapStatus);
+    }
+
+    @Override
+    public void onMapStatusChange(MapStatus mapStatus) {
+
+    }
+
+    @Override
+    public void onMapStatusChangeFinish(MapStatus mapStatus) {
+
     }
 }

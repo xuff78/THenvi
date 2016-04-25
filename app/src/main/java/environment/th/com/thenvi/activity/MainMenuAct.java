@@ -73,9 +73,8 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
         findViewById(R.id.menu_btn23).setOnClickListener(listener);
         findViewById(R.id.menu_btn24).setOnClickListener(listener);
         findViewById(R.id.menu_btn25).setOnClickListener(listener);
-
-
         menu_level2_layout=findViewById(R.id.menu_level2_layout);
+
 
         menu_leve13_layout=findViewById(R.id.menu_leve13_layout);
         findViewById(R.id.menu_btn31).setOnClickListener(listener2);
@@ -84,6 +83,8 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
 
 
         menu_leve14_layout=findViewById(R.id.menu_leve14_layout);
+        findViewById(R.id.menu_btn41).setOnClickListener(listener3);
+        findViewById(R.id.menu_btn42).setOnClickListener(listener3);
     }
 
     int lastShown=-1;
@@ -95,11 +96,15 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
             hideMenu(menu_level2_layout, 1);
         }else if(lastShown==2) {
             hideMenu(menu_leve13_layout, 2);
+        }else if(lastShown==3) {
+            hideMenu(menu_leve14_layout, 3);
         }
         if(view.getId()==R.id.menu_btn2&&tmpshown!=1) {
             showMenu(menu_level2_layout, 1);
         }else if(view.getId()==R.id.menu_btn3&&tmpshown!=2) {
             showMenu(menu_leve13_layout, 2);
+        }else if(view.getId()==R.id.menu_btn5&&tmpshown!=3) {
+            showMenu(menu_leve14_layout, 3);
         }
         if(selectBtn==view)
             return;
@@ -123,7 +128,7 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
                 addListFragment(frg, "menu3");
                 break;
             case R.id.menu_btn5:
-                selectPos=1;
+                selectPos=3;
                 frg = new BookPage();
                 addListFragment(frg, "menu5");
                 break;
@@ -189,6 +194,29 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
                     break;
             }
             hideMenu(menu_leve13_layout, 2);
+        }
+    };
+
+    View.OnClickListener listener3 = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(select2Btn==view)
+                return;
+            select2Btn.setBackgroundResource(R.color.trans);
+            select2Btn=view;
+            view.setBackgroundResource(R.color.alphagray);
+            view.setSelected(true);
+            switch (view.getId()) {
+                case R.id.menu_btn41:
+                    frg = new BookPage();
+                    addListFragment(frg, "menu41");
+                    break;
+                case R.id.menu_btn42:
+//                    frg = new TongliangMap();
+//                    addListFragment(frg, "menu42");
+                    break;
+            }
+            hideMenu(menu_leve14_layout, 2);
         }
     };
 

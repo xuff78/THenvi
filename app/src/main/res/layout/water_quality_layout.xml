@@ -20,7 +20,7 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:gravity="center"
-            android:text="业务数据"
+            android:text="水质模拟"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -214,6 +214,7 @@
             <Button
                 style="@style/txt_white_10"
                 android:text="Ⅰ"
+                android:id="@+id/iconL1"
                 android:background="@mipmap/water_lv1"
                 android:layout_width="20dip"
                 android:layout_height="20dip" />

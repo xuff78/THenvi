@@ -69,9 +69,17 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
     private MarkerSupportView content;
     private ArrayList<WaterQualityBean> siteList=new ArrayList<>();
     private ArrayList<WaterQualityBean> findList=new ArrayList<>();
+    private ArrayList<TextView> labelTxts=new ArrayList<>();
     private Marker currentMarker;
     private String materialType="", queryDate="";
     private DatePickerDialog datePickerDialog;
+    private String[] AMMONIA={">2.0","1.5-2.0","1.0-1.5","0.5-1.0","0.15-0.5"};
+    private String[] BOD={">10","6-10","4-6","3-4","0-3"};
+    private String[] COD={">40","30-40","20-30","15-20","0-15"};
+    private String[] DISSOLVED_OXYGEN={"0-2","2-3","3-5","5-6","6-7.5",">7.5"};
+    private String[] NITRATE={">2.0","1.5-2.0","1.0-1.5","0.5-1","0.2-0.5"};
+    private String[] TOTAL_PHOSPHORUS={">0.4","0.3-0.4","0.2-0.3","0.1-0.2","0.02-0.1"};
+    private View iconL1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -122,6 +130,13 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
     }
 
     private void initView(View v) {
+        iconL1=v.findViewById(R.id.iconL1);
+        labelTxts.add((TextView)v.findViewById(R.id.ll5));
+        labelTxts.add((TextView)v.findViewById(R.id.l5));
+        labelTxts.add((TextView)v.findViewById(R.id.l4));
+        labelTxts.add((TextView)v.findViewById(R.id.l3));
+        labelTxts.add((TextView)v.findViewById(R.id.l2));
+        labelTxts.add((TextView)v.findViewById(R.id.l1));
         searchEdt = (EditText) v.findViewById(R.id.searchEdt);
         searchEdt.addTextChangedListener(txtWatcher);
         startDate = (TextView)v.findViewById(R.id.startDate);
@@ -150,29 +165,51 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 typeBtn.setText(strings.get(i));
                 popup.dismiss();
+                String[] labelStrings = new String[0];
                 switch (i){
                     case 0:
+                        labelStrings=AMMONIA;
                         materialType="AMMONIA";
                         break;
                     case 1:
+                        labelStrings=BOD;
                         materialType="BOD";
                         break;
                     case 2:
+                        labelStrings=COD;
                         materialType="COD";
                         break;
                     case 3:
+                        labelStrings=DISSOLVED_OXYGEN;
                         materialType="DISSOLVED_OXYGEN";
                         break;
                     case 4:
+                        labelStrings=NITRATE;
                         materialType="NITRATE";
                         break;
                     case 5:
+                        labelStrings=TOTAL_PHOSPHORUS;
                         materialType="TOTAL_PHOSPHORUS";
                         break;
                 }
+                setLabels(labelStrings);
             }
         });
+        setLabels(AMMONIA);
         typeBtn.setText(strings.get(0));
+    }
+
+    private void setLabels(String[] labelStrings) {
+        iconL1.setVisibility(View.VISIBLE);
+        for(int i=0; i<labelTxts.size();i++){
+            if(i<labelStrings.length){
+                labelTxts.get(i).setText(labelStrings[i]);
+                labelTxts.get(i).setVisibility(View.VISIBLE);
+            }else{
+                labelTxts.get(i).setVisibility(View.GONE);
+                iconL1.setVisibility(View.GONE);
+            }
+        }
     }
 
     AdapterView.OnItemClickListener itemClickListener=new AdapterView.OnItemClickListener(){
