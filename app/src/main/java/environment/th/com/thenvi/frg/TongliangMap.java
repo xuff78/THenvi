@@ -69,7 +69,7 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
     private MapView mMapView;
     private BaiduMap baiduMap;
     private LinearLayout menuLayout;
-    private TextView endDate, startDate;
+    private TextView endDate, startDate,topMenuBtn;
     private MenuPopup popup;
     private ListView siteListview;
     public InfoWindow mInfoWindow;
@@ -79,7 +79,7 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
     private Marker currentMarker;
     private String materialType="", queryDate="";
     private DatePickerDialog datePickerDialog;
-    private View leftMenuView;
+    private View leftMenuView, topMenuLayout;
     private ArrayList<Overlay> showPoints=new ArrayList<>();
     private ArrayList<Overlay> showAreas=new ArrayList<>();
 
@@ -134,6 +134,9 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
     }
 
     private void initView(View v) {
+        topMenuLayout=v.findViewById(R.id.topMenuLayout);
+        topMenuBtn= (TextView) v.findViewById(R.id.topMenuBtn);
+        topMenuBtn.setOnClickListener(this);
         leftMenuView=v.findViewById(R.id.leftMenuView);
         startDate = (TextView)v.findViewById(R.id.startDate);
         startDate.setOnClickListener(this);
@@ -250,6 +253,15 @@ public class TongliangMap extends BaseFragment implements View.OnClickListener,
                 break;
             case R.id.findTypeBtn:
                 ((MainMenuAct)getActivity()).addListFragment(new WaterQualityMap(),"menu32");
+                break;
+            case R.id.topMenuBtn:
+                if(topMenuLayout.isShown()){
+                    topMenuBtn.setText("展开");
+                    topMenuLayout.setVisibility(View.GONE);
+                }else{
+                    topMenuBtn.setText("收起");
+                    topMenuLayout.setVisibility(View.VISIBLE);
+                }
                 break;
         }
     }

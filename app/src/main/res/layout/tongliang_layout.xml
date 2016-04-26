@@ -49,10 +49,11 @@
         android:layout_height="fill_parent"
         android:clickable="true" />
     <RelativeLayout
+        android:id="@+id/topMenuLayout"
         android:layout_below="@+id/titleLayout"
         android:background="@color/normaltranswhite"
         android:layout_width="match_parent"
-        android:layout_height="45dip">
+        android:layout_height="40dip">
         <LinearLayout
             android:layout_centerInParent="true"
             android:gravity="center"
@@ -65,7 +66,7 @@
             android:gravity="center"
             android:background="@mipmap/of_white_btn"
             android:layout_width="100dip"
-            android:layout_height="32dip" />
+            android:layout_height="30dip" />
             <ImageView
                 android:textSize="14sp"
                 android:src="@mipmap/icon_arrow_right"
@@ -80,7 +81,7 @@
             android:layout_toRightOf="@+id/startDate"
             android:background="@mipmap/of_white_btn"
             android:layout_width="100dip"
-            android:layout_height="32dip" />
+            android:layout_height="30dip" />
         </LinearLayout>
         <TextView
             android:id="@+id/findOut"
@@ -92,6 +93,16 @@
             android:layout_width="70dip"
             android:layout_height="match_parent" />
     </RelativeLayout>
+    <TextView
+        android:background="@color/hardtranswhite"
+        android:layout_below="@+id/titleLayout"
+        android:id="@+id/topMenuBtn"
+        android:text="收起"
+        android:textColor="@color/hard_gray"
+        android:textSize="12sp"
+        android:gravity="center"
+        android:layout_width="50dip"
+        android:layout_height="40dip" />
         <LinearLayout
             android:visibility="gone"
             android:layout_alignParentBottom="true"
@@ -99,13 +110,13 @@
             android:background="@color/white"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="220dip">
+            android:layout_height="210dip">
             <LinearLayout
                 android:padding="5dip"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="40dip">
+                android:layout_height="35dip">
                 <TextView
                     android:text="省界"
                     android:gravity="center"

@@ -79,11 +79,11 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
     private Marker currentMarker;
     private String materialType="", queryDate="";
     private DatePickerDialog datePickerDialog;
-    private View leftMenuView;
+    private View leftMenuView, topMenuLayout;
     private ArrayList<Overlay> showPoints=new ArrayList<>();
     private ArrayList<Overlay> showAreas=new ArrayList<>();
     private ArrayList<String> dates=new ArrayList<>();
-    private TextView typeBtn, dateTxt;
+    private TextView typeBtn, dateTxt, topMenuBtn;
     private ImageView playBtn;
     private SeekBar seekBar;
     private int stepWidth=1;
@@ -140,6 +140,9 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
     }
 
     private void initView(View v) {
+        topMenuLayout=v.findViewById(R.id.topMenuLayout);
+        topMenuBtn= (TextView) v.findViewById(R.id.topMenuBtn);
+        topMenuBtn.setOnClickListener(this);
         seekBar=(SeekBar) v.findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -332,6 +335,15 @@ public class TongliangYujinMap extends BaseFragment implements View.OnClickListe
                     playBtn.setImageResource(R.mipmap.map_icon_pause);
                 }
                 isPlay=!isPlay;
+                break;
+            case R.id.topMenuBtn:
+                if(topMenuLayout.isShown()){
+                    topMenuBtn.setText("展开");
+                    topMenuLayout.setVisibility(View.GONE);
+                }else{
+                    topMenuBtn.setText("收起");
+                    topMenuLayout.setVisibility(View.VISIBLE);
+                }
                 break;
         }
     }

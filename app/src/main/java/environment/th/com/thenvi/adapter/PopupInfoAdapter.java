@@ -31,7 +31,7 @@ public class PopupInfoAdapter  extends BaseAdapter {
         this.mInflater = LayoutInflater.from(context);
         this.dataList = dataList;
         con = context;
-        this.itemHeight = ScreenUtil.dip2px(context, 40);
+        this.itemHeight = ScreenUtil.dip2px(context, 35);
     }
 
     @Override
