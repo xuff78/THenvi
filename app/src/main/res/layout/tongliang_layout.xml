@@ -94,14 +94,15 @@
             android:layout_height="match_parent" />
     </RelativeLayout>
     <TextView
-        android:background="@color/hardtranswhite"
+        android:background="@mipmap/arrow_right_btn"
         android:layout_below="@+id/titleLayout"
         android:id="@+id/topMenuBtn"
         android:text="收起"
         android:textColor="@color/hard_gray"
         android:textSize="12sp"
-        android:gravity="center"
-        android:layout_width="50dip"
+        android:paddingLeft="10dip"
+        android:gravity="center_vertical"
+        android:layout_width="60dip"
         android:layout_height="40dip" />
         <LinearLayout
             android:visibility="gone"
