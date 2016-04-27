@@ -3,7 +3,9 @@
     android:orientation="vertical"
     android:paddingBottom="22dip"
     android:gravity="center"
-    android:background="@drawable/login_edit_shape"
+    android:paddingLeft="15dip"
+    android:paddingRight="15dip"
+    android:background="@drawable/marker_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
@@ -17,7 +19,7 @@
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/txt_black_14" />
+        style="@style/txt_white_14" />
     <View
         android:id="@+id/line1"
         android:layout_below="@+id/titleTxt"
@@ -27,11 +29,12 @@
     <ListView
         android:layout_weight="8"
         android:layout_marginBottom="5dip"
+        android:layout_marginTop="10dp"
         android:layout_above="@+id/detailBtn"
         android:layout_below="@+id/line1"
         android:id="@+id/infoList"
         android:scrollbars="none"
-        android:divider="@color/light_gray"
+        android:divider="@color/trans"
         android:dividerHeight="1px"
         android:cacheColorHint="@color/trans"
         android:layout_width="match_parent"

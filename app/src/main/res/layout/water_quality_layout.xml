@@ -45,7 +45,7 @@
     <RelativeLayout
         android:background="@color/transwhite"
         android:layout_width="match_parent"
-        android:layout_height="45dip">
+        android:layout_height="40dip">
         <TextView
             android:id="@+id/startDate"
             android:textSize="14sp"
@@ -54,7 +54,7 @@
             android:layout_centerVertical="true"
             android:background="@mipmap/of_white_btn"
             android:layout_width="100dip"
-            android:layout_height="32dip" />
+            android:layout_height="30dip" />
         <TextView
             android:layout_toRightOf="@+id/startDate"
             android:id="@+id/typeBtn"
