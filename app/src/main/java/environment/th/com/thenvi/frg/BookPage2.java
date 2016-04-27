@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 import environment.th.com.thenvi.R;
 import environment.th.com.thenvi.activity.BookContentAct;
+import environment.th.com.thenvi.activity.BookListAct;
 import environment.th.com.thenvi.adapter.AdapterCallBack;
 import environment.th.com.thenvi.bean.BookBean;
 import environment.th.com.thenvi.bean.BookCate;
@@ -40,6 +41,7 @@ public class BookPage2   extends BaseFragment implements AdapterCallBack, Adapte
     private int page=1, totalPage=1, lastVisibleIndex=0;
     private TextView txt;
     private String currentType="";
+    private String subject="";
 
     private void initHandler() {
         handler=new HttpHandler(getActivity(), new CallBack(getActivity()){
@@ -50,31 +52,10 @@ public class BookPage2   extends BaseFragment implements AdapterCallBack, Adapte
                     adapter = new AreaListAdapter(getActivity(), types, 0);
                     areaList.setAdapter(adapter);
                 }else if(method.equals(ConstantUtil.method_PDFEv)) {
-//                    String pageInfo=JsonUtil.getString(jsonData, "page");
-//                    page=JsonUtil.getJsonInt(pageInfo, "page");
-//                    totalPage=JsonUtil.getJsonInt(pageInfo, "totalPage");
-//                    books.addAll(JsonUtil.getPDFInfo(jsonData));
-//                    adapter2.notifyDataSetChanged();
-//                    areaList2.setOnScrollListener(new AbsListView.OnScrollListener() {
-//                        @Override
-//                        public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-//                            if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
-//                                    && lastVisibleIndex == adapter2.getCount()) {
-//                                if (page < totalPage) {
-//                                    handler.getPDFlist(currentType, page+1);
-//                                }
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onScroll(AbsListView absListView, int firstVisibleItem,
-//                                             int visibleItemCount, int totalItemCount) {
-//                            lastVisibleIndex = firstVisibleItem + visibleItemCount - 1;
-//                            if (totalItemCount == totalPage + 1) {
-//                                txt.setText("已全部加载");
-//                            }
-//                        }
-//                    });
+                    Intent intent=new Intent(getActivity(), BookContentAct.class);
+                    intent.putExtra("jsonData", jsonData);
+                    intent.putExtra("subject", subject);
+                    startActivity(intent);
                 }
             }
         });
@@ -96,9 +77,9 @@ public class BookPage2   extends BaseFragment implements AdapterCallBack, Adapte
         areaList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent=new Intent(getActivity(), BookContentAct.class);
-//                intent.putExtra("URL", books.get(i).getBookUrl());
-//                intent.putExtra("NAME", books.get(i).getBookName());
+                subject=types.get(i).getName();
+                Intent intent=new Intent(getActivity(), BookListAct.class);
+                intent.putExtra("name", types.get(selected).getCates().get(i).getName());
                 startActivity(intent);
             }
         });
@@ -112,7 +93,10 @@ public class BookPage2   extends BaseFragment implements AdapterCallBack, Adapte
             adapter2 = new AreaListAdapter(getActivity(), types.get(i).getCates(), 2);
             areaList2.setAdapter(adapter2);
         }else{
-
+            subject=types.get(i).getName();
+            Intent intent=new Intent(getActivity(), BookListAct.class);
+            intent.putExtra("name", subject);
+            startActivity(intent);
         }
 //        handler.getPDFlist(currentType, page);
         selected=i;
@@ -149,7 +133,7 @@ public class BookPage2   extends BaseFragment implements AdapterCallBack, Adapte
                 convertView.setBackgroundColor(Color.WHITE);
             else
                 convertView.setBackgroundColor(Color.TRANSPARENT);
-            if(type==1)
+            if(datalist.get(position).getNextType().equals("list"))
                 arrowRight.setVisibility(View.GONE);
 
             nameTxt.setText(datalist.get(position).getName());

@@ -66,6 +66,8 @@ public class BookPage  extends BaseFragment implements AdapterCallBack, AdapterV
                     totalPage=JsonUtil.getJsonInt(pageInfo, "totalPage");
                     books.addAll(JsonUtil.getPDFInfo(jsonData));
                     adapter2.notifyDataSetChanged();
+                    if(page==totalPage)
+                        txt.setText("已全部加载");
                     areaList2.setOnScrollListener(new AbsListView.OnScrollListener() {
                         @Override
                         public void onScrollStateChanged(AbsListView absListView, int scrollState) {
@@ -116,7 +118,7 @@ public class BookPage  extends BaseFragment implements AdapterCallBack, AdapterV
         AbsListView.LayoutParams llp=new AbsListView.LayoutParams(-1, ScreenUtil.dip2px(getActivity(), 40));
         txt=new TextView(getActivity());
         txt.setText("加载中");
-        txt.setTextSize(16);
+        txt.setTextSize(14);
         txt.setGravity(Gravity.CENTER);
         txt.setLayoutParams(llp);
         areaList2.addFooterView(txt);

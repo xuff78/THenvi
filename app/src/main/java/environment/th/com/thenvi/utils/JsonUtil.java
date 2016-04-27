@@ -1039,6 +1039,26 @@ public class JsonUtil {
         return sites;
     }
 
+    public static ArrayList<BookBean> getPDFListEv(String jsonData){
+        ArrayList<BookBean> sites=new ArrayList();
+        try {
+
+            JSONArray array=new JSONArray(jsonData);
+            for(int i=0;i<array.length();i++){
+                JSONObject subJson=array.getJSONObject(i);
+                BookBean book=new BookBean();
+                if(!subJson.isNull("name"))
+                    book.setBookName(subJson.getString("name"));
+                if(!subJson.isNull("url"))
+                    book.setBookUrl(subJson.getString("url"));
+                sites.add(book);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return sites;
+    }
+
     public static ArrayList<BookBean> getPDFInfo(String jsonData){
         ArrayList<BookBean> sites=new ArrayList();
         try {
