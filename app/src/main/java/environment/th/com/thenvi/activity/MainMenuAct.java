@@ -24,6 +24,7 @@ import java.util.List;
 
 import environment.th.com.thenvi.R;
 import environment.th.com.thenvi.frg.BookPage;
+import environment.th.com.thenvi.frg.BookPage2;
 import environment.th.com.thenvi.frg.CurrentLoactionMap;
 import environment.th.com.thenvi.frg.EmergencySuppliesMap;
 import environment.th.com.thenvi.frg.SewageDisposalMap;
@@ -212,8 +213,8 @@ public class MainMenuAct extends AppCompatActivity implements View.OnClickListen
                     addListFragment(frg, "menu41");
                     break;
                 case R.id.menu_btn42:
-//                    frg = new TongliangMap();
-//                    addListFragment(frg, "menu42");
+                    frg = new BookPage2();
+                    addListFragment(frg, "menu42");
                     break;
             }
             hideMenu(menu_leve14_layout, 2);

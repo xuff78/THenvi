@@ -18,6 +18,9 @@ public class ConstantUtil {
 
 	public static final String method_Login="1/login";
 
+	public static final String method_PDFCateEv="1/pdf/huanBaoCategory";
+	public static final String method_PDFEv="1/pdf/huanBaoList";
+
 	public static final String method_PDF="1/pdf/list";
 	public static final String method_PDFTypes="1/pdf/typeList";
 

@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import environment.th.com.thenvi.bean.BookBean;
+import environment.th.com.thenvi.bean.BookCate;
 import environment.th.com.thenvi.bean.CRiverInfoBean;
 import environment.th.com.thenvi.bean.ChatGateDam;
 import environment.th.com.thenvi.bean.ChatGuokong;
@@ -1054,6 +1055,30 @@ public class JsonUtil {
                     sites.add(book);
                 }
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return sites;
+    }
+
+    public static ArrayList<BookCate> getPDFTypesEv(String jsonData){
+        ArrayList<BookCate> sites=new ArrayList();
+        try {
+
+            JSONArray array=new JSONArray(jsonData);
+            for(int i=0;i<array.length();i++){
+                JSONObject subJson=array.getJSONObject(i);
+                BookCate book=new BookCate();
+                if(!subJson.isNull("name"))
+                    book.setName(subJson.getString("name"));
+                if(!subJson.isNull("nextType"))
+                    book.setNextType(subJson.getString("nextType"));
+                if(!subJson.isNull("id"))
+                    book.setId(subJson.getString("id"));
+                sites.add(book);
+                getPDFTypesEv(subJson.toString());
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
