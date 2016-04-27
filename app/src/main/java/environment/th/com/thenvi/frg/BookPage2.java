@@ -102,13 +102,6 @@ public class BookPage2   extends BaseFragment implements AdapterCallBack, Adapte
                 startActivity(intent);
             }
         });
-        AbsListView.LayoutParams llp=new AbsListView.LayoutParams(-1, ScreenUtil.dip2px(getActivity(), 40));
-        txt=new TextView(getActivity());
-        txt.setText("加载中");
-        txt.setTextSize(16);
-        txt.setGravity(Gravity.CENTER);
-        txt.setLayoutParams(llp);
-        areaList2.addFooterView(txt);
     }
 
     @Override

@@ -1075,8 +1075,10 @@ public class JsonUtil {
                     book.setNextType(subJson.getString("nextType"));
                 if(!subJson.isNull("id"))
                     book.setId(subJson.getString("id"));
+                if(!subJson.isNull("data")) {
+                    book.setCates(getPDFTypesEv(subJson.getString("data")));
+                }
                 sites.add(book);
-                getPDFTypesEv(subJson.toString());
             }
 
         } catch (JSONException e) {
