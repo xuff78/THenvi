@@ -174,7 +174,7 @@ public class HttpHandler extends Handle {
 		params.put("typeCode", typeCode);
 		params.put("page", page+"");
 		params.put("rows", "20");
-		request(ConstantUtil.method_PDF, params, true);
+		request(ConstantUtil.method_PDF, params, false);
 	}
 
 	public void getPDFType() {

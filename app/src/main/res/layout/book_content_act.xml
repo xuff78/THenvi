@@ -15,6 +15,10 @@
             android:background="@drawable/press_trans_to_gray"
             android:layout_height="45dip" />
         <TextView
+            android:layout_marginLeft="45dip"
+            android:layout_marginRight="45dip"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:id="@+id/titleTxt"
             android:layout_gravity="center"
             android:text="TH跨界区"

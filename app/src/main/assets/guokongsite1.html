@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+</head>
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main2" style="height:250px; margin-top: 15px;"></div>
+<!-- ECharts单文件引入 -->
+<script src="echarts-all.js"></script>
+<!--<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>-->
+<script type="text/javascript">
+        function setData(p1){
+
+        var m_json = JSON.parse(p1);
+
+        var m_info0 = m_json.FLOW;
+        var m_list0 = new Array();
+        for (var i = 0; i < m_info0.length; i++) {
+            m_list0[i] = m_info0[i].data;
+        }
+
+        var m_info1 = m_json.FirstFormInfo1;
+        var m_list1 = new Array();
+        for (var i = 0; i < m_info1.length; i++) {
+            m_list1[i] = m_info1[i].data;
+        }
+
+        var m_info2 = m_json.FirstFormInfo2;
+        var m_list2 = new Array();
+        for (var i = 0; i < m_info2.length; i++) {
+            m_list2[i] = m_info2[i].data;
+        }
+
+        var m_info3 = m_json.SecondFormInfo1;
+        var m_list3 = new Array();
+        for (var i = 0; i < m_info3.length; i++) {
+            m_list3[i] = m_info3[i].data;
+        }
+
+        var tags_info = m_json.tags;
+        var m_tags = new Array();
+        for (var i = 0; i < tags_info.length; i++) {
+            m_tags[i] = tags_info[i].data;
+        }
+
+        // 基于准备好的dom，初始化echarts图表
+        var myChart2 = echarts.init(document.getElementById('main2'));
+
+        var option2 = {
+    tooltip : {
+        trigger: 'axis'
+    },
+    grid: {
+        x: 30,
+        y: 60,
+        x2: 30,
+        y2: 30,
+        // width: {totalWidth} - x - x2,
+        // height: {totalHeight} - y - y2,
+        backgroundColor: 'rgba(0,0,0,0)',
+        borderWidth: 1,
+        borderColor: '#ccc'
+    },
+    <!--toolbox: {-->
+        <!--show : false,-->
+        <!--feature : {-->
+            <!--mark : {show: true},-->
+            <!--dataView : {show: true, readOnly: false},-->
+            <!--magicType: {show: true, type: ['line', 'bar']},-->
+            <!--restore : {show: true},-->
+            <!--saveAsImage : {show: true}-->
+        <!--}-->
+    <!--},-->
+    calculable : false,
+    legend: {
+        data:['PH','DO','CODMN','NH3N'],
+        textStyle: {
+            color: 'white'          // 图例文字颜色
+        }
+    },
+    title: {
+        text:"时刻",
+        x: 'right',                 // 水平安放位置，默认为左对齐，可选为：
+                                   // 'center' ¦ 'left' ¦ 'right'
+                                   // ¦ {number}（x坐标，单位px）
+        y: 'bottom',                  // 垂直安放位置，默认为全图顶端，可选为：
+                                   // 'top' ¦ 'bottom' ¦ 'center'
+                                   // ¦ {number}（y坐标，单位px）
+        //textAlign: null          // 水平对齐方式，默认根据x设置自动调整
+        backgroundColor: 'rgba(0,0,0,0)',
+        borderColor: '#ccc',       // 标题边框颜色
+        borderWidth: 0,            // 标题边框线宽，单位px，默认为0（无边框）
+        padding: 7,                // 标题内边距，单位px，默认各方向内边距为5，
+                                   // 接受数组分别设定上右下左边距，同css
+        itemGap: 10,               // 主副标题纵向间隔，单位px，默认为10，
+        textStyle: {
+            fontSize: 10,
+            fontWeight: 'bolder',
+            color: '#fff'          // 主标题文字颜色
+        }
+    },
+    xAxis : [
+        {
+            type : 'category',
+            data : m_tags,
+            axisLine: {            // 坐标轴线
+                show: true,        // 默认显示，属性show控制显示与否
+                lineStyle: {       // 属性lineStyle控制线条样式
+                    color: 'white',
+                    width: 1,
+                    type: 'solid'
+                }
+             },
+             axisLabel : {
+                textStyle: {
+                    color: 'white'
+                }
+            },
+            axisTick : {
+                lineStyle: {
+                    color: 'white',
+                }
+            },
+            splitLine: {           // 分隔线
+                show: true,        // 默认显示，属性show控制显示与否
+                // onGap: null,
+                lineStyle: {
+                    color: ['#969696'],
+                    width: 1,
+                    type: 'solid'
+                }
+            },
+            splitArea : {
+                show: true,
+                areaStyle:{
+                    color:['rgba(70,130,180,0.2)','rgba(71,71,71,0.2)']
+                }
+            }
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value',
+            name : '浓度\n(mg/l)',
+            splitNumber: 5,
+            axisLine: {            // 坐标轴线
+                show: true,        // 默认显示，属性show控制显示与否
+                lineStyle: {       // 属性lineStyle控制线条样式
+                    color: 'white',
+                    width: 1,
+                    type: 'solid'
+                }
+             },
+             axisLabel : {
+                textStyle: {
+                    color: 'white',
+                    fontSize: 9
+                }
+            },
+            splitLine: {           // 分隔线
+                show: true,        // 默认显示，属性show控制显示与否
+                // onGap: null,
+                lineStyle: {
+                    color: ['#969696'],
+                    width: 1,
+                    type: 'solid'
+                }
+            },
+            splitArea : {
+                show: true,
+                areaStyle:{
+                    color:['rgba(70,130,180,0.2)','rgba(71,71,71,0.2)']
+                }
+            }
+        },
+        {
+            type : 'value',
+            name : '',
+            splitNumber: 10,
+            axisLine: {            // 坐标轴线
+                show: true,        // 默认显示，属性show控制显示与否
+                lineStyle: {       // 属性lineStyle控制线条样式
+                    color: 'white',
+                    width: 1,
+                    type: 'solid'
+                }
+             },
+             axisLabel : {
+                textStyle: {
+                    color: 'white',
+                    fontSize: 11
+                }
+            },
+            splitLine: {           // 分隔线
+                show: true,        // 默认显示，属性show控制显示与否
+                // onGap: null,
+                lineStyle: {
+                    color: ['#969696'],
+                    width: 1,
+                    type: 'solid'
+                }
+            }
+            <!--axisLabel : {-->
+                <!--formatter: '{value} °C'-->
+            <!--}-->
+        }
+
+
+    ],
+    series : [
+        {
+            name:'PH',
+            type:'line',
+            yAxisIndex: 0,
+            stack: '浓度',
+            itemStyle: {
+                normal: {
+                    color: '#5CACEE',
+                }
+            },
+            data:m_list1
+        },
+        {
+            name:'DO',
+            type:'line',
+            yAxisIndex: 0,
+            stack: '浓度',
+            itemStyle: {
+                normal: {
+                    color: '#7A67EE',
+                }
+            },
+            data:m_list2
+        },
+        {
+            name:'CODMN',
+            type:'line',
+            yAxisIndex: 0,
+            stack: '浓度',
+            itemStyle: {
+                normal: {
+                    color: '#458B74',
+                }
+            },
+            data:m_list3
+        },
+        {
+            name:'NH3N',
+            type:'line',
+            yAxisIndex: 0,
+            itemStyle: {
+                normal: {
+                    color: '#D1EEEE',
+                }
+            },
+            data:m_list0
+        }
+    ]
+};
+
+        // 为echarts对象加载数据
+        myChart2.setOption(option2);
+        };
+
+    </script>
+</body>

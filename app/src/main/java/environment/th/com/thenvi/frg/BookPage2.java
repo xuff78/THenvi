@@ -77,7 +77,6 @@ public class BookPage2   extends BaseFragment implements AdapterCallBack, Adapte
         areaList2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                subject=types.get(i).getName();
                 Intent intent=new Intent(getActivity(), BookListAct.class);
                 intent.putExtra("name", types.get(selected).getCates().get(i).getName());
                 startActivity(intent);
@@ -90,11 +89,21 @@ public class BookPage2   extends BaseFragment implements AdapterCallBack, Adapte
         page=1;
         currentType=types.get(i).getNextType();
         if(currentType.equals("cate")) {
-            adapter2 = new AreaListAdapter(getActivity(), types.get(i).getCates(), 2);
-            areaList2.setAdapter(adapter2);
+            Intent intent=new Intent(getActivity(), BookListAct.class);
+            intent.putExtra("pdfType", 1);
+            intent.putExtra("listType", 0);
+            intent.putExtra("id", subject);
+            intent.putExtra("name", subject);
+            intent.putExtra(BookCate.Name, types.get(i));
+            startActivity(intent);
+//            adapter2 = new AreaListAdapter(getActivity(), types.get(i).getCates(), 2);
+//            areaList2.setAdapter(adapter2);
         }else{
             subject=types.get(i).getName();
             Intent intent=new Intent(getActivity(), BookListAct.class);
+            intent.putExtra("pdfType", 1);
+            intent.putExtra("listType", 1);
+            intent.putExtra("id", subject);
             intent.putExtra("name", subject);
             startActivity(intent);
         }
@@ -129,12 +138,7 @@ public class BookPage2   extends BaseFragment implements AdapterCallBack, Adapte
             TextView addrTxt=(TextView) convertView.findViewById(R.id.addrTxt);
             TextView nameTxt=(TextView) convertView.findViewById(R.id.nameTxt);
             View arrowRight=convertView.findViewById(R.id.arrowRight);
-            if(selected==position)
-                convertView.setBackgroundColor(Color.WHITE);
-            else
-                convertView.setBackgroundColor(Color.TRANSPARENT);
-            if(datalist.get(position).getNextType().equals("list"))
-                arrowRight.setVisibility(View.GONE);
+            arrowRight.setVisibility(View.GONE);
 
             nameTxt.setText(datalist.get(position).getName());
 

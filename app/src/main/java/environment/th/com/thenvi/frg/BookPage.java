@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 import environment.th.com.thenvi.R;
 import environment.th.com.thenvi.activity.BookContentAct;
+import environment.th.com.thenvi.activity.BookListAct;
 import environment.th.com.thenvi.adapter.AdapterCallBack;
 import environment.th.com.thenvi.adapter.BookAdapter;
 import environment.th.com.thenvi.bean.BookBean;
@@ -126,15 +127,20 @@ public class BookPage  extends BaseFragment implements AdapterCallBack, AdapterV
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        page=1;
+//        page=1;
         currentType=types.get(i).getType();
-        books.clear();
-        adapter2 = new AreaListAdapter(getActivity(), books, 1);
-        areaList2.setAdapter(adapter2);
-        handler.getPDFlist(currentType, page);
-        selected=i;
-        adapter.notifyDataSetChanged();
-
+//        books.clear();
+//        adapter2 = new AreaListAdapter(getActivity(), books, 1);
+//        areaList2.setAdapter(adapter2);
+//        handler.getPDFlist(currentType, page);
+//        selected=i;
+//        adapter.notifyDataSetChanged();
+        Intent intent=new Intent(getActivity(), BookListAct.class);
+        intent.putExtra("pdfType", 0);
+        intent.putExtra("listType", 1);
+        intent.putExtra("id", currentType);
+        intent.putExtra("name", types.get(i).getBookName());
+        startActivity(intent);
     }
 
     public class AreaListAdapter extends BaseAdapter {
@@ -163,12 +169,7 @@ public class BookPage  extends BaseFragment implements AdapterCallBack, AdapterV
             TextView addrTxt=(TextView) convertView.findViewById(R.id.addrTxt);
             TextView nameTxt=(TextView) convertView.findViewById(R.id.nameTxt);
             View arrowRight=convertView.findViewById(R.id.arrowRight);
-            if(selected==position)
-                convertView.setBackgroundColor(Color.WHITE);
-            else
-                convertView.setBackgroundColor(Color.TRANSPARENT);
-            if(type==1)
-                arrowRight.setVisibility(View.GONE);
+            arrowRight.setVisibility(View.GONE);
 
             nameTxt.setText(datalist.get(position).getBookName());
 

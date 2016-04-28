@@ -1,12 +1,14 @@
 package environment.th.com.thenvi.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Administrator on 2016/4/27.
  */
-public class BookCate {
+public class BookCate implements Serializable{
 
+    public static final String Name="BookCate";
     private String name="";
     private String nextType="";
     private String id="";
