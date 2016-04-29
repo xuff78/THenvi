@@ -55,16 +55,30 @@ public class ChatsInfoAct extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chats_layout);
 
-
         initView();
     }
 
     private void initView() {
-        Calendar calendar = Calendar.getInstance(Locale.CHINA);
+        TextView titleTxt= (TextView) findViewById(R.id.titleTxt);
+        if(getIntent().hasExtra("Title"))
+            titleTxt.setText(getIntent().getStringExtra("Title"));
+        Calendar mCalendar = Calendar.getInstance(Locale.CHINA);
         //获取日期
-        year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
+        year = mCalendar.get(Calendar.YEAR);
+        month = mCalendar.get(Calendar.MONTH);
+        day = mCalendar.get(Calendar.DAY_OF_MONTH);
+        long todayL=mCalendar.getTimeInMillis();
+        mCalendar.add(Calendar.DATE, -7);
+        long beforeTodayL=mCalendar.getTimeInMillis();
+
+
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date curDate = new Date(todayL);//获取当前时间
+        String strEnd = formatter.format(curDate);
+
+        Date beforeDate = new Date(beforeTodayL);//获取当前时间
+        String strStart = formatter.format(beforeDate);
 
         findViewById(R.id.listLeftBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,14 +88,12 @@ public class ChatsInfoAct extends AppCompatActivity implements View.OnClickListe
         });
         startDate=(TextView)findViewById(R.id.startDate);
         endDate=(TextView)findViewById(R.id.endDate);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
-        String str = formatter.format(curDate);
-//        startDate.setText(str);
-        startDate.setText("2014-03-10");
+
+        startDate.setText(strStart);
+//        startDate.setText("2014-03-10");
         startDate.setOnClickListener(this);
-//        endDate.setText(str);
-        endDate.setText("2014-03-17");
+        endDate.setText(strEnd);
+//        endDate.setText("2014-03-17");
         endDate.setOnClickListener(this);
         findViewById(R.id.findData).setOnClickListener(this);
         mDateSetListener=new DatePickerDialog.OnDateSetListener() {

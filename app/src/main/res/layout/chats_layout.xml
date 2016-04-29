@@ -15,6 +15,7 @@
             android:background="@drawable/press_trans_to_gray"
             android:layout_height="45dip" />
         <TextView
+            android:id="@+id/titleTxt"
             android:layout_gravity="center"
             android:text="统计图表"
             android:layout_centerInParent="true"

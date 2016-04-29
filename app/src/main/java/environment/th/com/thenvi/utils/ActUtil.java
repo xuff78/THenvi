@@ -18,7 +18,9 @@ import com.baidu.mapapi.map.Stroke;
 import com.baidu.mapapi.model.LatLng;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import environment.th.com.thenvi.R;
@@ -170,6 +172,13 @@ public class ActUtil {
         for(int i=0;i<layers.size();i++) {
             layers.get(i).remove();
         }
+    }
+
+    public static String getCurrentDate(){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+        String str = formatter.format(curDate);
+        return str;
     }
 
 }

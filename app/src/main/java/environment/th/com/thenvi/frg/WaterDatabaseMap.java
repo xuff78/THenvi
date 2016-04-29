@@ -66,6 +66,7 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
     private TextView typeBtn;
     private EditText searchEdt;
     private int type=0; //跨界， 国控， 闸坝
+    private int tmptype=0; //跨界， 国控， 闸坝
     private MenuPopup popup;
     private ListView siteListview;
     public InfoWindow mInfoWindow;
@@ -180,9 +181,9 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 typeBtn.setText(strings.get(i));
-                type=i;
+                tmptype=i;
                 popup.dismiss();
-                switch (type){
+                switch (i){
                     case 0:
                         handler.getKuajieSiteList();
                         break;
@@ -273,9 +274,11 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
                 switch (type) {
                     case 0:
                         i.putExtra(ChatsInfoAct.KuajieSite, bean);
+                        i.putExtra("Title", ((RiverInfoBean)bean).getSNAME());
                         break;
                     case 1:
                         i.putExtra(ChatsInfoAct.GuokongSite, bean);
+                        i.putExtra("Title", ((CRiverInfoBean)bean).getPNAME());
                         break;
                     case 2:
 //                        i.putExtra(ChatsInfoAct.GateDamSite, bean);
@@ -389,6 +392,7 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
             public void doSuccess(String method, String jsonData) {
                 if(getActivity()!=null)
                 if(method.equals(ConstantUtil.method_KuajieSiteList)){
+                    type=tmptype;
                     baiduMap.hideInfoWindow();
                     mInfoWindow = null;
                     ActUtil.removeLayers(sitelayers);
@@ -418,6 +422,7 @@ public class WaterDatabaseMap  extends BaseFragment implements View.OnClickListe
                         refreshMapStatus(point, 10);
                     }
                 }else if(method.equals(ConstantUtil.method_GuokongSiteList)){
+                    type=tmptype;
                     baiduMap.hideInfoWindow();
                     mInfoWindow = null;
                     ActUtil.removeLayers(sitelayers);

@@ -46,6 +46,7 @@ import environment.th.com.thenvi.activity.MainMenuAct;
 import environment.th.com.thenvi.adapter.SiteListAdapter;
 import environment.th.com.thenvi.bean.MapAreaInfo;
 import environment.th.com.thenvi.bean.PopupInfoItem;
+import environment.th.com.thenvi.bean.RiverInfoBean;
 import environment.th.com.thenvi.bean.WaterSiteBean;
 import environment.th.com.thenvi.http.CallBack;
 import environment.th.com.thenvi.http.HttpHandler;
@@ -71,6 +72,7 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
     private TextView typeBtn;
     private EditText searchEdt;
     private int type=0; //水文， 雨量， 闸坝
+    private int tmptype=0; //水文， 雨量， 闸坝
     private MenuPopup popup;
     private ListView siteListview;
     public InfoWindow mInfoWindow;
@@ -172,9 +174,9 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 typeBtn.setText(strings.get(i));
-                type=i;
+                tmptype=i;
                 popup.dismiss();
-                switch (type){
+                switch (i){
                     case 0:
                         handler.getSiteList();
                         break;
@@ -255,6 +257,7 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
                         i.putExtra(ChatsInfoAct.GateDamSite, bean);
                         break;
                 }
+                i.putExtra("Title", bean.getHSNAME());
                 startActivity(i);
             }
         });
@@ -364,6 +367,7 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
             public void doSuccess(String method, String jsonData) {
                 if(method.equals(ConstantUtil.method_SiteList)||method.equals(ConstantUtil.method_RainSiteList)
                         ||method.equals(ConstantUtil.method_GateDamSiteList)){
+                    type=tmptype;
                     baiduMap.hideInfoWindow();
                     mInfoWindow = null;
                     siteList= JsonUtil.getSiteList(jsonData);

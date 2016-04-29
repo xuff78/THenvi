@@ -1175,23 +1175,38 @@ public class JsonUtil {
             for(int i=0;i<datalist.size();i++){
 
                 JSONObject objsub=new JSONObject();
-                objsub.put("data", datalist.get(i).getFLOW());
+                String data0=datalist.get(i).getFLOW();
+                if(data0.length()==0)
+                    data0="-";
+                objsub.put("data", data0);
                 array0.put(i, objsub);
 
                 objsub=new JSONObject();
-                objsub.put("data", datalist.get(i).getCODN());
+                String data1=datalist.get(i).getCODN();
+                if(data1.length()==0)
+                    data1="-";
+                objsub.put("data", data1);
                 array1.put(i, objsub);
 
                 objsub=new JSONObject();
-                objsub.put("data", datalist.get(i).getNDN());
+                String data2=datalist.get(i).getNDN();
+                if(data2.length()==0)
+                    data2="-";
+                objsub.put("data", data2);
                 array2.put(i, objsub);
 
                 objsub=new JSONObject();
-                objsub.put("data", datalist.get(i).getPN());
+                String data3=datalist.get(i).getPN();
+                if(data3.length()==0)
+                    data3="-";
+                objsub.put("data", data3);
                 array3.put(i, objsub);
 
                 objsub=new JSONObject();
-                objsub.put("data", datalist.get(i).getNN());
+                String data4=datalist.get(i).getNN();
+                if(data4.length()==0)
+                    data4="-";
+                objsub.put("data", data4);
                 array4.put(i, objsub);
 
                 objsub=new JSONObject();
@@ -1231,19 +1246,32 @@ public class JsonUtil {
             for(int i=0;i<datalist.size();i++){
 
                 JSONObject objsub=new JSONObject();
-                objsub.put("data", datalist.get(i).getNH3N());
+                String data0=datalist.get(i).getNH3N();
+                if(data0.length()==0)
+                    data0="-";
+                objsub.put("data", data0);
                 array0.put(i, objsub);
 
                 objsub=new JSONObject();
-                objsub.put("data", datalist.get(i).getPH());
+                String data1=datalist.get(i).getPH();
+                if(data1.length()==0)
+                    data1="-";
+                objsub.put("data", data1);
                 array1.put(i, objsub);
 
                 objsub=new JSONObject();
-                objsub.put("data", datalist.get(i).getDO());
+
+                String data2=datalist.get(i).getDO();
+                if(data2.length()==0)
+                    data2="-";
+                objsub.put("data", data2);
                 array2.put(i, objsub);
 
                 objsub=new JSONObject();
-                objsub.put("data", datalist.get(i).getCODMN());
+                String data3=datalist.get(i).getCODMN();
+                if(data3.length()==0)
+                    data3="-";
+                objsub.put("data", data3);
                 array3.put(i, objsub);
 
                 objsub=new JSONObject();

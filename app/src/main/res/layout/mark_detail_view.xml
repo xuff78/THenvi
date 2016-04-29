@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:paddingBottom="22dip"
+    android:paddingBottom="15dip"
     android:gravity="center"
     android:paddingLeft="15dip"
     android:paddingRight="15dip"
@@ -39,6 +39,11 @@
         android:cacheColorHint="@color/trans"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+    <View
+        android:layout_marginTop="10dip"
+        android:background="@color/light_gray"
+        android:layout_width="match_parent"
+        android:layout_height="1px"/>
     <Button
         android:layout_weight="1"
         android:layout_alignParentBottom="true"
@@ -48,5 +53,6 @@
         android:text="查看详情"
         style="@style/txt_white_14"
         android:layout_width="100dip"
+        android:layout_marginTop="10dip"
         android:layout_height="30dip" />
 </LinearLayout>

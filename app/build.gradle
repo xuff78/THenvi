@@ -34,6 +34,18 @@ android {
         }
     }
 
+    buildTypes {
+        release {
+            debuggable true
+
+
+        }
+        debug {
+            debuggable true
+
+        }
+    }
+
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']

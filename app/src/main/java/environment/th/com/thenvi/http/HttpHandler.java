@@ -6,9 +6,12 @@ package environment.th.com.thenvi.http;
 
 import android.app.Activity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import environment.th.com.thenvi.utils.ActUtil;
 import environment.th.com.thenvi.utils.ConstantUtil;
 import environment.th.com.thenvi.utils.LogUtil;
 
@@ -47,7 +50,7 @@ public class HttpHandler extends Handle {
 		HashMap<String, String> params=new HashMap<>();
 		params.put("hsname", hsname);
 		params.put("rsname", rsname);
-		params.put("date", "2014-03-31");
+		params.put("date", ActUtil.getCurrentDate());
 		request(ConstantUtil.method_SiteDetail, params, true);
 	}
 
@@ -70,7 +73,7 @@ public class HttpHandler extends Handle {
 		HashMap<String, String> params=new HashMap<>();
 		params.put("rfname", hsname);
 		params.put("rsname", rsname);
-		params.put("date", "2014-03-31");
+		params.put("date", ActUtil.getCurrentDate());
 		request(ConstantUtil.method_RainSiteDetail, params, true);
 	}
 
@@ -93,7 +96,7 @@ public class HttpHandler extends Handle {
 		HashMap<String, String> params=new HashMap<>();
 		params.put("dname", hsname);
 		params.put("rsname", rsname);
-		params.put("date", "2014-03-31");
+		params.put("date", ActUtil.getCurrentDate());
 		request(ConstantUtil.method_GateDamDetail, params, true);
 	}
 
@@ -149,7 +152,7 @@ public class HttpHandler extends Handle {
 		HashMap<String, String> params=new HashMap<>();
 		params.put("river", hsname);
 		params.put("provices", rsname);
-		params.put("date", "2014-03-31");
+		params.put("date", ActUtil.getCurrentDate());
 		request(ConstantUtil.method_KuajieSiteDetail, params, true);
 	}
 
@@ -199,7 +202,7 @@ public class HttpHandler extends Handle {
 		HashMap<String, String> params=new HashMap<>();
 		params.put("pname", hsname);
 		params.put("city", rsname);
-		params.put("date", "2014-03-31");
+		params.put("date", ActUtil.getCurrentDate());
 		request(ConstantUtil.method_GuokongSiteDetail, params, true);
 	}
 
@@ -220,7 +223,7 @@ public class HttpHandler extends Handle {
 	public void getYibanSiteDetail(String pscode) {
 		HashMap<String, String> params=new HashMap<>();
 		params.put("pscode", pscode);
-		params.put("date", "2014-03-31");
+		params.put("date", ActUtil.getCurrentDate());
 		request(ConstantUtil.method_YibanSiteDetail, params, true);
 	}
 
@@ -232,7 +235,7 @@ public class HttpHandler extends Handle {
 	public void getWushuizdSiteDetail(String pscode) {
 		HashMap<String, String> params=new HashMap<>();
 		params.put("pscode", pscode);
-		params.put("date", "2014-03-31");
+		params.put("date", ActUtil.getCurrentDate());
 		request(ConstantUtil.method_WushuizdSiteDetail, params, true);
 	}
 
@@ -250,7 +253,7 @@ public class HttpHandler extends Handle {
 	public void getGongyeSiteDetail(String runit) {
 		HashMap<String, String> params=new HashMap<>();
 		params.put("runit", runit);
-		params.put("date", "2014-03-31");
+		params.put("date", ActUtil.getCurrentDate());
 		request(ConstantUtil.method_GongyeSiteDetail, params, true);
 	}
 
@@ -262,7 +265,7 @@ public class HttpHandler extends Handle {
 	public void getWushuipcDetail(String name) {
 		HashMap<String, String> params=new HashMap<>();
 		params.put("name", name);
-		params.put("date", "2014-03-31");
+		params.put("date", ActUtil.getCurrentDate());
 		request(ConstantUtil.method_WushuipcSiteDetail, params, true);
 	}
 
@@ -280,7 +283,7 @@ public class HttpHandler extends Handle {
 	public void getChuqinSiteDetail(String farm) {
 		HashMap<String, String> params=new HashMap<>();
 		params.put("farm", farm);
-		params.put("date", "2014-03-31");
+		params.put("date", ActUtil.getCurrentDate());
 		request(ConstantUtil.method_ChuqinSiteDetail, params, true);
 	}
 
