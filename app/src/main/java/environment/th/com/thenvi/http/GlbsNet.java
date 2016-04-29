@@ -138,7 +138,7 @@ public final class GlbsNet {
     }
 
 	private static String getJsonStringFromGZIP( HttpURLConnection  response) {
-		String jsonString = null;
+		String jsonString = "";
 
 		try {
 			InputStream e = response.getInputStream();
