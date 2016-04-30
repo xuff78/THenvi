@@ -1123,19 +1123,31 @@ public class JsonUtil {
             for(int i=0;i<datalist.size();i++){
 
                 JSONObject objsub=new JSONObject();
-                objsub.put("data", datalist.get(i).getUPPERSLUICE());
+                String data1=datalist.get(i).getUPPERSLUICE();
+                if(data1.equals("0"))
+                    data1="-";
+                objsub.put("data", data1);
                 array1.put(i, objsub);
 
                 objsub=new JSONObject();
-                objsub.put("data", datalist.get(i).getUNDERSLUICE());
+                String data2=datalist.get(i).getUNDERSLUICE();
+                if(data2.equals("0"))
+                    data2="-";
+                objsub.put("data", data2);
                 array2.put(i, objsub);
 
                 objsub=new JSONObject();
-                objsub.put("data", datalist.get(i).getDIVERSION());
+                String data3=datalist.get(i).getDIVERSION();
+                if(data3.equals("0"))
+                    data3="-";
+                objsub.put("data", data3);
                 array3.put(i, objsub);
 
                 objsub=new JSONObject();
-                objsub.put("data", datalist.get(i).getDRAINAGE());
+                String data4=datalist.get(i).getDRAINAGE();
+                if(data4.equals("0"))
+                    data4="-";
+                objsub.put("data", data4);
                 array4.put(i, objsub);
 
                 objsub=new JSONObject();

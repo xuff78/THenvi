@@ -101,19 +101,31 @@ public class ChatsDialog2 extends DialogFragment
             for(int i=0;i<AMMONIAs.size();i++){
 
                 JSONObject objsub=new JSONObject();
-                objsub.put("data", AMMONIAs.get(i).getValue());
+                String data1=AMMONIAs.get(i).getValue();
+                if(data1.equals("0"))
+                    data1="-";
+                objsub.put("data", data1);
                 array1.put(i, objsub);
 
                 objsub=new JSONObject();
-                objsub.put("data", CODs.get(i).getValue());
+                String data2=CODs.get(i).getValue();
+                if(data2.equals("0"))
+                    data2="-";
+                objsub.put("data", data2);
                 array2.put(i, objsub);
 
                 objsub=new JSONObject();
-                objsub.put("data", TNs.get(i).getValue());
+                String data3=TNs.get(i).getValue();
+                if(data3.equals("0"))
+                    data3="-";
+                objsub.put("data", data3);
                 array3.put(i, objsub);
 
                 objsub=new JSONObject();
-                objsub.put("data", TPs.get(i).getValue());
+                String data4=TPs.get(i).getValue();
+                if(data4.equals("0"))
+                    data4="-";
+                objsub.put("data", data4);
                 array4.put(i, objsub);
 
                 objsub=new JSONObject();
