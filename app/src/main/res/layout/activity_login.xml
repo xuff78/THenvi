@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageView
-        android:src="@mipmap/day_2"
+        android:src="@mipmap/s11"
         android:scaleType="centerCrop"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -17,7 +17,8 @@
     <TextView
         android:id="@+id/topLogo"
         style="@style/txt_with_shadow"
-        android:text="太湖跨境水环境信息平台"
+        android:text="太湖流域跨界区\n水环境信息交流与共享平台"
+        android:lineSpacingExtra="5dip"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dip"
         android:layout_width="wrap_content"

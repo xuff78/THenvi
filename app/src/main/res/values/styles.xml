@@ -139,7 +139,7 @@
     </style>
 
     <style name="txt_with_shadow">
-        <item name="android:textSize">26.0sp</item>
+        <item name="android:textSize">24.0sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">#ffffff</item>
         <item name="android:shadowColor">#000000</item>
