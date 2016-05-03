@@ -114,6 +114,7 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
                 }
                 WaterSiteBean bean = (WaterSiteBean) markerExtraInfo.getSerializable("InfoBean");
                 showSupportContent(marker.getPosition(), height, bean.getHSNAME(), bean);
+                content.setListView(bean.getInfos());
                 switch (type){
                     case 0:
                         handler.getSiteDetail(bean.getHSNAME(), bean.getRSNAME());
@@ -199,6 +200,7 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
             mDrawerLayout.closeDrawer(menuLayout);
             WaterSiteBean site= findList.get(i);
             showSupportContent(new LatLng(Double.valueOf(site.getLATITUDE()),Double.valueOf(site.getLONGITUDE())), 75, site.getHSNAME(), site);
+            content.setListView(site.getInfos());
             switch (type){
                 case 0:
                     handler.getSiteDetail(site.getHSNAME(), site.getRSNAME());
@@ -404,7 +406,8 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
                 }else if(method.equals(ConstantUtil.method_SiteDetail)||method.equals(ConstantUtil.method_RainSiteDetail)
                         ||method.equals(ConstantUtil.method_GateDamDetail)){
                     WaterSiteBean siteBean=JsonUtil.getSiteDetail(jsonData);
-                    content.setListView(siteBean.getInfos());
+                    if(siteBean.getInfos().size()>0)
+                        content.setListView(siteBean.getInfos());
                 }
             }
         });

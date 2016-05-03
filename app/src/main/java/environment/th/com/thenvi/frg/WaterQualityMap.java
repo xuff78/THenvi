@@ -30,6 +30,7 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.model.LatLng;
 
 import java.text.SimpleDateFormat;
@@ -40,13 +41,17 @@ import environment.th.com.thenvi.R;
 import environment.th.com.thenvi.activity.ChatsInfoAct;
 import environment.th.com.thenvi.activity.MainMenuAct;
 import environment.th.com.thenvi.adapter.SiteListAdapter;
+import environment.th.com.thenvi.bean.MapAreaInfo;
+import environment.th.com.thenvi.bean.MapPointInfo;
 import environment.th.com.thenvi.bean.WaterQualityBean;
 import environment.th.com.thenvi.bean.WaterQualityBean;
 import environment.th.com.thenvi.http.CallBack;
 import environment.th.com.thenvi.http.HttpHandler;
+import environment.th.com.thenvi.utils.ActUtil;
 import environment.th.com.thenvi.utils.ConstantUtil;
 import environment.th.com.thenvi.utils.JsonUtil;
 import environment.th.com.thenvi.utils.ScreenUtil;
+import environment.th.com.thenvi.utils.SharedPreferencesUtil;
 import environment.th.com.thenvi.view.MarkerSupportView;
 import environment.th.com.thenvi.view.MenuPopup;
 
@@ -54,7 +59,7 @@ import environment.th.com.thenvi.view.MenuPopup;
  * Created by 可爱的蘑菇 on 2016/4/4.
  */
 public class WaterQualityMap extends BaseFragment implements View.OnClickListener,
-        BaiduMap.OnMapClickListener {
+        BaiduMap.OnMapClickListener, BaiduMap.OnMapStatusChangeListener {
 
     private HttpHandler handler;
     private MapView mMapView;
@@ -92,6 +97,7 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
         mMapView.showZoomControls(false);
         mMapView.showScaleControl(true);
         baiduMap = mMapView.getMap();
+        baiduMap.setOnMapStatusChangeListener(this);
 
         baiduMap.setOnMapClickListener(this);
         baiduMap.setMyLocationEnabled(true);
@@ -123,9 +129,17 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
         initHandler();
         initView(mView);
 
-        handler.getShuizhiInfo("AMMONIA","2011-01-01");
+
         materialType="AMMONIA";
         startDate.setText("2011-01-01");
+
+        String tongliangMap= SharedPreferencesUtil.getString(getActivity(), ConstantUtil.TongliangMap);
+        if(tongliangMap.equals(SharedPreferencesUtil.FAILURE_STRING)) {
+            handler.getTongliangMap();
+        }else {
+            showTongliangMap(tongliangMap);
+            handler.getShuizhiInfo("AMMONIA","2011-01-01");
+        }
         return mView;
     }
 
@@ -292,6 +306,7 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
             Marker marker = (Marker) (baiduMap.addOverlay(option));
             bundle.putInt("height", height);
             marker.setExtraInfo(bundle);
+            sitelayers.add(marker);
         }catch (Exception e){
 
         }
@@ -386,7 +401,7 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
                 if(method.equals(ConstantUtil.method_Shuizhi)){
                     baiduMap.hideInfoWindow();
                     mInfoWindow = null;
-                    baiduMap.clear();
+                    ActUtil.removeLayers(sitelayers);
                     siteList= JsonUtil.getWaterQualityInfo(jsonData);
                     ArrayList<String> names=new ArrayList<>();
                     findList.clear();
@@ -439,8 +454,39 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
                         LatLng point = new LatLng(Double.parseDouble(bean.getY()), Double.parseDouble(bean.getX()));
                         refreshMapStatus(point, 10);
                     }
+                }else if(method.equals(ConstantUtil.method_TongliangMap)){
+                    SharedPreferencesUtil.setString(getActivity(), ConstantUtil.TongliangMap, jsonData);
+                    showTongliangMap(jsonData);
+                    handler.getShuizhiInfo("AMMONIA","2011-01-01");
                 }
             }
         });
+    }
+
+
+
+    private ArrayList<Overlay> sitelayers=new ArrayList<>();
+    private ArrayList<Overlay> showAreas=new ArrayList<>();
+
+    private void showTongliangMap(String jsonData) {
+        ArrayList<MapAreaInfo> infos=JsonUtil.getAreaInfo(jsonData, "14fenqu");
+        showAreas= ActUtil.showAreaSpace(getActivity(), baiduMap, infos, 0x44A4D3EE, getResources().getColor(R.color.hardtranswhite));
+        if(infos.size()>0)
+            refreshMapStatus(infos.get(0).getPoints().get(0), 10);
+    }
+
+    @Override
+    public void onMapStatusChangeStart(MapStatus mapStatus) {
+        ActUtil.changeLayerStatus(showAreas, mapStatus);
+    }
+
+    @Override
+    public void onMapStatusChange(MapStatus mapStatus) {
+
+    }
+
+    @Override
+    public void onMapStatusChangeFinish(MapStatus mapStatus) {
+
     }
 }

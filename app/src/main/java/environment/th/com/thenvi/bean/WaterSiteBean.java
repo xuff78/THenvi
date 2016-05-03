@@ -68,13 +68,16 @@ public class WaterSiteBean implements Serializable{
 
     public ArrayList<PopupInfoItem> getInfos(){
         ArrayList<PopupInfoItem> datas = new ArrayList<>();
-        datas.add(new PopupInfoItem("水系", RSNAME));
+        if(RSNAME.length()>0)
+            datas.add(new PopupInfoItem("水系", RSNAME));
         if(SAFESTAGE.length()>0)
             datas.add(new PopupInfoItem("保证水位", SAFESTAGE));
         if(CRESTELEVATION.length()>0)
             datas.add(new PopupInfoItem("堤顶高度", CRESTELEVATION));
-        datas.add(new PopupInfoItem("经度", LONGITUDE));
-        datas.add(new PopupInfoItem("纬度", LATITUDE));
+        if(LONGITUDE.length()>0)
+            datas.add(new PopupInfoItem("经度", LONGITUDE));
+        if(LATITUDE.length()>0)
+            datas.add(new PopupInfoItem("纬度", LATITUDE));
         return datas;
     }
 }
