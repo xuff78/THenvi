@@ -8,8 +8,8 @@
         android:paddingLeft="10dip"
         android:paddingRight="10dip"
         android:gravity="center"
-        android:layout_height="40dip"
-        style="@style/txt_white_12" />
+        android:layout_height="35dip"
+        style="@style/txt_white_11" />
     <TextView
         android:id="@+id/contentTxt"
         android:paddingLeft="10dip"
@@ -19,6 +19,6 @@
         android:layout_alignParentRight="true"
         android:gravity="center_vertical|right"
         android:layout_height="wrap_content"
-        android:minHeight="40dip"
-        style="@style/txt_white_12" />
+        android:minHeight="35dip"
+        style="@style/txt_white_11" />
 </RelativeLayout>

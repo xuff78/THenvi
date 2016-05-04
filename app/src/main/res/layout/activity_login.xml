@@ -30,7 +30,10 @@
         android:layout_below="@+id/topLogo"
         android:background="@drawable/login_edit_shape"
         android:orientation="vertical"
-        android:layout_margin="25dip"
+        android:layout_marginBottom="30dip"
+        android:layout_marginLeft="25dip"
+        android:layout_marginRight="25dip"
+        android:layout_marginTop="60dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
