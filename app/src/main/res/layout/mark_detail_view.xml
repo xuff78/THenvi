@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:paddingBottom="15dip"
+    android:paddingBottom="10dip"
     android:gravity="center"
     android:paddingLeft="15dip"
     android:paddingRight="15dip"
@@ -51,7 +51,7 @@
         android:background="@color/hard_gray"
         android:id="@+id/detailBtn"
         android:text="查看详情"
-        style="@style/txt_white_14"
+        style="@style/txt_white_12"
         android:layout_width="100dip"
         android:layout_marginTop="10dip"
         android:layout_height="30dip" />
