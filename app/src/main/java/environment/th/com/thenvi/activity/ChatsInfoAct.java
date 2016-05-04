@@ -74,7 +74,7 @@ public class ChatsInfoAct extends AppCompatActivity implements View.OnClickListe
 
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date curDate = new Date(todayL);//获取当前时间
+        Date curDate = new Date(todayL);//获取当
         String strEnd = formatter.format(curDate);
 
         Date beforeDate = new Date(beforeTodayL);
