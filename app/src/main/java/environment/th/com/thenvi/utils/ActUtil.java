@@ -2,6 +2,7 @@ package environment.th.com.thenvi.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -179,6 +180,20 @@ public class ActUtil {
         Date curDate = new Date(System.currentTimeMillis());//获取当前时间
         String str = formatter.format(curDate);
         return str;
+    }
+
+    public static ArrayList<Overlay> getCurrentMap(final Activity con, final BaiduMap baiduMap){
+        ArrayList<Overlay> maplayers=new ArrayList<>();
+        if(con!=null) {
+            String MapData= SharedPreferencesUtil.getString(con, ConstantUtil.AreaInfo);
+            if(!MapData.equals(SharedPreferencesUtil.FAILURE_STRING)){
+                ArrayList<MapAreaInfo> areaInfo = JsonUtil.getAreaInfo(MapData, "fenqu");
+                maplayers.addAll(ActUtil.showAreaSpace(con, baiduMap, areaInfo));
+                ArrayList<MapAreaInfo> areaInfo2 = JsonUtil.getAreaInfo(MapData, "duanMian");
+                maplayers.addAll(ActUtil.showWorkingLine(baiduMap, areaInfo2));
+            }
+        }
+        return maplayers;
     }
 
 }

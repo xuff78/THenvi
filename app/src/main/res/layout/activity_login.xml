@@ -26,14 +26,17 @@
         android:gravity="center"
         android:layout_height="70dip" />
     <LinearLayout
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
         android:id="@+id/edtLayout"
-        android:layout_below="@+id/topLogo"
         android:background="@drawable/login_edit_shape"
         android:orientation="vertical"
         android:layout_marginBottom="30dip"
         android:layout_marginLeft="25dip"
         android:layout_marginRight="25dip"
-        android:layout_marginTop="60dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
@@ -98,4 +101,5 @@
         android:layout_marginRight="24dip"
         android:layout_width="match_parent"
         android:layout_height="50dip" />
+    </LinearLayout>
 </RelativeLayout>

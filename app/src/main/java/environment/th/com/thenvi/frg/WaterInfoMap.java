@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -147,14 +148,14 @@ public class WaterInfoMap extends BaseFragment implements View.OnClickListener,
                 handler.getGateDamSiteList();
                 break;
         }
-        String MapData= SharedPreferencesUtil.getString(getActivity(), ConstantUtil.AreaInfo);
-        if(!MapData.equals(SharedPreferencesUtil.FAILURE_STRING)){
-            maplayers.clear();
-            ArrayList<MapAreaInfo> areaInfo = JsonUtil.getAreaInfo(MapData, "fenqu");
-            maplayers.addAll(ActUtil.showAreaSpace(getActivity(), baiduMap, areaInfo));
-            ArrayList<MapAreaInfo> areaInfo2 = JsonUtil.getAreaInfo(MapData, "duanMian");
-            maplayers.addAll(ActUtil.showWorkingLine(baiduMap, areaInfo2));
-        }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                maplayers=ActUtil.getCurrentMap(getActivity(), baiduMap);
+            }
+        },1500);
+
         return mView;
     }
 

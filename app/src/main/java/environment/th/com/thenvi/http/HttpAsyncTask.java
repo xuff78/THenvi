@@ -76,6 +76,7 @@ public class HttpAsyncTask extends AsyncTask<Object, String, String> {
 		ActUtil.closeSoftPan(mContext);
 		if(isShowDlg) {
 			progressDialog = ProgressDialog.show(mContext, "", "加载中..", true, true);
+			progressDialog.setCanceledOnTouchOutside(false);
 			progressDialog.setOnCancelListener(dialogCancel);
 		}
 	}

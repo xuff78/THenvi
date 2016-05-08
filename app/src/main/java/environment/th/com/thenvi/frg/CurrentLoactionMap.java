@@ -66,11 +66,34 @@ public class CurrentLoactionMap extends BaseFragment {
             @Override
             public void doSuccess(String method, final String jsonData) {
                 SharedPreferencesUtil.setString(getActivity(), ConstantUtil.AreaInfo, jsonData);
-                ArrayList<MapAreaInfo> areaInfo = JsonUtil.getAreaInfo(jsonData, "fenqu");
-                ActUtil.showAreaSpace(getActivity(), baiduMap, areaInfo);
 
-                ArrayList<MapAreaInfo> areaInfo2 = JsonUtil.getAreaInfo(jsonData, "duanMian");
-                ActUtil.showWorkingLine(baiduMap, areaInfo2);
+                final ArrayList<MapAreaInfo> areaInfo = JsonUtil.getAreaInfo(jsonData, "fenqu");
+                if(areaInfo.size()>0) {
+                    List<LatLng> points=areaInfo.get(areaInfo.size()/2).getPoints();
+                    if(points.size()>0) {
+                        refreshMapStatus(points.get(0), 11);
+                    }
+                }
+
+                postHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(getActivity()!=null) {
+                            ActUtil.showAreaSpace(getActivity(), baiduMap, areaInfo);
+
+                        }
+                    }
+                },2000);
+
+                postHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(getActivity()!=null) {
+                            ArrayList<MapAreaInfo> areaInfo2 = JsonUtil.getAreaInfo(jsonData, "duanMian");
+                            ActUtil.showWorkingLine(baiduMap, areaInfo2);
+                        }
+                    }
+                },3000);
 
                 postHandler.postDelayed(new Runnable() {
                     @Override
@@ -80,14 +103,7 @@ public class CurrentLoactionMap extends BaseFragment {
                             showWorkingLine(areaInfo, new int[]{0xFFFFD700, 0xFFEE0000, 0xFF436EEE});
                         }
                     }
-                },2000);
-
-                if(areaInfo.size()>0) {
-                    List<LatLng> points=areaInfo.get(areaInfo.size()/2).getPoints();
-                    if(points.size()>0) {
-                        refreshMapStatus(points.get(0), 11);
-                    }
-                }
+                },4000);
 
                 for(int i=0;i<CurrentLoactionMap.this.areaInfo.size();i++) {
                     View mMarkerView = LayoutInflater.from(getActivity()).inflate(R.layout.marker_layout, null);
