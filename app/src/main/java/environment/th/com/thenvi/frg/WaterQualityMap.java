@@ -275,6 +275,7 @@ public class WaterQualityMap extends BaseFragment implements View.OnClickListene
 //                startActivity(i);
             }
         });
+        content.setDetailGone();
         View view = content.getMarkerContentView();
         mInfoWindow = new InfoWindow(view, endpositon, -height);
         //显示InfoWindow
