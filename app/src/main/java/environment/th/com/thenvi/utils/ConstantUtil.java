@@ -14,7 +14,7 @@ public class ConstantUtil {
 	public static final String AreaInfo="AreaInfo";
 	public static final String TongliangMap="TongliangMap";
 
-	public static final String Api_Url="http://101.251.249.170/";
+	public static final String Api_Url="http://101.251.249.170:8080/";
 
 	public static final String method_Login="1/login";
 
